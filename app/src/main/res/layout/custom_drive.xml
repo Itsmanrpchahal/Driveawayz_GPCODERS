@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/margin_dp10"
+    android:layout_marginRight="@dimen/margin_dp10"
+    android:layout_marginTop="@dimen/margin_dp10"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="@dimen/margin_dp10">
+
+        <RelativeLayout
+            android:id="@+id/driver_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorGreyLight">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/driver_image"
+                android:layout_width="@dimen/margin_dp60"
+                android:layout_height="@dimen/margin_dp60"
+                android:layout_marginLeft="@dimen/margin_dp30"
+                android:layout_marginTop="@dimen/margin_dp15"
+                android:layout_marginBottom="@dimen/margin_dp15"
+                android:src="@drawable/download"
+                app:civ_border_color="@color/colorBlack"
+                app:civ_border_width="@dimen/margin_dp1">
+
+            </de.hdodenhof.circleimageview.CircleImageView>
+
+            <LinearLayout
+                android:id="@+id/layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/margin_dp10"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/margin_dp25"
+                android:layout_toRightOf="@id/driver_image">
+
+                <TextView
+                    android:id="@+id/driver_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sukhdev Singh"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/textsize_sp16"
+                    >
+
+                </TextView>
+
+
+                <TextView
+                    android:id="@+id/drive_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jan 22 2019 at 16:00"
+                    >
+
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/margin_dp25"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin_dp30">
+
+                <TextView
+                    android:id="@+id/drive_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$100.00"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/textsize_sp16"
+                    >
+
+                </TextView>
+
+
+                <TextView
+                    android:id="@+id/drive_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4 Hours"
+                    >
+
+                </TextView>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:layout_below="@id/driver_image">
+
+                <TextView
+                    android:id="@+id/pickuptv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PICK UP"
+                    android:layout_marginLeft="@dimen/margin_dp30"
+                    android:layout_marginTop="@dimen/margin_dp30">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/drive_loc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4634 Swift Village"
+                    android:layout_below="@id/pickuptv"
+                    android:layout_marginLeft="@dimen/margin_dp30"
+                    android:layout_marginTop="@dimen/margin_dp10"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/textsize_sp16">
+
+                </TextView>
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_dp1"
+                    android:background="@color/colorGreyLight"
+                    android:layout_below="@id/drive_loc"
+                    android:layout_marginLeft="@dimen/margin_dp30"
+                    android:layout_marginRight="@dimen/margin_dp30"
+                    android:layout_marginTop="10dp">
+
+                </View>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:layout_below="@id/layout2">
+
+                <TextView
+                    android:id="@+id/dropoftv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DROP OFF"
+                    android:layout_marginLeft="@dimen/margin_dp30"
+                    android:layout_marginTop="@dimen/margin_dp30">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/drive_drop_loc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4634 Swift Village"
+                    android:layout_below="@id/dropoftv"
+                    android:layout_marginLeft="@dimen/margin_dp30"
+                    android:layout_marginTop="@dimen/margin_dp10"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/textsize_sp16"
+                    android:layout_marginBottom="@dimen/margin_dp15">
+
+                </TextView>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

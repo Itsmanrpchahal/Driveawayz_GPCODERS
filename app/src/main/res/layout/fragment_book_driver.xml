@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorSplashTheme"
+    tools:context=".dashboard.homeFrag.BookDriver">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_dp120"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bottom_building">
+
+        </ImageView>
+    </RelativeLayout>
+
+    <!-- TODO: Update blank fragment layout -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="false">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="@dimen/margin_dp16"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="@dimen/margin_dp10">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Select Car &amp; Other Details"
+                        android:textColor="@color/colorTextLight"
+                        android:textSize="@dimen/textsize_sp16"
+                        android:layout_margin="@dimen/margin_dp20"></TextView>
+
+                    <TextView
+                        android:id="@+id/tv1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv"
+                        android:text="Total number of guests"
+                        android:textColor="@color/colorTextLight"
+                        android:layout_marginLeft="@dimen/margin_dp20"
+                        android:layout_marginTop="@dimen/margin_dp10">
+
+                    </TextView>
+
+
+                    <EditText
+                        android:id="@+id/numberofgueststv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv1"
+                        android:layout_marginLeft="@dimen/margin_dp20"
+                        android:layout_marginRight="@dimen/margin_dp20"
+                        android:inputType="number">
+
+                    </EditText>
+
+
+                    <LinearLayout
+                        android:id="@+id/layout1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_margin="@dimen/margin_dp20"
+                        android:layout_below="@id/numberofgueststv">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginRight="@dimen/margin_dp5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/select_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Select Vehicle"
+                                android:textColor="@color/colorTextLight"></TextView>
+
+
+                            <EditText
+                                android:id="@+id/select_vehicle_et"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text">
+
+                            </EditText>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="@dimen/margin_dp5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/hours_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="How many hours?"
+                                android:textColor="@color/colorTextLight">
+
+                            </TextView>
+
+
+                            <EditText
+                                android:id="@+id/hours_et"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number">
+
+                            </EditText>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        android:layout_margin="@dimen/margin_dp20"
+                        android:layout_below="@id/layout1">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginRight="@dimen/margin_dp5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/pickdate_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Pickup Date"
+                                android:textColor="@color/colorTextLight">
+
+                            </TextView>
+
+
+                            <EditText
+                                android:id="@+id/pick_date_et"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:enabled="true"
+                                android:editable="false"
+                                android:focusable="false"
+                                android:inputType="text">
+
+                            </EditText>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="@dimen/margin_dp5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/picktime_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Pickup Time"
+                                android:textColor="@color/colorTextLight">
+
+                            </TextView>
+
+
+                            <EditText
+                                android:id="@+id/picktime_et"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:enabled="true"
+                                android:editable="false"
+                                android:focusable="false"
+                                android:inputType="number">
+
+                            </EditText>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/bookdriver_bt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/layout2"
+                        android:layout_marginLeft="@dimen/margin_dp20"
+                        android:layout_marginRight="@dimen/margin_dp20"
+                        android:layout_marginBottom="@dimen/margin_dp20"
+                        android:background="@drawable/color_black"
+                        android:text="Book Driver Now"
+                        android:textColor="@color/colorWhite"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/textsize_sp16"
+                        android:layout_marginTop="@dimen/margin_dp30">
+
+                    </Button>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+    </ScrollView>
+</FrameLayout>

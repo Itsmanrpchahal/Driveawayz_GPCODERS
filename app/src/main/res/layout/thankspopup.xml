@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorBlack"
+        app:cardCornerRadius="@dimen/margin_dp5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/bookdoctv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thank you for booking you drive. We look farward to serving you and Delivering Memorable Experiences."
+                android:textColor="@color/colorWhite"
+                android:padding="@dimen/margin_dp10"
+                android:layout_marginTop="@dimen/margin_dp40"
+                android:layout_marginBottom="@dimen/margin_dp40"
+                android:textAlignment="textStart"
+                android:layout_marginRight="@dimen/margin_dp10"
+                android:layout_marginLeft="@dimen/margin_dp10">
+
+            </TextView>
+
+            <Button
+                android:id="@+id/ok_bt"
+                android:layout_width="@dimen/margin_dp110"
+                android:layout_height="@dimen/margin_dp25"
+                android:layout_below="@id/bookdoctv"
+                android:layout_margin="@dimen/margin_dp10"
+                android:background="@drawable/round_border"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/colorWhite"
+                android:text="Ok"
+                android:textAllCaps="false">
+
+            </Button>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

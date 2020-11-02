@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".splashScreen.SplashScreen"
+    android:background="@drawable/splash_bc">
+
+    <ImageView
+        android:layout_width="@dimen/margin_dp120"
+        android:layout_height="@dimen/margin_dp120"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_dp100"
+        android:src="@drawable/logo">
+
+    </ImageView>
+
+
+    <Button
+        android:id="@+id/getStartedBT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_dp60"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:background="@drawable/round_border"
+        android:text="Get Started"
+        android:textAllCaps="false"
+        android:textSize="@dimen/textsize_sp16">
+
+    </Button>
+
+</RelativeLayout>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Driveawayz</string>
+    <string name="logintext">Sign in</string>
+    <string name="phoneverify">Phone Verification</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="googleclientId">AIzaSyAv8h7-UwOMInVH6XOcUG-Asc6vI8D-aFY</string>
+</resources>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorTheme">
+
+    <RelativeLayout
+        android:id="@+id/layoutone"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/header_image"
+            android:layout_width="@dimen/margin_dp80"
+            android:layout_height="@dimen/margin_dp80"
+            android:layout_marginLeft="@dimen/margin_dp40"
+            android:layout_marginTop="@dimen/margin_dp60"
+            android:src="@drawable/download"
+            app:civ_border_overlay="true">
+
+        </de.hdodenhof.circleimageview.CircleImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_dp85"
+            android:layout_marginLeft="@dimen/margin_dp20"
+            android:layout_toRightOf="@id/header_image"
+            android:text="John Smith"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/textsize_sp16"
+            android:textStyle="bold">
+
+        </TextView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutone"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/margin_dp20">
+
+            <TextView
+                android:id="@+id/hour_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_clockdrawer"
+                android:text="100"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textsize_sp16">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total \nHours"
+                android:textAlignment="center"
+                android:textColor="@color/colorGreyLight">
+
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/margin_dp20">
+
+            <TextView
+                android:id="@+id/km_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_meter_header"
+                android:text="100kM"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textsize_sp16">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total \nDistance"
+                android:textAlignment="center"
+                android:textColor="@color/colorGreyLight">
+
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/margin_dp20">
+
+            <TextView
+                android:id="@+id/job_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_clockdrawer"
+                android:text="60"
+                android:textAlignment="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textsize_sp16">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total\nJobs"
+                android:textAlignment="center"
+                android:textColor="@color/colorGreyLight">
+
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

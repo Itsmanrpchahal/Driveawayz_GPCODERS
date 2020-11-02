@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".dashboard.homeFrag.DropPoint">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_dp120"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/bottom_building">
+
+            </ImageView>
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_dp16"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="@dimen/margin_dp16"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="@dimen/margin_dp10">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.driveawayz.dashboard.homeFrag.AppMapView
+                            android:id="@+id/mapviewpickup"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/margin_dp300">
+
+                        </com.driveawayz.dashboard.homeFrag.AppMapView>
+
+
+                        <TextView
+                            android:id="@+id/tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Tell us your primary destination?"
+                            android:textColor="@color/colorTextLight"
+                            android:layout_below="@id/mapviewpickup"
+                            android:layout_margin="@dimen/margin_dp20">
+
+                        </TextView>
+
+                        <AutoCompleteTextView
+                            android:id="@+id/setdestination_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv"
+                            android:singleLine="true"
+                            android:backgroundTint="@color/colorTheme"
+                            android:textColor="@color/colorBlack"
+                            android:layout_marginLeft="@dimen/margin_dp20"
+                            android:layout_marginRight="@dimen/margin_dp20">
+
+                        </AutoCompleteTextView>
+
+                        <Button
+                            android:id="@+id/setDestination_bt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/setdestination_et"
+                            android:layout_marginLeft="@dimen/margin_dp20"
+                            android:layout_marginRight="@dimen/margin_dp20"
+                            android:layout_marginBottom="@dimen/margin_dp20"
+                            android:background="@drawable/color_black"
+                            android:text="Set Destination"
+                            android:textColor="@color/colorWhite"
+                            android:textAllCaps="false"
+                            android:textSize="@dimen/textsize_sp16"
+                            android:layout_marginTop="@dimen/margin_dp30">
+
+                        </Button>
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+        </ScrollView>
+
+    </RelativeLayout>
+
+</FrameLayout>

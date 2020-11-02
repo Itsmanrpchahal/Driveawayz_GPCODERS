@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGreyLight"
+    tools:context=".SignUp.CompleteSignUp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorSplashTheme">
+
+                <ImageButton
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorTrans"
+                    android:src="@drawable/ic_chevron_left_black_24dp">
+
+                </ImageButton>
+            </androidx.appcompat.widget.Toolbar>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/toolbar"
+                android:background="@color/colorSplashTheme">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_dp250"
+                    android:background="@drawable/building">
+
+                </ImageView>
+            </RelativeLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/toolbar"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:layout_marginTop="180dp"
+                android:layout_marginRight="@dimen/margin_dp16"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="@dimen/margin_dp10">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/paymentifotv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:layout_margin="@dimen/margin_dp16"
+                        android:textSize="@dimen/textsize_sp16"
+                        android:text="Payment Information">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/cardnotv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Card Number"
+                        android:textColor="@color/colorTextLight"
+                        android:layout_below="@id/paymentifotv"
+                        android:layout_marginLeft="@dimen/margin_dp16">
+
+                    </TextView>
+
+                    <EditText
+                        android:id="@+id/creaditcard_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/cardnotv"
+                        android:layout_margin="@dimen/margin_dp16"
+                        android:inputType="number"
+                        android:backgroundTint="@color/colorTheme"
+                        android:drawablePadding="@dimen/margin_dp10"
+                        android:singleLine="true"
+                        android:drawableLeft="@drawable/ic_card">
+
+                    </EditText>
+
+                    <TextView
+                        android:id="@+id/nameoncardtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name on Card"
+                        android:textColor="@color/colorTextLight"
+                        android:layout_below="@id/creaditcard_et"
+                        android:layout_marginLeft="@dimen/margin_dp16">
+
+                    </TextView>
+
+
+                    <EditText
+                        android:id="@+id/cnameofcard_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/nameoncardtv"
+                        android:layout_margin="@dimen/margin_dp16"
+                        android:backgroundTint="@color/colorTheme"
+                        android:inputType="number"
+                        android:singleLine="true">
+
+                    </EditText>
+
+                    <LinearLayout
+                        android:id="@+id/layout1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3"
+                        android:layout_below="@id/cnameofcard_et"
+                        android:layout_margin="@dimen/margin_dp16">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Expiry Month">
+
+                        </TextView>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Expiry Year">
+
+                        </TextView>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="CVV">
+
+                        </TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/layout1"
+                        android:orientation="horizontal"
+                        android:weightSum="3"
+                        android:layout_marginLeft="@dimen/margin_dp16"
+                        android:layout_marginRight="@dimen/margin_dp16">
+
+                        <EditText
+                            android:id="@+id/monthcard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="MM//DD/YYYY"
+                            android:inputType="number"
+                            android:backgroundTint="@color/colorTheme"
+                            android:layout_weight="1"
+                            android:textColorHint="@color/colorGreyLight"
+                            android:textColor="@color/colorBlack">
+
+                        </EditText>
+                    </LinearLayout>
+
+
+                    <CheckBox
+                        android:id="@+id/checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/layout2"
+                        android:layout_margin="@dimen/margin_dp16"
+                        android:text="I agree to Driverville’s Terms of Service"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/colorBlack"
+                        android:backgroundTint="@color/colorBlack"
+                        android:buttonTint="@color/colorBlack">
+
+                    </CheckBox>
+
+                    <Button
+                        android:id="@+id/completebt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/checkbox"
+                        android:layout_marginLeft="@dimen/margin_dp20"
+                        android:layout_marginRight="@dimen/margin_dp20"
+                        android:layout_marginBottom="@dimen/margin_dp20"
+                        android:background="@drawable/color_black"
+                        android:text="Complete Registation"
+                        android:textColor="@color/colorWhite"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/textsize_sp16"
+                        android:layout_marginTop="@dimen/margin_dp30">
+
+                    </Button>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card"
+                android:layout_marginTop="@dimen/textsize_sp20">
+
+            </View>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

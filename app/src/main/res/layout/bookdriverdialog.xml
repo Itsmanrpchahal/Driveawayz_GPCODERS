@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorBlack"
+        app:cardCornerRadius="@dimen/margin_dp5">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/bookdoctv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="@dimen/margin_dp40"
+                android:layout_marginBottom="@dimen/margin_dp40"
+                android:text="Thank you for driving with us, we
+apperciate your bussiness. The hourly
+rate for our driver at starting desti-
+nation is $44.00 per hour. By Clicking
+accept you allow DriverVille to pre-
+authorize your credit card for $250.00
+. You will be only be charged at the
+closing of drive the actual time used."
+                android:textAlignment="textStart"
+                android:layout_marginLeft="@dimen/margin_dp10"
+                android:layout_marginRight="@dimen/margin_dp10">
+
+            </TextView>
+
+            <Button
+                android:id="@+id/cancel_bt"
+                android:layout_width="@dimen/margin_dp110"
+                android:layout_height="@dimen/margin_dp25"
+                android:layout_below="@id/bookdoctv"
+                android:layout_margin="@dimen/margin_dp10"
+                android:background="@drawable/white_round_bt"
+                android:textColor="@color/colorBlack"
+                android:text="Cancel"
+                android:textAllCaps="false">
+
+            </Button>
+
+
+
+            <Button
+                android:id="@+id/accept_bt"
+                android:layout_width="@dimen/margin_dp110"
+                android:layout_height="@dimen/margin_dp25"
+                android:layout_below="@id/bookdoctv"
+                android:layout_margin="@dimen/margin_dp10"
+                android:background="@drawable/white_round_bt"
+                android:textColor="@color/colorBlack"
+                android:text="Accept"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin_dp10"
+                android:textAllCaps="false">
+
+            </Button>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>

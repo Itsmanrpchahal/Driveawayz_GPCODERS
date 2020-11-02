@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:title="Home"
+            android:icon="@drawable/ic_location_on_black_24dp"/>
+
+        <item
+            android:id="@+id/nav_notifications"
+            android:title="Notifications"
+            android:icon="@drawable/ic_notification"/>
+
+        <item
+            android:id="@+id/nav_mydrive"
+            android:title="My Drives"
+            android:icon="@drawable/car"/>
+
+        <item
+            android:id="@+id/nav_paymentsmethods"
+            android:title="Payment MEthods"
+            android:icon="@drawable/ic_card"/>
+
+        <item
+            android:id="@+id/nav_setting"
+            android:title="Setting"
+            android:icon="@drawable/ic_setting"/>
+
+        <item
+            android:id="@+id/nav_support"
+            android:title="Support"
+            android:icon="@drawable/ic_suport"/>
+
+    </group>
+
+</menu>

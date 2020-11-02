@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGreyLight"
+    tools:context=".Login.LoginScreen">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorGreyLight">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorSplashTheme">
+
+                    <ImageButton
+                        android:id="@+id/back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_chevron_left_black_24dp"
+                        android:background="@color/colorTrans">
+
+                    </ImageButton>
+                </androidx.appcompat.widget.Toolbar>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorSplashTheme"
+                    android:layout_below="@id/toolbar">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/margin_dp200"
+                        android:layout_marginTop="@dimen/margin_dp30"
+                        android:background="@drawable/building">
+
+                    </ImageView>
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/margin_dp10"
+                android:maxWidth="@dimen/margin_dp250"
+                app:cardBackgroundColor="@color/colorWhite"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:layout_marginRight="@dimen/margin_dp16"
+                android:layout_marginTop="180dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/signintext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:layout_marginTop="@dimen/margin_dp16"
+                        android:layout_marginLeft="@dimen/margin_dp16"
+                        android:textSize="@dimen/textsize_sp22"
+                        android:textStyle="bold"
+                        android:text="@string/logintext">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" with your email"
+                        android:layout_toRightOf="@id/signintext"
+                        android:layout_marginTop="@dimen/margin_dp16"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textsize_sp22">
+
+                    </TextView>
+
+
+                    <TextView
+                        android:id="@+id/emailtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textColor="@color/colorTextLight"
+                        android:layout_below="@id/signintext"
+                        android:layout_marginTop="@dimen/margin_dp16"
+                        android:layout_marginLeft="@dimen/margin_dp16">
+
+                    </TextView>
+
+                    <EditText
+                        android:id="@+id/email_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/emailtv"
+                        android:layout_marginLeft="@dimen/margin_dp16"
+                        android:layout_marginRight="@dimen/margin_dp16"
+                        android:layout_marginTop="@dimen/margin_dp2"
+                        android:hint="john@gmail.com"
+                        android:inputType="textEmailAddress"
+                        android:textColorHint="@color/colorGreyLight"
+                        android:textColor="@color/colorBlack">
+
+                    </EditText>
+
+                    <TextView
+                        android:id="@+id/passtv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Password"
+                        android:textColor="@color/colorTextLight"
+                        android:layout_below="@id/email_et"
+                        android:layout_marginTop="@dimen/margin_dp10"
+                        android:layout_marginLeft="@dimen/margin_dp16">
+
+                    </TextView>
+
+
+                    <EditText
+                        android:id="@+id/pass_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/passtv"
+                        android:inputType="textPassword"
+                        android:layout_marginLeft="@dimen/margin_dp16"
+                        android:layout_marginRight="@dimen/margin_dp16"
+                        android:layout_marginTop="@dimen/margin_dp2"
+                        android:hint="john@gmail.com"
+                        android:textColorHint="@color/colorGreyLight"
+                        android:textColor="@color/colorBlack">
+
+                    </EditText>
+
+                    <Button
+                        android:id="@+id/signInbt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/pass_et"
+                        android:layout_marginLeft="@dimen/margin_dp20"
+                        android:layout_marginRight="@dimen/margin_dp20"
+                        android:layout_marginBottom="@dimen/margin_dp20"
+                        android:background="@drawable/color_black"
+                        android:text="Sign In"
+                        android:textColor="@color/colorWhite"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/textsize_sp16"
+                        android:layout_marginTop="@dimen/margin_dp30">
+
+                    </Button>
+
+                    <Button
+                        android:id="@+id/donthaveaccountbt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Don’t have an account?"
+                        android:textColor="@color/colorBt"
+                        android:layout_below="@id/signInbt"
+                        android:background="@color/colorTrans"
+                        android:textAllCaps="false"
+                        android:layout_alignParentBottom="true">
+
+                    </Button>
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+
+
+
+    </ScrollView>
+</RelativeLayout>

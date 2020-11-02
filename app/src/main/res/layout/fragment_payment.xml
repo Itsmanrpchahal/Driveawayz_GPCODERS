@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colordrivebc"
+    tools:context=".dashboard.paymentFrag.PaymentFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/addnewCard_bt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_dp20"
+            android:layout_marginRight="@dimen/margin_dp20"
+            android:layout_marginBottom="@dimen/margin_dp20"
+            android:background="@drawable/color_black"
+            android:paddingRight="@dimen/margin_dp20"
+            android:text="Add a new card"
+            android:drawableLeft="@drawable/cc_white"
+            android:paddingLeft="@dimen/margin_dp20"
+            android:textColor="@color/colorWhite"
+            android:textAllCaps="false"
+            android:textSize="@dimen/textsize_sp16"
+            android:layout_marginTop="@dimen/margin_dp30">
+
+        </Button>
+
+        <TextView
+            android:id="@+id/cardtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CREDIT CARDS"
+            android:textSize="@dimen/textsize_sp16"
+            android:textColor="@color/colorBlack"
+            android:layout_below="@id/addnewCard_bt"
+            android:layout_marginLeft="@dimen/margin_dp20">
+
+        </TextView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_below="@id/cardtext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_dp20"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="@dimen/margin_dp10">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cardrecycler"
+                android:background="@color/colorWhite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</FrameLayout>

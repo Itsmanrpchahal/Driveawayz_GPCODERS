@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGreyLight"
+    tools:context=".OTPScreen.OTPScreen">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorSplashTheme"
+                android:id="@+id/toolbar">
+
+                <ImageButton
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_chevron_left_black_24dp"
+                    android:background="@color/colorTrans">
+
+                </ImageButton>
+            </androidx.appcompat.widget.Toolbar>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/toolbar"
+                android:background="@color/colorSplashTheme">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_dp250"
+                    android:background="@drawable/building">
+
+                </ImageView>
+            </RelativeLayout>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/margin_dp10"
+                app:cardBackgroundColor="@color/colorWhite"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:layout_marginRight="@dimen/margin_dp16"
+                android:layout_marginTop="180dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/phoneverytv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:layout_margin="@dimen/margin_dp16"
+                        android:textSize="@dimen/textsize_sp16"
+                        android:textStyle="bold"
+                        android:text="@string/phoneverify">
+
+                    </TextView>
+
+
+                    <TextView
+                        android:id="@+id/otptv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Enter otp here"
+                        android:textColor="@color/colorTextLight"
+                        android:layout_below="@id/phoneverytv"
+                        android:layout_marginLeft="@dimen/margin_dp16">
+
+                    </TextView>
+
+
+                    <in.aabhasjindal.otptextview.OtpTextView
+                        android:id="@+id/otp_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorTheme"
+                        app:height="40dp"
+                        app:width="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/otptv"
+                        app:bar_enabled="true"
+                        app:bar_height="2dp"
+                        app:length="4"
+                        app:otp="1234"
+                        app:otp_text_size="24dp"/>
+
+
+                    <Button
+                        android:id="@+id/verifynow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/otp_view"
+                        android:layout_marginLeft="@dimen/margin_dp20"
+                        android:layout_marginRight="@dimen/margin_dp20"
+                        android:layout_marginBottom="@dimen/margin_dp20"
+                        android:background="@drawable/color_black"
+                        android:text="Verify Now"
+                        android:textColor="@color/colorWhite"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/textsize_sp16"
+                        android:layout_marginTop="@dimen/margin_dp30"></Button>
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/verifynow"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="@dimen/margin_dp30"
+                        android:layout_marginTop="@dimen/margin_dp20">
+
+                        <TextView
+                            android:id="@+id/otptv1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Didn’t receive otp,"></TextView>
+
+                        <TextView
+                            android:id="@+id/resendotpbt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" send again!"
+                            android:textColor="@color/colorBt"
+                            android:layout_toRightOf="@id/otptv1"
+                            android:background="@color/colorTrans"
+                            android:textAllCaps="false"></TextView>
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
