@@ -1,7 +1,10 @@
 package com.driveawayz.SignUp
 
 import android.app.DatePickerDialog
+import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
@@ -12,18 +15,25 @@ import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.driveawayz.Constant.BaseClass
+import com.driveawayz.Controller.Controller
 import com.driveawayz.R
+import com.driveawayz.SignUp.response.SignUp1Response
+import com.driveawayz.Utilities.Utility
+import retrofit2.Response
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SignUpDetail1 : AppCompatActivity() {
+class SignUpDetail1 : BaseClass(),Controller.SignUp1API {
 
     private lateinit var back : ImageButton
     private lateinit var nextbt : Button
     private lateinit var dob_et : EditText
     private lateinit var datetime : String
+    private lateinit var utility: Utility
+    private lateinit var pd: ProgressDialog
     val c = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +75,14 @@ class SignUpDetail1 : AppCompatActivity() {
     }
 
     private fun findIds() {
+
+        utility = Utility()
+        pd = ProgressDialog(this)
+        pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        pd!!.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        pd!!.isIndeterminate = true
+        pd!!.setCancelable(false)
+
         val window: Window = getWindow()
 // clear FLAG_TRANSLUCENT_STATUS flag:
 // clear FLAG_TRANSLUCENT_STATUS flag:
@@ -94,6 +112,14 @@ class SignUpDetail1 : AppCompatActivity() {
         val sdf1 = SimpleDateFormat(format1,Locale.UK)
         datetime = sdf1.format(c.time)
         dob_et.setText(sdf.format(c.time))
+    }
+
+    override fun onSignUpSuccess(success: Response<SignUp1Response>) {
+        pd.dismiss()
+    }
+
+    override fun onError(error: String) {
+        pd.dismiss()
     }
 
 }
