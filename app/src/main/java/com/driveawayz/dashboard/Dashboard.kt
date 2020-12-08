@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
+import android.view.Window
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -49,6 +52,16 @@ class Dashboard : AppCompatActivity() {
     }
 
     private fun findIds() {
+        val window: Window = getWindow()
+// clear FLAG_TRANSLUCENT_STATUS flag:
+// clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+// finally change the color
+// finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorTheme))
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
         frameLayout = findNavController(R.id.nav_host_fragment)
