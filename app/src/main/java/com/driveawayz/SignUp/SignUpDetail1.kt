@@ -95,9 +95,7 @@ class SignUpDetail1 : BaseClass(),Controller.SignUp1API {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorLightTheme))
 
 
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+
         // create an OnDateSetListener
 
         back = findViewById(R.id.back)
