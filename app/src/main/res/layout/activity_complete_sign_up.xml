@@ -130,46 +130,60 @@
                         android:layout_below="@id/cnameofcard_et"
                         android:layout_margin="@dimen/margin_dp16">
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/black"
+                                android:text="Expiry Month">
+
+                            </TextView>
+
+                            <EditText
+                                android:id="@+id/monthcard"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="MM"
+                                android:clickable="true"
+                                android:focusable="false"
+                                android:inputType="number"
+                                android:backgroundTint="@color/colorTheme"
+                                android:layout_weight="1"
+                                android:textColorHint="@color/colorGreyLight"
+                                android:textColor="@color/colorBlack">
+
+                            </EditText>
+
+                        </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Expiry Month">
-
-                        </TextView>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:textColor="@color/black"
                             android:text="Expiry Year">
 
                         </TextView>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="CVV">
-
-                        </TextView>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/layout2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/layout1"
-                        android:orientation="horizontal"
-                        android:weightSum="3"
-                        android:layout_marginLeft="@dimen/margin_dp16"
-                        android:layout_marginRight="@dimen/margin_dp16">
-
                         <EditText
-                            android:id="@+id/monthcard"
+                            android:id="@+id/yearcard"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="MM//DD/YYYY"
+                            android:hint="YY"
+                            android:clickable="true"
+                            android:focusable="false"
                             android:inputType="number"
                             android:backgroundTint="@color/colorTheme"
                             android:layout_weight="1"
@@ -180,11 +194,46 @@
                     </LinearLayout>
 
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/black"
+                                android:text="CVV">
+
+                            </TextView>
+
+                            <EditText
+                                android:id="@+id/cvvcard"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="CVV"
+                                android:maxEms="3"
+                                android:maxLength="3"
+                                android:inputType="number"
+                                android:backgroundTint="@color/colorTheme"
+                                android:layout_weight="1"
+                                android:textColorHint="@color/colorGreyLight"
+                                android:textColor="@color/colorBlack">
+
+                            </EditText>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+
                     <CheckBox
                         android:id="@+id/checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/layout2"
+                        android:layout_below="@id/layout1"
                         android:layout_margin="@dimen/margin_dp16"
                         android:text="I agree to Driverville’s Terms of Service"
                         android:layout_centerHorizontal="true"

@@ -256,7 +256,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/addresstv"
                         android:layout_marginLeft="@dimen/margin_dp16"
-                        android:layout_marginTop="@dimen/margin_dp2"
+                        android:layout_marginTop="3dp"
                         android:layout_marginRight="@dimen/margin_dp16"
                         android:backgroundTint="@color/colorTheme"
                         android:hint="3526"

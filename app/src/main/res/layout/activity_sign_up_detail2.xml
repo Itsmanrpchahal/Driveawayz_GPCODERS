@@ -220,7 +220,7 @@
 
 
                     <EditText
-                        android:id="@+id/address_et"
+                        android:id="@+id/licenceplate_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/licenceplatetv"
@@ -242,7 +242,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="State"
-                        android:layout_below="@id/address_et"
+                        android:layout_below="@id/licenceplate_et"
                         android:textColor="@color/colorBlack"
                         android:layout_marginTop="@dimen/margin_dp30"
                         android:layout_marginLeft="@dimen/margin_dp16">
