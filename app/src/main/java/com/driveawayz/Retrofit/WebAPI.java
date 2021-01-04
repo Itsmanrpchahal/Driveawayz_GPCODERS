@@ -25,7 +25,6 @@ public class WebAPI {
                 .connectTimeout(180, TimeUnit.SECONDS)
                 .writeTimeout(180, TimeUnit.SECONDS)
                 .readTimeout(180, TimeUnit.SECONDS)
-
                 .build();
 
         retrofit = new Retrofit.Builder().baseUrl(BASE_URL)

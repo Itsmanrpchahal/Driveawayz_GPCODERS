@@ -1,5 +1,6 @@
 package com.driveawayz.Retrofit;
 
+import com.driveawayz.OTPScreen.response.NumberVerifyResponse;
 import com.driveawayz.SignUp.response.SignUp1Response;
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
 
@@ -17,6 +18,14 @@ public interface ApiInterface {
             @Field("mobileNumber") String mobileNumber,
             @Field("channel") String channel
     );
+
+    @FormUrlEncoded
+    @POST("/api/v1/auth/verification")
+    Call<NumberVerifyResponse> verifyPhone (
+            @Field("mobileNumber") String mobileNumber,
+            @Field("code") String code
+    );
+
 
     @FormUrlEncoded
     @POST("/api/v1/auth/signup")

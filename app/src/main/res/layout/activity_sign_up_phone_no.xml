@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGreyLight"
+    android:id="@+id/parent_signPhone"
+    tools:context=".SignUp.signupphone.SignUpPhoneNo">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_chevron_left_black_24dp"
+            android:background="@android:color/transparent">
+
+        </ImageButton>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:id="@+id/scrollabl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_dp55">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:layout_marginRight="@dimen/margin_dp16"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="@dimen/margin_dp10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/colorWhite">
+
+
+                    <RelativeLayout
+                        android:id="@+id/layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorSplashTheme">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/margin_dp200"
+                            android:layout_marginTop="@dimen/margin_dp85"
+                            android:background="@drawable/building">
+
+                        </ImageView>
+
+                        <TextView
+                            android:id="@+id/signintext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_dp16"
+                            android:text="@string/signIntext"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/textsize_sp22">
+
+                        </TextView>
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/margin_dp40"
+                        android:layout_marginTop="@dimen/margin_dp30"
+                        android:layout_marginLeft="@dimen/margin_dp20"
+                        android:layout_marginRight="@dimen/margin_dp20"
+                        android:background="@drawable/corner_border_grey">
+
+
+                        <View
+                            android:id="@+id/view"
+                            android:layout_width="@dimen/margin_dp1"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/ccp"
+                            android:background="@color/colorGreyLight">
+
+                        </View>
+
+
+                        <com.rilixtech.widget.countrycodepicker.CountryCodePicker
+                            android:id="@+id/ccp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            app:ccp_defaultNameCode="IN"
+                            app:ccp_showFlag="false"
+                            app:ccp_backgroundColor="@color/white"
+                            android:layout_centerInParent="true"
+                            android:padding="@dimen/margin_dp8"
+                            android:gravity="center"
+                            app:ccp_hideNameCode="true"
+                            app:ccp_setCountryByTimeZone="true"
+                            android:backgroundTint="@color/white"
+                            android:layout_alignParentLeft="true"
+                            android:layout_gravity="center_vertical">
+
+                        </com.rilixtech.widget.countrycodepicker.CountryCodePicker>
+
+                        <EditText
+                            android:id="@+id/phone_number_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/view"
+                            android:layout_centerVertical="true"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/textsize_sp16"
+                            android:inputType="number"
+                            android:layout_centerInParent="true"
+                            android:focusable="true"
+                            android:hint="0123456789"
+                            android:layout_marginRight="@dimen/margin_dp10"
+                            android:imeOptions="actionDone"
+                            android:textColorHint="@color/colorGreyLight"
+                            android:padding="@dimen/margin_dp5"
+                            android:background="@color/white">
+
+                        </EditText>
+
+
+                    </RelativeLayout>
+
+
+                    <Button
+                        android:id="@+id/nextBt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_dp20"
+                        android:layout_marginRight="@dimen/margin_dp20"
+                        android:layout_marginBottom="@dimen/margin_dp20"
+                        android:background="@drawable/color_black"
+                        android:text="Next"
+                        android:textColor="@color/colorWhite"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/textsize_sp16"
+                        android:layout_marginTop="@dimen/margin_dp30">
+
+                    </Button>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/alreadyhaveaccount_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Already have an account?"
+        android:gravity="center"
+        android:textColor="@color/colorBt"
+        android:background="@color/colorTrans"
+        android:textAllCaps="false"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_dp10">
+
+    </Button>
+</RelativeLayout>

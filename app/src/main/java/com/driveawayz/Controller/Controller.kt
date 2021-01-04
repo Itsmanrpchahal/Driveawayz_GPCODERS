@@ -1,5 +1,6 @@
 package com.driveawayz.Controller
 
+import com.driveawayz.OTPScreen.response.NumberVerifyResponse
 import com.driveawayz.Retrofit.WebAPI
 import com.driveawayz.SignUp.response.SignUp1Response
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse
@@ -12,12 +13,19 @@ class Controller {
     var webAPI : WebAPI? = null
     var signUp1API : SignUp1API? = null
     var signUpPhoneAPI : SignUpPhoneAPI? = null
-
+    var phoneNumberAPI : VerifyPhoneAPI? = null
 
 
     fun Controller(signUpPhone: SignUpPhoneAPI)
     {
         signUpPhoneAPI =signUpPhone
+        webAPI = WebAPI()
+    }
+
+    fun Controller(signUpPhone: SignUpPhoneAPI,verifyPhone : VerifyPhoneAPI)
+    {
+        signUpPhoneAPI =signUpPhone
+        phoneNumberAPI = verifyPhone
         webAPI = WebAPI()
     }
 
@@ -34,11 +42,29 @@ class Controller {
                 call: Call<SignUpPhoneNoResponse>,
                 response: Response<SignUpPhoneNoResponse>
             ) {
-                TODO("Not yet implemented")
+                signUpPhoneAPI?.onSignUpPhoneSuccess(response)
             }
 
             override fun onFailure(call: Call<SignUpPhoneNoResponse>, t: Throwable) {
-                TODO("Not yet implemented")
+                signUpPhoneAPI?.onError(t.localizedMessage)
+            }
+
+        })
+    }
+
+    fun VerifyPhone(mobileNumber : String,code : String)
+    {
+        webAPI?.api?.verifyPhone(mobileNumber,code)?.enqueue(object : Callback<NumberVerifyResponse>
+        {
+            override fun onResponse(
+                call: Call<NumberVerifyResponse>,
+                response: Response<NumberVerifyResponse>
+            ) {
+                phoneNumberAPI?.onVerifyPhoneSuccess(response)
+            }
+
+            override fun onFailure(call: Call<NumberVerifyResponse>, t: Throwable) {
+               phoneNumberAPI?.onError(t.localizedMessage)
             }
 
         })
@@ -70,5 +96,10 @@ class Controller {
     interface SignUp1API {
         fun onSignUpSuccess(success : Response<SignUp1Response>)
         fun onError(error:String)
+    }
+
+    interface VerifyPhoneAPI {
+        fun onVerifyPhoneSuccess(success: Response<NumberVerifyResponse>)
+        fun onError(error: String)
     }
 }

@@ -95,7 +95,6 @@
                         app:bar_enabled="true"
                         app:bar_height="2dp"
                         app:length="4"
-                        app:otp="1234"
                         app:otp_text_size="24dp"/>
 
 
@@ -123,21 +122,26 @@
                         android:layout_marginBottom="@dimen/margin_dp30"
                         android:layout_marginTop="@dimen/margin_dp20">
 
-                        <TextView
-                            android:id="@+id/otptv1"
+                        <Button
+                            android:id="@+id/callme"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Didn’t receive otp,"></TextView>
+                            android:textColor="@color/grey"
+                            android:background="@android:color/transparent"
+                            android:textAllCaps="false"
+                            android:enabled="false"
+                            android:layout_marginRight="@dimen/defaultmargin"
+                            android:text="call me"></Button>
 
-                        <TextView
+                        <Button
                             android:id="@+id/resendotpbt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" send again!"
-                            android:textColor="@color/colorBt"
-                            android:layout_toRightOf="@id/otptv1"
+                            android:layout_toRightOf="@id/callme"
                             android:background="@color/colorTrans"
-                            android:textAllCaps="false"></TextView>
+                            android:text=" send again!"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorBt"></Button>
 
                     </RelativeLayout>
 

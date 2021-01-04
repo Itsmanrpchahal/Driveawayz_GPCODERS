@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_appicon"
         android:supportsRtl="true"
         android:theme="@style/Translucent">
-        <activity android:name=".SignUp.signupphone.SignUpPhoneNo"></activity>
+        <activity android:name=".SignUp.signupphone.SignUpPhoneNo" android:windowSoftInputMode="adjustNothing"></activity>
         <activity
             android:name=".dashboard.Dashboard"
             android:windowSoftInputMode="adjustPan" />

@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.driveawayz"
-        minSdkVersion 22
+        minSdkVersion 25
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -86,18 +86,24 @@ dependencies {
     implementation 'com.wang.avi:library:2.1.3'
 
     //ToDo:RetroFit
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+        implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.14.1'
     implementation 'io.reactivex:rxandroid:1.2.1'
     implementation 'io.reactivex:rxjava:1.3.0'
     implementation 'com.jakewharton.rxbinding:rxbinding:0.4.0'
-
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation ("com.squareup.okhttp3:okhttp:3.12.12"){
+        force = true //API 19 support
+    }
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.12'
     implementation 'com.squareup.retrofit2:converter-jackson:2.2.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
     implementation 'com.android.support:multidex:1.0.3'
 
     //ToDo:CCP
     implementation 'com.github.joielechong:countrycodepicker:2.4.1'
+
+    //ToDo: SMS Catcher
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:17.4.0'
 }
