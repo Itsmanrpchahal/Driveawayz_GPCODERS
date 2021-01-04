@@ -16,11 +16,14 @@
         android:roundIcon="@mipmap/ic_appicon"
         android:supportsRtl="true"
         android:theme="@style/Translucent">
-        <activity android:name=".dashboard.Dashboard" android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name="com.driveawayz.SignUp.CompleteSignUp" />
-        <activity android:name="com.driveawayz.SignUp.SignUpDetail2" />
-        <activity android:name="com.driveawayz.SignUp.SignUpDetail1" />
-        <activity android:name=".OTPScreen.OTPScreen" />
+        <activity android:name=".SignUp.signupphone.SignUpPhoneNo"></activity>
+        <activity
+            android:name=".dashboard.Dashboard"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".SignUp.CompleteSignUp" />
+        <activity android:name=".SignUp.SignUpDetail2" />
+        <activity android:name=".SignUp.SignUpDetail1" />
+        <activity android:name=".OTPScreen.OTPScreen" android:windowSoftInputMode="stateHidden"  />
         <activity android:name=".Login.LoginScreen" />
         <activity android:name=".MainActivity" />
         <activity android:name=".splashScreen.SplashScreen">
@@ -34,7 +37,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/googleclientId" />
-
     </application>
 
 </manifest>

@@ -7,6 +7,37 @@
     android:background="@color/colorGreyLight"
     tools:context=".SignUp.SignUpDetail1">
 
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSplashTheme"
+        android:id="@+id/toolbar">
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_chevron_left_black_24dp"
+            android:background="@color/colorTrans">
+
+        </ImageButton>
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:background="@color/colorSplashTheme">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_dp250"
+            android:background="@drawable/building">
+
+        </ImageView>
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,35 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorSplashTheme"
-                android:id="@+id/toolbar">
 
-                <ImageButton
-                    android:id="@+id/back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_chevron_left_black_24dp"
-                    android:background="@color/colorTrans">
 
-                </ImageButton>
-            </androidx.appcompat.widget.Toolbar>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/toolbar"
-                android:background="@color/colorSplashTheme">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_dp250"
-                    android:background="@drawable/building">
-
-                </ImageView>
-            </RelativeLayout>
             <androidx.cardview.widget.CardView
                 android:id="@+id/card"
                 android:layout_width="match_parent"
