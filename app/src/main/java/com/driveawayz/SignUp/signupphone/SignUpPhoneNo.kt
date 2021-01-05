@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.driveawayz.Controller.Controller
+import com.driveawayz.Login.LoginScreen
 import com.driveawayz.OTPScreen.OTPScreen
 import com.driveawayz.R
 import com.driveawayz.SignUp.SignUpDetail1
@@ -31,6 +32,7 @@ class SignUpPhoneNo : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
     private lateinit var phone_number_et: EditText
     private lateinit var utility: Utility
     private lateinit var pd: ProgressDialog
+    private lateinit var alreadyhaveaccount_bt : Button
     private  var c_code: String = "+91"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +78,10 @@ class SignUpPhoneNo : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
 
 
         }
+
         back.setOnClickListener { onBackPressed() }
+
+        alreadyhaveaccount_bt.setOnClickListener { startActivity(Intent(this,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)) }
     }
 
     private fun findIDs() {
@@ -92,8 +97,8 @@ class SignUpPhoneNo : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
         ccp = findViewById(R.id.ccp)
         back = findViewById(R.id.back)
         phone_number_et = findViewById(R.id.phone_number_et)
+        alreadyhaveaccount_bt = findViewById(R.id.alreadyhaveaccount_bt)
         ccp!!.setOnCountryChangeListener(this)
-
 
     }
 

@@ -138,9 +138,7 @@ class OTPScreen : BaseClass(), Controller.SignUpPhoneAPI, Controller.VerifyPhone
                 }
             }
         }
-
     }
-
 
     private fun findIds() {
         mobileno = intent.getStringExtra(Constants.MOBILENUMBER)!!

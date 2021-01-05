@@ -48,7 +48,6 @@ class Dashboard : AppCompatActivity() {
 
         setupActionBarWithNavController(frameLayout, appBarConfiguration)
         navView.setupWithNavController(frameLayout)
-
     }
 
     private fun findIds() {

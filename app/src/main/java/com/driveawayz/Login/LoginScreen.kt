@@ -11,6 +11,7 @@ import com.driveawayz.Constant.BaseClass
 import com.driveawayz.OTPScreen.OTPScreen
 import com.driveawayz.R
 import com.driveawayz.SignUp.SignUpDetail1
+import com.driveawayz.dashboard.Dashboard
 
 
 class LoginScreen : BaseClass() {
@@ -29,7 +30,7 @@ class LoginScreen : BaseClass() {
 
     private fun lisenters() {
         back.setOnClickListener { onBackPressed() }
-        signInbt.setOnClickListener { startActivity(Intent(this, OTPScreen::class.java)) }
+        signInbt.setOnClickListener { startActivity(Intent(this, Dashboard::class.java)) }
         donthaveaccountbt.setOnClickListener {
             startActivity(
                 Intent(
