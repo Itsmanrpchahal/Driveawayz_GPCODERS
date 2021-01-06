@@ -3,9 +3,10 @@ package com.driveawayz.dashboard.homeFrag
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
+import androidx.fragment.app.Fragment
+
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +15,11 @@ import android.widget.AdapterView
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import androidx.fragment.app.FragmentManager
+import com.driveawayz.Constant.BaseFrag
 import com.driveawayz.R
 import com.driveawayz.Utilities.GpsTracker
 import com.driveawayz.dashboard.homeFrag.customPlacepicker.AutoCompleteAdapter
+
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -36,7 +39,7 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import java.io.IOException
 import java.util.*
 
-class DropPoint : Fragment(), OnMapReadyCallback {
+class DropedPoint : BaseFrag(),OnMapReadyCallback {
 
     private lateinit var setDestination_bt: Button
     lateinit var manager: FragmentManager
@@ -49,21 +52,13 @@ class DropPoint : Fragment(), OnMapReadyCallback {
     var placesClient: PlacesClient? = null
     lateinit var adapter: AutoCompleteAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val mapFragment =
-            childFragmentManager.findFragmentById(R.id.mapviewdrop) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
-    }
-
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view: View
-        view = inflater.inflate(R.layout.fragment_drop_point2, container, false)
+        view = inflater.inflate(R.layout.fragment_droped_point, container, false)
         autocompleteAddress()
         Places.initialize(context!!, getResources().getString(R.string.googleclientId));
 
@@ -85,7 +80,12 @@ class DropPoint : Fragment(), OnMapReadyCallback {
 
         listeners()
         return view
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.mapviewdrop) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
     }
 
     private fun listeners() {
@@ -227,5 +227,4 @@ class DropPoint : Fragment(), OnMapReadyCallback {
         }
 
     }
-
 }

@@ -4,7 +4,8 @@
     <string name="phoneverify">Phone Verification</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="googleclientId">AIzaSyAv8h7-UwOMInVH6XOcUG-Asc6vI8D-aFY</string>
+    <string name="googleclientId">AIzaSyBv3FYZuLZJR8mOlONc6hMGqh-Taeo7-7g</string>
+<!--    <string name="googleclientId">AIzaSyAv8h7-UwOMInVH6XOcUG-Asc6vI8D-aFY</string>-->
     <string name="signIntext"><b>Sign up </b>with <br></br> your phone number</string>
     <string name="close_up">OK</string>
     <string name="nointernet">Internet connectivity failed</string>

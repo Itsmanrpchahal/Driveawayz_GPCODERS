@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorSplashTheme"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".dashboard.homeFrag.DropPoint">
+    tools:context=".dashboard.homeFrag.DropedPoint">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
@@ -48,12 +49,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <com.driveawayz.dashboard.homeFrag.AppMapView
-                            android:id="@+id/mapviewpickup"
+                        <fragment
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            xmlns:tools="http://schemas.android.com/tools"
+                            android:id="@+id/mapviewdrop"
+                            android:name="com.google.android.gms.maps.SupportMapFragment"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/margin_dp300">
-
-                        </com.driveawayz.dashboard.homeFrag.AppMapView>
+                            android:layout_height="@dimen/margin_dp300"
+                            tools:context=".dashboard.homeFrag.DropedPoint" />
 
 
                         <TextView
@@ -62,7 +65,7 @@
                             android:layout_height="wrap_content"
                             android:text="Tell us your primary destination?"
                             android:textColor="@color/colorTextLight"
-                            android:layout_below="@id/mapviewpickup"
+                            android:layout_below="@id/mapviewdrop"
                             android:layout_margin="@dimen/margin_dp20">
 
                         </TextView>
@@ -73,6 +76,9 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/tv"
                             android:singleLine="true"
+                            android:cursorVisible="true"
+                            android:nextFocusDown="@id/setDestination_bt"
+                            android:inputType="textAutoComplete"
                             android:backgroundTint="@color/colorTheme"
                             android:textColor="@color/colorBlack"
                             android:layout_marginLeft="@dimen/margin_dp20"

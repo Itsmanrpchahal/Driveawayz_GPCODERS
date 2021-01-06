@@ -118,15 +118,15 @@ public class AutoCompleteAdapter extends ArrayAdapter<AutocompletePrediction> im
     private ArrayList<AutocompletePrediction> getAutocomplete(CharSequence constraint) {
 
         //Create a RectangularBounds object.
-        RectangularBounds bounds = RectangularBounds.newInstance(
-                new LatLng(-33.880490, 151.184363),
-                new LatLng(-33.858754, 151.229596));
+//        RectangularBounds bounds = RectangularBounds.newInstance(
+//                new LatLng(-33.880490, 151.184363),
+//                new LatLng(-33.858754, 151.229596));
 
 
         final FindAutocompletePredictionsRequest.Builder requestBuilder =
                 FindAutocompletePredictionsRequest.builder()
                         .setQuery(constraint.toString())
-                        .setCountry("UK") //Use only in specific country
+                       // .setCountry("UK") //Use only in specific country
                         // Call either setLocationBias() OR setLocationRestriction().
 //                        .setLocationRestriction(bounds)
                         .setSessionToken(AutocompleteSessionToken.newInstance());

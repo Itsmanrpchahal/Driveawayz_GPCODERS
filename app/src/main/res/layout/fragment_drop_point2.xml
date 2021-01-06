@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorSplashTheme"
-    tools:context=".dashboard.homeFrag.PickUpPoint">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".dashboard.homeFrag.DropPoint">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
@@ -53,51 +52,50 @@
                         <fragment
                             xmlns:android="http://schemas.android.com/apk/res/android"
                             xmlns:tools="http://schemas.android.com/tools"
-                            android:id="@+id/mapviewpickup"
+                            android:id="@+id/mapviewdrop"
                             android:name="com.google.android.gms.maps.SupportMapFragment"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/margin_dp300"
-                            tools:context=".dashboard.homeFrag.PickUpFrag" />
+                            tools:context=".dashboard.homeFrag.DropPoint" />
 
 
                         <TextView
                             android:id="@+id/tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/mapviewpickup"
-                            android:text="Tell us where to pick you up?"
+                            android:text="Tell us your primary destination?"
                             android:textColor="@color/colorTextLight"
+                            android:layout_below="@id/mapviewdrop"
                             android:layout_margin="@dimen/margin_dp20">
 
                         </TextView>
 
                         <AutoCompleteTextView
-                            android:id="@+id/pickup_et"
+                            android:id="@+id/setdestination_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/colorBlack"
-                            android:imeOptions="actionDone"
                             android:layout_below="@id/tv"
                             android:singleLine="true"
-                            android:nextFocusDown="@id/setPickUp_bt"
                             android:cursorVisible="true"
+                            android:nextFocusDown="@id/setDestination_bt"
                             android:inputType="textAutoComplete"
                             android:backgroundTint="@color/colorTheme"
+                            android:textColor="@color/colorBlack"
                             android:layout_marginLeft="@dimen/margin_dp20"
                             android:layout_marginRight="@dimen/margin_dp20">
 
                         </AutoCompleteTextView>
 
                         <Button
-                            android:id="@+id/setPickUp_bt"
+                            android:id="@+id/setDestination_bt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/pickup_et"
+                            android:layout_below="@id/setdestination_et"
                             android:layout_marginLeft="@dimen/margin_dp20"
                             android:layout_marginRight="@dimen/margin_dp20"
                             android:layout_marginBottom="@dimen/margin_dp20"
                             android:background="@drawable/color_black"
-                            android:text="Set PickUp"
+                            android:text="Set Destination"
                             android:textColor="@color/colorWhite"
                             android:textAllCaps="false"
                             android:textSize="@dimen/textsize_sp16"

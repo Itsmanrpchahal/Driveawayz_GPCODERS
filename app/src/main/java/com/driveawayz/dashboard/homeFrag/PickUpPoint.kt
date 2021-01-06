@@ -1,6 +1,7 @@
 package com.driveawayz.dashboard.homeFrag
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
@@ -8,9 +9,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.driveawayz.R
@@ -78,7 +82,6 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
         if (gpsTracker.canGetLocation()) {
             lat = gpsTracker.latitude
             lng = gpsTracker.longitude
-            pickupEt.setText(gpsTracker.latitude.toString() + " " + gpsTracker.longitude)
 
         } else {
             gpsTracker.showSettingsAlert()
@@ -93,7 +96,7 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
         setPickUpBt.setOnClickListener {
             manager.beginTransaction().replace(
                 R.id.nav_host_fragment,
-                DropPoint()
+                DropedPoint()
             ).addToBackStack(null).commit()
         }
     }
@@ -115,15 +118,15 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0!!
         val location = LatLng(lat, lat)
-        mMap.addMarker(
-            MarkerOptions().position(location).title("test")
-                .icon(BitmapDescriptorFactory.defaultMarker())
-        )
+
+        mMap.clear()
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 16f))
         mMap.uiSettings?.isMyLocationButtonEnabled = true
+        mMap.uiSettings?.isTiltGesturesEnabled = true
         mMap.uiSettings?.isCompassEnabled = true
         mMap.uiSettings?.isZoomControlsEnabled = true
-        mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+        mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+        mMap.uiSettings?.isScrollGesturesEnabled = false
 
         val cameraPosition =
             CameraPosition.builder().target(LatLng(lat, lng)).zoom(16f).bearing(10f)
@@ -175,21 +178,35 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
                             val geocoder = Geocoder(context)
                             try {
                                 val addresses: List<Address> = geocoder.getFromLocationName(loc, 15)
-                                val latLngs: MutableList<LatLng> = ArrayList(addresses.size)
-                                Log.d("latLngs", latLngs.toString())
-                                for (a in addresses) {
-                                    if (a.hasLatitude() && a.hasLongitude()) {
-                                        latLngs.add(LatLng(a.getLatitude(), a.getLongitude()))
-                                        val lat1: Double = java.lang.String.valueOf(a.getLatitude()).toDouble()
-                                        val lng1: Double =
-                                            java.lang.String.valueOf(a.getLongitude()).toDouble()
-                                        lat = lat1
-                                        lng = lng1
 
-                                        //                                        getCityName(lat1, lng1);
-                                        // location(lat1, lng1)
-                                    }
+                               // val latLngs: MutableList<LatLng> = ArrayList(addresses.size)
+                               // Log.d("latLngs", latLngs.toString())
+
+                                val lat2 : Double = java.lang.String.valueOf(addresses.get(0).latitude).toDouble()
+                                val lng2 : Double = java.lang.String.valueOf(addresses.get(0).longitude).toDouble()
+
+                                lat = lat2
+                                lng = lng2
+                                Log.d("LATLONG",""+lat2+"   "+lng2)
+                                val location = LatLng(lat, lng)
+                                Log.d("LATLNG",""+lat+"   "+lng)
+                                pickupEt.setText(addresses.get(0).getAddressLine(0).toString())
+
+                                mMap.clear()
+
+                                if (mapviewpickup != null) {
+                                    mapviewpickup!!.onCreate(null);
+                                    mapviewpickup!!.onResume();
+                                    mapviewpickup!!.getMapAsync(this);
                                 }
+
+                                mMap.addMarker(
+                                    MarkerOptions().position(location).title(addresses.get(0).getAddressLine(0)+"    "+addresses.get(0).latitude+"   "+addresses.get(0).longitude)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
+                                )
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 16f))
+
+                                hideKeyboard()
                             } catch (e: IOException) {
                                 e.printStackTrace()
                             }
@@ -201,4 +218,14 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
                 e.printStackTrace()
             }
         }
+
+    private fun hideKeyboard() {
+        try {
+            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+        } catch (e: Exception) {
+
+        }
+
+    }
 }

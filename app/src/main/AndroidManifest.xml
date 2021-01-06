@@ -48,7 +48,9 @@
         <activity
             android:name=".OTPScreen.OTPScreen"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".Login.LoginScreen" android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".Login.LoginScreen"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".MainActivity" />
         <activity android:name=".splashScreen.SplashScreen">
             <intent-filter>
