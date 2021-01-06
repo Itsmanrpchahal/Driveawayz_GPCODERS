@@ -181,7 +181,7 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
 
                                // val latLngs: MutableList<LatLng> = ArrayList(addresses.size)
                                // Log.d("latLngs", latLngs.toString())
-
+9
                                 val lat2 : Double = java.lang.String.valueOf(addresses.get(0).latitude).toDouble()
                                 val lng2 : Double = java.lang.String.valueOf(addresses.get(0).longitude).toDouble()
 
@@ -202,7 +202,7 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
 
                                 mMap.addMarker(
                                     MarkerOptions().position(location).title(addresses.get(0).getAddressLine(0)+"    "+addresses.get(0).latitude+"   "+addresses.get(0).longitude)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.loc1))
                                 )
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 16f))
 
@@ -226,6 +226,5 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
         } catch (e: Exception) {
 
         }
-
     }
 }
