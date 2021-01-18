@@ -13,7 +13,6 @@ import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.ImageButton
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.driveawayz.Constant.BaseClass
 import com.driveawayz.Controller.Controller
@@ -21,11 +20,11 @@ import com.driveawayz.R
 import com.driveawayz.SignUp.response.SignUp1Response
 import com.driveawayz.Utilities.Utility
 import retrofit2.Response
-import java.text.DateFormat
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+@Suppress("DEPRECATION")
 class SignUpDetail1 : BaseClass(), Controller.SignUp1API {
 
     private lateinit var name_et: EditText
@@ -88,7 +87,7 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API {
             }
         }
 
-        val dateSetListener = object : DatePickerDialog.OnDateSetListener {
+        var dateSetListener = object : DatePickerDialog.OnDateSetListener {
             override fun onDateSet(
                 view: DatePicker, year: Int, monthOfYear: Int,
                 dayOfMonth: Int
@@ -98,18 +97,23 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API {
                 c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                 updateDateInView()
             }
+
         }
 
+
         dob_et.setOnClickListener {
-            DatePickerDialog(
-                this, R.style.DialogTheme,
+            val datePickerDialog = DatePickerDialog(
+                this,
+                R.style.DialogTheme,
                 dateSetListener,
-                // set DatePickerDialog to point to today's date when it loads up
                 c.get(Calendar.YEAR),
                 c.get(Calendar.MONTH),
                 c.get(Calendar.DAY_OF_MONTH)
-            ).show()
+            )
+            datePickerDialog.datePicker.maxDate = System.currentTimeMillis() + 1000
+            datePickerDialog.show()
         }
+
     }
 
     private fun findIds() {
@@ -151,7 +155,7 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API {
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         val sdf1 = SimpleDateFormat(format1, Locale.UK)
         datetime = sdf1.format(c.time)
-        Log.d("TIME",""+datetime)
+        Log.d("TIME", "" + datetime)
         dob_et.setText(sdf.format(c.time))
     }
 

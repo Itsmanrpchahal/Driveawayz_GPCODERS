@@ -1,12 +1,15 @@
 package com.driveawayz.Retrofit;
 
+import com.driveawayz.Login.response.LoginResponse;
 import com.driveawayz.OTPScreen.response.NumberVerifyResponse;
 import com.driveawayz.SignUp.response.SignUp1Response;
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
+import com.driveawayz.splashScreen.MeResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface ApiInterface {
@@ -39,6 +42,17 @@ public interface ApiInterface {
         @Field("phoneNumber") String phoneNumber
     );
 
+    @FormUrlEncoded
+    @POST("/api/v1/auth/login")
+    Call<LoginResponse> login (
+      @Field("email") String email,
+      @Field("password") String password
+    );
+
+    @POST("/api/v1/user/me")
+    Call<MeResponse> me (
+      @Header("Authorization") String token
+    );
 
 
 }

@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun lisenters() {
-        login_bt.setOnClickListener { startActivity(Intent(this,LoginScreen::class.java)) }
-        signup_bt.setOnClickListener { startActivity(Intent(this, SignUpPhoneNo::class.java)) }
+        login_bt.setOnClickListener { startActivity(Intent(this,LoginScreen::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)) }
+        signup_bt.setOnClickListener { startActivity(Intent(this, SignUpPhoneNo::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)) }
     }
 
     private fun findIds() {

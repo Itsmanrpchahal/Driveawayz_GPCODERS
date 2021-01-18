@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -23,6 +24,7 @@ import com.rilixtech.widget.countrycodepicker.Country
 import com.rilixtech.widget.countrycodepicker.CountryCodePicker
 import retrofit2.Response
 
+@Suppress("DEPRECATION")
 class SignUpPhoneNo : AppCompatActivity(), CountryCodePicker.OnCountryChangeListener,
     Controller.SignUpPhoneAPI {
     private lateinit var nextBt: Button
@@ -30,6 +32,7 @@ class SignUpPhoneNo : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
     lateinit var controller: Controller
     private lateinit var back: ImageButton
     private lateinit var phone_number_et: EditText
+    private lateinit var mySpinner : Spinner
     private lateinit var utility: Utility
     private lateinit var pd: ProgressDialog
     private lateinit var alreadyhaveaccount_bt : Button
@@ -40,7 +43,7 @@ class SignUpPhoneNo : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
         setContentView(R.layout.activity_sign_up_phone_no)
 
         findIDs()
-        listeners()
+       listeners()
     }
 
     private fun listeners() {
@@ -99,7 +102,6 @@ class SignUpPhoneNo : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
         phone_number_et = findViewById(R.id.phone_number_et)
         alreadyhaveaccount_bt = findViewById(R.id.alreadyhaveaccount_bt)
         ccp!!.setOnCountryChangeListener(this)
-
     }
 
 

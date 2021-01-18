@@ -10,8 +10,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.AdapterView
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
@@ -125,14 +127,15 @@ class OTPScreen : BaseClass(), Controller.SignUpPhoneAPI, Controller.VerifyPhone
 
         verifynow.setOnClickListener {
             if (utility.isConnectingToInternet(this)) {
-                pd.show()
-                pd.setContentView(R.layout.loading)
+
                 when {
                     otp_view.otp!!.length.equals(0) -> {
                         otp_view.requestFocus()
                         otp_view.showError()
                     }
                     else -> {
+                        pd.show()
+                        pd.setContentView(R.layout.loading)
                         controller.VerifyPhone(code + mobileno, otp_view.otp.toString())
                     }
                 }
@@ -190,4 +193,6 @@ class OTPScreen : BaseClass(), Controller.SignUpPhoneAPI, Controller.VerifyPhone
         pd.dismiss()
         Toast.makeText(this, "" + error, Toast.LENGTH_SHORT).show()
     }
+
+
 }

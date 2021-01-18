@@ -1,9 +1,11 @@
 package com.driveawayz.Controller
 
+import com.driveawayz.Login.response.LoginResponse
 import com.driveawayz.OTPScreen.response.NumberVerifyResponse
 import com.driveawayz.Retrofit.WebAPI
 import com.driveawayz.SignUp.response.SignUp1Response
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse
+import com.driveawayz.splashScreen.MeResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,6 +16,8 @@ class Controller {
     var signUp1API : SignUp1API? = null
     var signUpPhoneAPI : SignUpPhoneAPI? = null
     var phoneNumberAPI : VerifyPhoneAPI? = null
+    var loginAPI : LoginAPI? = null
+    var meAPI : MeAPI? = null
 
 
     fun Controller(signUpPhone: SignUpPhoneAPI)
@@ -34,6 +38,19 @@ class Controller {
         webAPI = WebAPI()
     }
 
+    fun Controller(login : LoginAPI,me : MeAPI)
+    {
+        loginAPI =  login
+        meAPI = me
+        webAPI = WebAPI()
+    }
+
+    fun Controller(me:MeAPI)
+    {
+        meAPI = me
+        webAPI = WebAPI()
+    }
+
     fun SignUpPhone(mobileNumber : String,channel : String)
     {
         webAPI?.api?.signUpPhone(mobileNumber,channel)?.enqueue(object :Callback<SignUpPhoneNoResponse>
@@ -46,7 +63,7 @@ class Controller {
             }
 
             override fun onFailure(call: Call<SignUpPhoneNoResponse>, t: Throwable) {
-                signUpPhoneAPI?.onError(t.localizedMessage)
+                signUpPhoneAPI?.onError(t.message.toString())
             }
 
         })
@@ -82,7 +99,37 @@ class Controller {
             }
 
             override fun onFailure(call: Call<SignUp1Response>, t: Throwable) {
-                    signUp1API?.onError(t.localizedMessage)
+                t.message?.let { signUp1API?.onError(it) }
+            }
+
+        })
+    }
+
+    fun Login(email: String,password: String)
+    {
+        webAPI?.api?.login(email, password)?.enqueue(object : Callback<LoginResponse>
+        {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                loginAPI?.oLoginSucceess(response)
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                t.message?.let { loginAPI?.onError(it) }
+            }
+
+        })
+    }
+
+    fun Me(token:String)
+    {
+        webAPI?.api?.me("Bearer "+token)?.enqueue(object : Callback<MeResponse>
+        {
+            override fun onResponse(call: Call<MeResponse>, response: Response<MeResponse>) {
+                meAPI?.onMeSuccess(response)
+            }
+
+            override fun onFailure(call: Call<MeResponse>, t: Throwable) {
+                t.message?.let { meAPI?.onError(it) }
             }
 
         })
@@ -100,6 +147,16 @@ class Controller {
 
     interface VerifyPhoneAPI {
         fun onVerifyPhoneSuccess(success: Response<NumberVerifyResponse>)
+        fun onError(error: String)
+    }
+
+    interface LoginAPI {
+        fun oLoginSucceess(success : Response<LoginResponse>)
+        fun onError(error: String)
+    }
+
+    interface MeAPI {
+        fun onMeSuccess(success: Response<MeResponse>)
         fun onError(error: String)
     }
 }

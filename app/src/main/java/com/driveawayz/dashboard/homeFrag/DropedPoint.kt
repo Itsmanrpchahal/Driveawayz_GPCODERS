@@ -151,8 +151,8 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback {
                     placeID = item.getPlaceId()
                 }
 
-                //                To specify which data types to return, pass an array of Place.Fields in your FetchPlaceRequest
-                //                Use only those fields which are required.
+                // To specify which data types to return, pass an array of Place.Fields in your FetchPlaceRequest
+                // Use only those fields which are required.
                 val placeFields: List<Place.Field> = Arrays.asList(
                     Place.Field.ID,
                     Place.Field.NAME,

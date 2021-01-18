@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -46,6 +49,7 @@ public class Utility {
                 });
         snackbar.show();
     }
+
 
     public static boolean isValidPassword(final String password) {
 
