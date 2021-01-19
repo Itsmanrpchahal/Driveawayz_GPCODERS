@@ -12,4 +12,9 @@ object Constants {
     val ADDRESS = "ADDRESS"
     val VEHICLES ="VEHICLES"
     val CARDS = "CARDS"
+    val NAME ="NAME"
+    val EMAIL ="EMAIL"
+    val DOB ="DOB"
+    var PHONENUMBERVERIFIED ="PHONENUMBERVERIFIED"
+    val STRIPEKEY: String? = "pk_test_eAexCNVuFAFBrWrfthrvK5i500Jb0yc34o"
 }

@@ -9,15 +9,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.DatePicker
-import android.widget.EditText
-import android.widget.ImageButton
+import android.widget.*
 import androidx.core.content.ContextCompat
 import com.driveawayz.Constant.BaseClass
 import com.driveawayz.Controller.Controller
 import com.driveawayz.R
-import com.driveawayz.SignUp.response.SignUp1Response
+import com.driveawayz.SignUp.signupphone.response.SignUp1User
+import com.driveawayz.SignUp.signupphone.response.UpdateAddress
+import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
 import retrofit2.Response
 import java.text.SimpleDateFormat
@@ -25,7 +24,7 @@ import java.util.*
 
 
 @Suppress("DEPRECATION")
-class SignUpDetail1 : BaseClass(), Controller.SignUp1API {
+class SignUpDetail1 : BaseClass(), Controller.SignUp1API,Controller.UpdateAddressAPI {
 
     private lateinit var name_et: EditText
     private lateinit var email_et: EditText
@@ -38,17 +37,32 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API {
     private lateinit var datetime: String
     private lateinit var utility: Utility
     private lateinit var pd: ProgressDialog
+    private lateinit var controller: Controller
     val c = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up_detail1)
-
+        controller = Controller()
+        controller.Controller(this, this)
         findIds()
         lisenters()
+        if (!getStringVal(Constants.NAME).equals(""))
+        {
+            name_et.setText(getStringVal(Constants.NAME))
+            name_et.isEnabled = false
+            email_et.setText(getStringVal(Constants.EMAIL))
+            email_et.isEnabled = false
+            pass_et.isEnabled = false
+            pass_et.setText("*******")
+            dob_et.isEnabled = false
+            dob_et.setText(getStringVal(Constants.DOB))
+
+        }
     }
 
     private fun lisenters() {
+
         back.setOnClickListener { onBackPressed() }
         nextbt.setOnClickListener {
             when {
@@ -82,7 +96,29 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API {
                     address_et.error = "Enter Address"
                 }
                 else -> {
-                    startActivity(Intent(this, SignUpDetail2::class.java))
+                    pd.show()
+                    pd.setContentView(R.layout.loading)
+                    if (getStringVal(Constants.PHONENUMBERVERIFIED).equals("true"))
+                    {
+                        pd.show()
+                        controller.UpdateAddress(
+                            "Bearer " +getStringVal(Constants.TOKEN),
+                            street_et.text.toString(),
+                            address_et.text.toString()
+                        )
+                    } else {
+                        pd.show()
+                        controller.SignUp1(
+                            name_et.text.toString(),
+                            email_et.text.toString(),
+                            pass_et.text.toString(),
+                            datetime,
+                            getStringVal(
+                                Constants.CODE
+                            ) + getStringVal(Constants.MOBILENUMBER),
+                            true
+                        )
+                    }
                 }
             }
         }
@@ -159,12 +195,70 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API {
         dob_et.setText(sdf.format(c.time))
     }
 
-    override fun onSignUpSuccess(success: Response<SignUp1Response>) {
+
+    override fun onSignUpSuccess(success: Response<SignUp1User>) {
+        //pd.dismiss()
+        if (success.isSuccessful)
+        {
+            if (success.code()==201)
+            {
+                setStringVal(Constants.TOKEN, success.body()?.accessToken)
+                controller.UpdateAddress(
+                    "Bearer " + success.body()?.accessToken,
+                    street_et.text.toString(),
+                    address_et.text.toString()
+                )
+            } else if (success.code()==400)
+            {
+                pd.dismiss()
+                email_et.requestFocus()
+                email_et.setError("Email already exist")
+                utility.relative_snackbar(
+                    window.currentFocus,
+                    "Email already exist",
+                    getString(R.string.close_up)
+                )
+            }
+
+        } else {
+            pd.dismiss()
+            utility.relative_snackbar(
+                window.currentFocus,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
+
+
+    }
+
+    override fun onUpdateAddress(success: Response<UpdateAddress>) {
         pd.dismiss()
+        if (success.isSuccessful)
+        {
+            startActivity(
+                Intent(this, SignUpDetail2::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    .setFlags(
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    )
+            )
+            finish()
+        } else {
+            utility.relative_snackbar(
+                window.currentFocus,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
     }
 
     override fun onError(error: String) {
         pd.dismiss()
+        utility.relative_snackbar(
+            window.currentFocus,
+            error,
+            getString(R.string.close_up)
+        )
     }
 
 }

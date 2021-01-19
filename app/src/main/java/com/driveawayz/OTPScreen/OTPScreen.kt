@@ -2,24 +2,17 @@ package com.driveawayz.OTPScreen
 
 import `in`.aabhasjindal.otptextview.OtpTextView
 import android.app.ProgressDialog
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.AdapterView
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.driveawayz.Constant.BaseClass
 import com.driveawayz.Controller.Controller
 import com.driveawayz.OTPScreen.response.NumberVerifyResponse
@@ -179,6 +172,8 @@ class OTPScreen : BaseClass(), Controller.SignUpPhoneAPI, Controller.VerifyPhone
         pd.dismiss()
         if (success.isSuccessful) {
             if (!success.body()!!.status.equals("pending")) {
+                setStringVal(Constants.CODE,code)
+                setStringVal(Constants.MOBILENUMBER,mobileno)
                 startActivity(Intent(this, SignUpDetail1::class.java))
             } else {
                 otp_view.requestFocus()

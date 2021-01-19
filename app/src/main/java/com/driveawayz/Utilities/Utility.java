@@ -2,6 +2,7 @@ package com.driveawayz.Utilities;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.icu.text.SimpleDateFormat;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.View;
@@ -15,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,6 +52,28 @@ public class Utility {
                 });
         snackbar.show();
     }
+
+    public static String changeDateTimeToDateTime(String time)
+    {
+        String time_stamp = "";
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            //SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+            Date date = formatter.parse(time);
+
+            // Format for output
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM d, yyyy hh:mm aaa");
+            time_stamp = (dateFormatter.format(date));
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return time_stamp;
+
+    }
+
+
 
 
     public static boolean isValidPassword(final String password) {

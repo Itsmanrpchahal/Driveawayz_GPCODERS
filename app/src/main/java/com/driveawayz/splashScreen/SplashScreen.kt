@@ -38,7 +38,7 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
         controller = Controller()
         controller.Controller(this)
         if (!getStringVal(Constants.TOKEN).equals("")) {
-            controller.Me(getStringVal(Constants.TOKEN)!!)
+            controller.Me("Bearer "+getStringVal(Constants.TOKEN)!!)
         } else {
             startActivity(
                 Intent(
@@ -46,6 +46,7 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
                     MainActivity::class.java
                 )
             )
+            finish()
         }
 
 
@@ -62,14 +63,62 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
         Handler().postDelayed({
 
             if (!getStringVal(Constants.TOKEN).equals("")) {
-                if (getStringVal(Constants.ADDRESS).equals("0")) {
-                    startActivity(Intent(this, SignUpDetail1::class.java))
-                } else if (getStringVal(Constants.VEHICLES).equals("0")) {
-                    startActivity(Intent(this, SignUpDetail2::class.java))
-                } else if (getStringVal(Constants.CARDS).equals("0")) {
-                    startActivity(Intent(this, CompleteSignUp::class.java))
-                } else {
-                    startActivity(Intent(this, Dashboard::class.java))
+                if (success.isSuccessful) {
+                    if (success.code() == 200) {
+                        setStringVal(Constants.NAME,success.body()?.name)
+                        setStringVal(Constants.EMAIL,success.body()?.email)
+                        setStringVal(Constants.DOB,success.body()?.dateOfBirth)
+                        setStringVal(Constants.MOBILENUMBER,success.body()?.phoneNumber)
+                        setStringVal(Constants.PHONENUMBERVERIFIED,
+                            success.body()?.phoneVerified.toString()
+                        )
+                        if (success.body()?.address?.size == 0) {
+                            startActivity(
+                                Intent(
+                                    this,
+                                    SignUpDetail1::class.java
+                                ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            )
+
+                            finish()
+
+                        } else if (success.body()?.vehicle?.size == 0) {
+                            startActivity(
+                                Intent(
+                                    this,
+                                    SignUpDetail2::class.java
+                                ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            )
+                            finish()
+                        } else if (success.body()?.cards?.size == 0) {
+                            startActivity(
+                                Intent(
+                                    this,
+                                    CompleteSignUp::class.java
+                                ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            )
+                            finish()
+                        } else {
+                            startActivity(
+                                Intent(
+                                    this,
+                                    Dashboard::class.java
+                                ).setFlags
+                                    (Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            )
+                            finish()
+                        }
+                    } else {
+                        utility.relative_snackbar(
+                            window.decorView,
+                            getString(R.string.nointernet),
+                            getString(R.string.close_up)
+                        )
+                    }
                 }
 
             } else {

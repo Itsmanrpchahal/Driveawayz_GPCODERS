@@ -4,7 +4,10 @@ import com.driveawayz.Login.response.LoginResponse
 import com.driveawayz.OTPScreen.response.NumberVerifyResponse
 import com.driveawayz.Retrofit.WebAPI
 import com.driveawayz.SignUp.response.SignUp1Response
+import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
+import com.driveawayz.SignUp.signupphone.response.SignUp1User
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse
+import com.driveawayz.SignUp.signupphone.response.UpdateAddress
 import com.driveawayz.splashScreen.MeResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,6 +21,8 @@ class Controller {
     var phoneNumberAPI : VerifyPhoneAPI? = null
     var loginAPI : LoginAPI? = null
     var meAPI : MeAPI? = null
+    var updateAddressAPI : UpdateAddressAPI? = null
+    var addVehiclesAPI : AddVehiclesAPI? = null
 
 
     fun Controller(signUpPhone: SignUpPhoneAPI)
@@ -33,8 +38,9 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(signUp1: SignUp1API){
+    fun Controller(signUp1: SignUp1API,updateAddress: UpdateAddressAPI){
         signUp1API = signUp1
+        updateAddressAPI = updateAddress
         webAPI = WebAPI()
     }
 
@@ -48,6 +54,12 @@ class Controller {
     fun Controller(me:MeAPI)
     {
         meAPI = me
+        webAPI = WebAPI()
+    }
+
+    fun Controller(addVehicle : AddVehiclesAPI)
+    {
+        addVehiclesAPI = addVehicle
         webAPI = WebAPI()
     }
 
@@ -87,19 +99,34 @@ class Controller {
         })
     }
 
-    fun SignUp1(name:String,email : String,password :String,dateOfBirth : String,street : String,address :String,phoneNumber : String)
+    fun SignUp1(name:String,email : String,password :String,dateOfBirth : String,phoneNumber : String,phoneVerified : Boolean)
     {
-        webAPI?.api?.signUp(name, email, password, dateOfBirth, street, address, phoneNumber)?.enqueue(object :Callback<SignUp1Response>
+        webAPI?.api?.signUp(name, email, password, dateOfBirth, phoneNumber,phoneVerified)?.enqueue(object :Callback<SignUp1User>
         {
             override fun onResponse(
-                call: Call<SignUp1Response>,
-                response: Response<SignUp1Response>
+                call: Call<SignUp1User>,
+                response: Response<SignUp1User>
             ) {
                     signUp1API?.onSignUpSuccess(response)
             }
 
-            override fun onFailure(call: Call<SignUp1Response>, t: Throwable) {
+            override fun onFailure(call: Call<SignUp1User>, t: Throwable) {
                 t.message?.let { signUp1API?.onError(it) }
+            }
+
+        })
+    }
+
+    fun UpdateAddress(token:String,street:String,address:String)
+    {
+        webAPI?.api?.updateAddress(token,street, address)?.enqueue(object :Callback<UpdateAddress>
+        {
+            override fun onResponse(call: Call<UpdateAddress>, response: Response<UpdateAddress>) {
+                updateAddressAPI?.onUpdateAddress(response)
+            }
+
+            override fun onFailure(call: Call<UpdateAddress>, t: Throwable) {
+                updateAddressAPI?.onError(t.message!!)
             }
 
         })
@@ -122,7 +149,7 @@ class Controller {
 
     fun Me(token:String)
     {
-        webAPI?.api?.me("Bearer "+token)?.enqueue(object : Callback<MeResponse>
+        webAPI?.api?.me(token)?.enqueue(object : Callback<MeResponse>
         {
             override fun onResponse(call: Call<MeResponse>, response: Response<MeResponse>) {
                 meAPI?.onMeSuccess(response)
@@ -135,14 +162,37 @@ class Controller {
         })
     }
 
+    fun AddVehicle(token: String,make:String,type:String,year:String,transmission:String,licensePlate: String,state:String)
+    {
+        webAPI?.api?.addVehicle(token, make, type, year, transmission, licensePlate, state)?.enqueue(object : Callback<AddVehiclesResponse>
+        {
+            override fun onResponse(
+                call: Call<AddVehiclesResponse>,
+                response: Response<AddVehiclesResponse>
+            ) {
+                addVehiclesAPI?.onAddVehicleSuccess(response)
+            }
+
+            override fun onFailure(call: Call<AddVehiclesResponse>, t: Throwable) {
+                addVehiclesAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
     interface SignUpPhoneAPI {
         fun onSignUpPhoneSuccess(success: Response<SignUpPhoneNoResponse>)
         fun onError(error: String)
     }
 
     interface SignUp1API {
-        fun onSignUpSuccess(success : Response<SignUp1Response>)
+        fun onSignUpSuccess(success : Response<SignUp1User>)
         fun onError(error:String)
+    }
+
+    interface UpdateAddressAPI{
+        fun onUpdateAddress(success : Response<com.driveawayz.SignUp.signupphone.response.UpdateAddress>)
+        fun onError(error: String)
     }
 
     interface VerifyPhoneAPI {
@@ -157,6 +207,11 @@ class Controller {
 
     interface MeAPI {
         fun onMeSuccess(success: Response<MeResponse>)
+        fun onError(error: String)
+    }
+
+    interface AddVehiclesAPI {
+        fun onAddVehicleSuccess(success:Response<AddVehiclesResponse>)
         fun onError(error: String)
     }
 }

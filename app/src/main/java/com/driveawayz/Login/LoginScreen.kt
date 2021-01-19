@@ -1,13 +1,11 @@
 package com.driveawayz.Login
 
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -25,7 +23,6 @@ import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.Dashboard
 import com.driveawayz.splashScreen.MeResponse
 import retrofit2.Response
-import java.lang.reflect.Type
 
 
 @Suppress("DEPRECATION")
@@ -104,7 +101,7 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
         pd!!.isIndeterminate = true
         pd!!.setCancelable(false)
         controller = Controller()
-        controller.Controller(this)
+        controller.Controller(this,this)
         val window: Window = getWindow()
 // clear FLAG_TRANSLUCENT_STATUS flag:
 // clear FLAG_TRANSLUCENT_STATUS flag:
@@ -125,12 +122,11 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
     }
 
     override fun oLoginSucceess(success: Response<LoginResponse>) {
-        pd.dismiss()
         if (success.isSuccessful) {
 
             if (success.code() == 201) {
                 setStringVal(Constants.TOKEN, success.body()?.accessToken)
-                //controller.Me(success.body()?.accessToken!!)
+                controller.Me("Bearer "+success.body()?.accessToken!!)
 
             } else if (success.code() == 401) {
                 utility.relative_snackbar(
@@ -150,37 +146,58 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
 
     override fun onMeSuccess(success: Response<MeResponse>) {
         pd.dismiss()
-        if (getStringVal(Constants.ADDRESS).equals("0")) {
-            startActivity(
-                Intent(
-                    this,
-                    SignUpDetail1::class.java
-                ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            )
+        if (success.isSuccessful)
+        {
+            if (success.code()==200)
+            {
+                setStringVal(Constants.NAME,success.body()?.name)
+                setStringVal(Constants.EMAIL,success.body()?.email)
+                setStringVal(Constants.DOB,success.body()?.dateOfBirth)
+                setStringVal(Constants.MOBILENUMBER,success.body()?.phoneNumber)
+                setStringVal(Constants.PHONENUMBERVERIFIED,
+                    success.body()?.phoneVerified.toString()
+                )
 
-            finish()
-        } else if (getStringVal(Constants.VEHICLES).equals("0")) {
-            startActivity(
-                Intent(
-                    this,
-                    SignUpDetail2::class.java
-                ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            )
-            finish()
-        } else if (getStringVal(Constants.CARDS).equals("0")) {
-            startActivity(
-                Intent(
-                    this,
-                    CompleteSignUp::class.java
-                ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            )
-            finish()
+                if (success.body()?.address?.size==0) {
+                    startActivity(
+                        Intent(
+                            this,
+                            SignUpDetail1::class.java
+                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    )
 
+                    finish()
 
+                } else if (success.body()?.vehicle?.size==0) {
+                    startActivity(
+                        Intent(
+                            this,
+                            SignUpDetail2::class.java
+                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    )
+                    finish()
+                } else if (success.body()?.cards?.size==0) {
+                    startActivity(
+                        Intent(
+                            this,
+                            CompleteSignUp::class.java
+                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    )
+                    finish()
+                } else {
+                    startActivity(Intent(this,
+                        Dashboard::class.java).setFlags
+                        (Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                    finish()
+                }
+            }else{
+                utility.relative_snackbar(window.decorView,getString(R.string.nointernet),getString(R.string.close_up))
+            }
         }
+
     }
 
     override fun onError(error: String) {
