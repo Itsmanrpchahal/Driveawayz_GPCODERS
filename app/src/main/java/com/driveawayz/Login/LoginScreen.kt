@@ -178,16 +178,18 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
                             .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     )
                     finish()
-                } else if (success.body()?.cards?.size==0) {
-                    startActivity(
-                        Intent(
-                            this,
-                            CompleteSignUp::class.java
-                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    )
-                    finish()
-                } else {
+                }
+//                else if (success.body()?.cards?.size==0) {
+//                    startActivity(
+//                        Intent(
+//                            this,
+//                            CompleteSignUp::class.java
+//                        ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                    )
+//                    finish()
+//                }
+                else {
                     startActivity(Intent(this,
                         Dashboard::class.java).setFlags
                         (Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))

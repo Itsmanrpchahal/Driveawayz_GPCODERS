@@ -16,5 +16,6 @@ object Constants {
     val EMAIL ="EMAIL"
     val DOB ="DOB"
     var PHONENUMBERVERIFIED ="PHONENUMBERVERIFIED"
+//    val STRIPEKEY: String? = "pk_test_OTNta0F2CKTUpYDDM7igKdml"
     val STRIPEKEY: String? = "pk_test_eAexCNVuFAFBrWrfthrvK5i500Jb0yc34o"
 }

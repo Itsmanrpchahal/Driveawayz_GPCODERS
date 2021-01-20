@@ -92,16 +92,18 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
                                     .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             )
                             finish()
-                        } else if (success.body()?.cards?.size == 0) {
-                            startActivity(
-                                Intent(
-                                    this,
-                                    CompleteSignUp::class.java
-                                ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            )
-                            finish()
-                        } else {
+                        }
+//                        else if (success.body()?.cards?.size == 0) {
+//                            startActivity(
+//                                Intent(
+//                                    this,
+//                                    CompleteSignUp::class.java
+//                                ).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                            )
+//                            finish()
+//                        }
+                        else {
                             startActivity(
                                 Intent(
                                     this,

@@ -1,31 +1,31 @@
 package com.driveawayz.SignUp
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.renderscript.ScriptIntrinsicConvolve3x3.create
 import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.*
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.driveawayz.Controller.Controller
 import com.driveawayz.R
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
-import com.google.gson.JsonObject
+import com.stripe.android.SourceCallback
 import com.stripe.android.Stripe
 import com.stripe.android.model.*
-import com.stripe.stripeterminal.SessionTokenManager_Factory.create
-import com.stripe.stripeterminal.model.external.PaymentMethod
-import org.json.JSONObject
-import java.net.URI.create
+import com.stripe.android.view.CardInputWidget
+import com.stripe.model.PaymentMethod
+import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class CompleteSignUp : AppCompatActivity() {
     private lateinit var back: ImageButton
@@ -41,21 +41,50 @@ class CompleteSignUp : AppCompatActivity() {
     private lateinit var controller: Controller
     private var MONTH: Int = 0
     private var YEAR: Int = 0
-    private lateinit  var paymentMethod : com.stripe.android.model.PaymentMethod
+    private lateinit var stripe : Stripe
+    private lateinit var cardinput : CardInputWidget
     val c = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_complete_sign_up)
 
+        cardinput = findViewById(R.id.cardinput)
         findIds()
         listeners()
+
     }
 
-    @SuppressLint("LogNotTimber")
+
+
+
     private fun listeners() {
+       // com.stripe.Stripe.apiKey = Constants.STRIPEKEY
         back.setOnClickListener { onBackPressed() }
-        completebt.setOnClickListener {
+        completebt.setOnClickListener {4242
+
+            val stripe1 = Stripe(this, Constants.STRIPEKEY!!)
+            com.stripe.Stripe.apiKey = Constants.STRIPEKEY
+            val card: MutableMap<String, Any> = HashMap()
+            card.put("number", "4242424242424242")
+            card.put("exp_month", 11)
+            card.put("exp_year", 2022)
+            card.put("cvc", "251")
+            val params: MutableMap<String, Any> = HashMap()
+            params["type"] = "card"
+            params["card"] = card
+
+
+            var paymentMethod : PaymentMethod
+            try {
+                paymentMethod = PaymentMethod.create(params).detach()
+                Log.d("stoken", "" + paymentMethod)
+            } catch (e: Exception)
+            {
+                Log.d("error", "" + e.message)
+            }
+
+
 
             when {
                 creaditcard_et.text.isEmpty() -> {
@@ -84,19 +113,16 @@ class CompleteSignUp : AppCompatActivity() {
                 }
                 else -> {
                     pd.show()
-//                    val card = Card(
-//                        creaditcard_et.text.toString(),
-//                        MONTH,
-//                        YEAR,
-//                        cvvcard.text.toString()
-//                    )
-//                    val card2 = Card(
-//                        creaditcard_et.text.toString(),
-//                        MONTH,
-//                        YEAR,
-//                        cvvcard.text.toString()
-//                    )
-//                    val stripe1 = Stripe(this, Constants.STRIPEKEY)
+
+                    val card2 = Card(
+                        creaditcard_et.text.toString(),
+                        MONTH,
+                        YEAR,
+                        cvvcard.text.toString()
+                    )
+
+                    val stripe1 = Stripe(this, Constants.STRIPEKEY)
+//
 //                    stripe1.createToken(card2, object : TokenCallback {
 //
 //                        override fun onError(error: java.lang.Exception) {
@@ -109,44 +135,10 @@ class CompleteSignUp : AppCompatActivity() {
 //                            Log.d("STRIPE_TOKEN",""+token)
 //                        }
 //                    })
-                    val stripe = Stripe(
-                        this,
-                        Constants.STRIPEKEY!!
-                    )
+
                     // The synchronous way to do it (DON'T DO BOTH)
 
-                  //  val cardSourceParams = SourceParams.createCardParams(card)
-// The asynchronous way to do it. Call this method on the main thread.
-//                    stripe.createSource(
-//                        cardSourceParams,
-//                        callback = object : ApiResultCallback<Source> {
-//                            override fun onSuccess(source: Source) {
-//                               Log.d("card",""+source)
-//                            }
-//
-//                            override fun onError(error: Exception) {
-//                                Log.d("errror",""+error)
-//                            }
-//                        }
-//                    )
 
-
-
-
-                    val card: MutableMap<String, Any> = HashMap()
-                    card["number"] = "4242424242424242"
-                    card["exp_month"] = 1
-                    card["exp_year"] = 2022
-                    card["cvc"] = "314"
-                    val params: MutableMap<String, Any> = HashMap()
-                    params["type"] = "card"
-                    params["card"] = card
-
-
-                    val id :String? = null
-                    //id = paymentMethod.id.toString()
-                    paymentMethod = PaymentMethod.create(params)
-                    Log.d("data", "" + paymentMethod.id.toString())
                 }
             }
 
@@ -215,14 +207,8 @@ class CompleteSignUp : AppCompatActivity() {
 
 
         val window: Window = getWindow()
-// clear FLAG_TRANSLUCENT_STATUS flag:
-// clear FLAG_TRANSLUCENT_STATUS flag:
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-// finally change the color
-// finally change the color
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorLightTheme))
         back = findViewById(R.id.back)
         completebt = findViewById(R.id.completebt)
@@ -234,3 +220,5 @@ class CompleteSignUp : AppCompatActivity() {
         checkbox = findViewById(R.id.checkbox)
     }
 }
+
+

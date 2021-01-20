@@ -32,6 +32,8 @@
                 </ImageButton>
             </androidx.appcompat.widget.Toolbar>
 
+
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/toolbar"
                 android:layout_marginLeft="@dimen/margin_dp16"
-                android:layout_marginTop="180dp"
+                android:layout_marginTop="150dp"
                 android:layout_marginRight="@dimen/margin_dp16"
                 app:cardBackgroundColor="@color/colorWhite"
                 app:cardCornerRadius="@dimen/margin_dp10">
@@ -90,6 +92,7 @@
                         android:layout_below="@id/cardnotv"
                         android:layout_margin="@dimen/margin_dp16"
                         android:inputType="number"
+                        android:textColor="@color/colorBlack"
                         android:backgroundTint="@color/colorTheme"
                         android:drawablePadding="@dimen/margin_dp10"
                         android:singleLine="true"
@@ -114,9 +117,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/nameoncardtv"
+                        android:textColor="@color/colorBlack"
                         android:layout_margin="@dimen/margin_dp16"
                         android:backgroundTint="@color/colorTheme"
-                        android:inputType="number"
+                        android:inputType="textPersonName"
                         android:singleLine="true">
 
                     </EditText>
@@ -271,6 +275,15 @@
                 android:layout_marginTop="@dimen/textsize_sp20">
 
             </View>
+
+            <com.stripe.android.view.CardInputWidget
+                android:id="@+id/cardinput"
+                android:visibility="visible"
+                android:layout_below="@id/card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.stripe.android.view.CardInputWidget>
 
         </RelativeLayout>
     </ScrollView>
