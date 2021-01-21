@@ -21,6 +21,7 @@ import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.setiingFrag.adatper.MyVehicelAdapter
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
+import com.driveawayz.splashScreen.MeResponse
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
@@ -29,7 +30,7 @@ import retrofit2.Response
 import java.io.File
 
 class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesAPI,
-    Controller.AddVehiclesAPI {
+    Controller.AddVehiclesAPI ,Controller.MeAPI{
 
 
     private lateinit var part: MultipartBody.Part
@@ -48,6 +49,10 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     private lateinit var uploadImage: ImageButton
     private lateinit var myvehicles_recycler: RecyclerView
     private lateinit var addnewvehicle_bt: Button
+    private lateinit var user_phn_number_et : EditText
+    private lateinit var user_birthdate_et : EditText
+    private lateinit var street : EditText
+    private lateinit var city : EditText
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,6 +62,9 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         view = inflater.inflate(R.layout.fragment_setting, container, false)
 
         findIds(view)
+        pd.show()
+        pd.setContentView(R.layout.loading)
+        controller.Me("Bearer "+getStringVal(Constants.TOKEN))
         listeners()
         return view
     }
@@ -70,6 +78,9 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                         profileview.visibility = View.VISIBLE
                         myaddressview.visibility = View.GONE
                         myvehicles_view.visibility = View.GONE
+                        pd.show()
+                        pd.setContentView(R.layout.loading)
+                        controller.Me("Bearer "+getStringVal(Constants.TOKEN))
                     }
 
                     item.itemId == R.id.nav_address -> {
@@ -101,7 +112,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     private fun findIds(view: View?) {
         utility = Utility()
         controller = Controller()
-        controller.Controller(this, this)
+        controller.Controller(this, this,this)
         bottomnavigaton = view!!.findViewById(R.id.bottomnavigaton)
         profileview = view.findViewById(R.id.profileview)
         myaddressview = view.findViewById(R.id.myaddressview)
@@ -109,6 +120,10 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         uploadImage = view.findViewById(R.id.uploadImage)
         myvehicles_recycler = view.findViewById(R.id.myvehicles_recycler)
         addnewvehicle_bt = view.findViewById(R.id.addnewvehicle_bt)
+        user_phn_number_et = view.findViewById(R.id.user_phn_number_et)
+        user_birthdate_et = view.findViewById(R.id.user_birthdate_et)
+        city = view.findViewById(R.id.city)
+        street = view.findViewById(R.id.street)
         pd = ProgressDialog(context)
         pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         pd!!.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
@@ -294,6 +309,36 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     override fun onAddVehicleSuccess(success: Response<AddVehiclesResponse>) {
         addvehiclepopup.dismiss()
         controller.MyVehicles("Bearer " + getStringVal(Constants.TOKEN))
+    }
+
+    override fun onMeSuccess(success: Response<MeResponse>) {
+        pd.dismiss()
+        if (success.isSuccessful)
+        {
+            if(success.code()==200)
+            {
+                user_phn_number_et.isEnabled = false
+                user_phn_number_et.setText(success.body()?.phoneNumber.toString())
+                user_birthdate_et.isEnabled = false
+                user_birthdate_et.setText(success.body()?.dateOfBirth)
+                street.isEnabled = false
+                street.setText(success.body()?.address?.get(0)?.street)
+                city.isEnabled = false
+                city.setText(success.body()?.address?.get(0)?.address)
+            } else {
+                utility!!.relative_snackbar(
+                    requireActivity().window.currentFocus,
+                    success.message(),
+                    getString(R.string.close_up)
+                )
+            }
+        } else {
+            utility!!.relative_snackbar(
+                requireActivity().window.currentFocus,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
     }
 
     override fun onError(error: String) {

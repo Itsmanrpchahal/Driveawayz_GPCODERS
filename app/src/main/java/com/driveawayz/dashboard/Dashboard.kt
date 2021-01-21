@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -29,6 +30,7 @@ class Dashboard : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     lateinit var appbarmain: AppBarLayout
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
@@ -46,6 +48,8 @@ class Dashboard : AppCompatActivity() {
             ), drawerLayout
         )
 
+
+
         setupActionBarWithNavController(frameLayout, appBarConfiguration)
         navView.setupWithNavController(frameLayout)
     }
@@ -62,6 +66,7 @@ class Dashboard : AppCompatActivity() {
 // finally change the color
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorTheme))
         drawerLayout = findViewById(R.id.drawer_layout)
+        drawerLayout.drawerElevation = 0.0F
         navView = findViewById(R.id.nav_view)
         frameLayout = findNavController(R.id.nav_host_fragment)
         appbarmain = findViewById(R.id.appbarmain)

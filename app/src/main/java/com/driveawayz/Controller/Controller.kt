@@ -65,10 +65,11 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(myVehicles : MyVehiclesAPI,addVehicle: AddVehiclesAPI)
+    fun Controller(myVehicles : MyVehiclesAPI,addVehicle: AddVehiclesAPI,me: MeAPI)
     {
         myVehiclesAPI= myVehicles
         addVehiclesAPI = addVehicle
+        meAPI = me
         webAPI = WebAPI()
     }
 

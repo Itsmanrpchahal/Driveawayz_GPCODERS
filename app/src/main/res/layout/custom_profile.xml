@@ -225,7 +225,8 @@
                     android:layout_marginRight="@dimen/margin_dp30"
                     android:backgroundTint="@color/colorTheme"
                     android:background="@color/colorTrans"
-                    android:hint="#4634, Street 3"
+                    android:hint="Street"
+                    android:textColorHint="@color/black"
                     android:enabled="false"
                     android:textColor="@color/colorBlack">
 
@@ -238,11 +239,12 @@
                     android:layout_marginTop="@dimen/margin_dp15"
                     android:layout_marginLeft="@dimen/margin_dp30"
                     android:layout_height="wrap_content"
+                    android:textColorHint="@color/black"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textsize_sp16"
                     android:enabled="false"
                     android:background="@color/colorTrans"
-                    android:hint="Portland, Alaska">
+                    android:hint="State">
 
                 </EditText>
 

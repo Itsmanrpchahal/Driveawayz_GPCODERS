@@ -6,6 +6,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/white"
     android:background="@color/colorLightTheme"
     android:fitsSystemWindows="true"
     tools:context=".dashboard.Dashboard"
@@ -20,22 +21,20 @@
     </include>
 
     <com.shreyaspatil.material.navigationview.MaterialNavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/nav_view1"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/colorWhite"
         android:scrollbars="vertical"
+        app:itemShapeInsetBottom="@dimen/margin_dp8"
         android:theme="@style/Widget.NavigationView.RippleEffect"
-        app:headerLayout="@layout/header"
+        android:overScrollMode="always"
         app:insetForeground="@android:color/transparent"
         app:itemIconTint="@color/navigation_item_tint"
         app:itemStyle="default_style"
         android:soundEffectsEnabled="true"
         app:itemTextColor="@color/navigation_item_tint">
-
-
-
 
 
         <androidx.core.widget.NestedScrollView
@@ -49,66 +48,90 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@color/colorWhite"
-                android:orientation="vertical"
-                android:visibility="visible">
+                android:orientation="vertical">
 
+                <com.shreyaspatil.material.navigationview.MaterialNavigationView
+                    android:id="@+id/nav_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:background="@color/colorWhite"
+                    android:scrollbars="vertical"
+                    android:theme="@style/Widget.NavigationView.RippleEffect"
+                    app:headerLayout="@layout/header"
+                    app:insetForeground="@android:color/white"
+                    app:itemIconTint="@color/navigation_item_tint"
+                    app:itemStyle="rounded_right"
+                    android:soundEffectsEnabled="true"
+                    app:itemTextColor="@color/navigation_item_tint">
 
-                <RelativeLayout
+                </com.shreyaspatil.material.navigationview.MaterialNavigationView>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_margin="20dp"
-                    android:gravity="bottom">
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
-                    <TextView
-                        android:id="@+id/tv"
+
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:text="Feedback"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/textsize_sp20">
+                        android:layout_margin="20dp"
+                        android:gravity="bottom">
 
-                    </TextView>
+                        <TextView
+                            android:id="@+id/tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:text="Feedback"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/textsize_sp20">
 
-                    <EditText
-                        android:id="@+id/sendfeedback"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv"
-                        android:gravity="start"
-                        android:nextFocusDown="@id/sendfeedback_bt"
-                        android:backgroundTint="@color/colorTheme"
-                        android:textCursorDrawable="@color/colorTheme"
-                        android:hint="Start writing here to send
-your feedback to the developer team"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/colorBlack"
-                        android:textColorHint="@color/colorGreyLight">
+                        </TextView>
 
-                    </EditText>
+                        <EditText
+                            android:id="@+id/sendfeedback"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv"
+                            android:gravity="start"
+                            android:nextFocusDown="@id/sendfeedback_bt"
+                            android:backgroundTint="@color/colorTheme"
+                            android:textCursorDrawable="@color/colorTheme"
+                            android:hint="Start writing here to send your feedback to the developer team"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/colorGreyLight">
+
+                        </EditText>
 
 
-                    <Button
-                        android:id="@+id/sendfeedback_bt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/sendfeedback"
-                        android:layout_marginTop="@dimen/margin_dp30"
-                        android:layout_marginBottom="@dimen/margin_dp20"
-                        android:background="@drawable/color_black"
-                        android:drawableLeft="@drawable/ic_plane"
-                        android:paddingLeft="@dimen/margin_dp10"
-                        android:text="SEND"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/textsize_sp16">
+                        <Button
+                            android:id="@+id/sendfeedback_bt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/sendfeedback"
+                            android:layout_marginTop="@dimen/margin_dp30"
+                            android:layout_marginBottom="@dimen/margin_dp20"
+                            android:background="@drawable/color_black"
+                            android:drawableLeft="@drawable/ic_plane"
+                            android:paddingLeft="@dimen/margin_dp10"
+                            android:text="SEND"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/textsize_sp16">
 
-                    </Button>
-                </RelativeLayout>
+                        </Button>
+                    </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
+
+
 
         </androidx.core.widget.NestedScrollView>
     </com.shreyaspatil.material.navigationview.MaterialNavigationView>
