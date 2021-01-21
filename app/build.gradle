@@ -114,4 +114,7 @@ dependencies {
 //    implementation 'com.stripe:stripe-android:16.2.0'
     implementation "com.stripe:stripe-java:20.35.0"
 
+    //ToDo: ImagerCropper
+        implementation 'com.github.dhaval2404:imagepicker:1.7.1'
+
 }

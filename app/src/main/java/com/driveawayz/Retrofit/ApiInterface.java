@@ -7,7 +7,10 @@ import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse;
 import com.driveawayz.SignUp.signupphone.response.SignUp1User;
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
 import com.driveawayz.SignUp.signupphone.response.UpdateAddress;
+import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse;
 import com.driveawayz.splashScreen.MeResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -75,6 +78,11 @@ public interface ApiInterface {
             @Field("transmission") String transmission,
             @Field("licensePlate") String licensePlate,
             @Field("state") String state
+    );
+
+    @GET("/api/v1/vehicles")
+    Call<List<MyVehiclesResponse>> myVehicles (
+            @Header("Authorization") String token
     );
 
 }

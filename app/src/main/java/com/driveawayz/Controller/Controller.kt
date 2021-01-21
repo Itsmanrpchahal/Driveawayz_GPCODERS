@@ -8,6 +8,7 @@ import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
 import com.driveawayz.SignUp.signupphone.response.SignUp1User
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse
 import com.driveawayz.SignUp.signupphone.response.UpdateAddress
+import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
 import com.driveawayz.splashScreen.MeResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,6 +24,7 @@ class Controller {
     var meAPI : MeAPI? = null
     var updateAddressAPI : UpdateAddressAPI? = null
     var addVehiclesAPI : AddVehiclesAPI? = null
+    var myVehiclesAPI : MyVehiclesAPI?= null
 
 
     fun Controller(signUpPhone: SignUpPhoneAPI)
@@ -59,6 +61,13 @@ class Controller {
 
     fun Controller(addVehicle : AddVehiclesAPI)
     {
+        addVehiclesAPI = addVehicle
+        webAPI = WebAPI()
+    }
+
+    fun Controller(myVehicles : MyVehiclesAPI,addVehicle: AddVehiclesAPI)
+    {
+        myVehiclesAPI= myVehicles
         addVehiclesAPI = addVehicle
         webAPI = WebAPI()
     }
@@ -180,6 +189,24 @@ class Controller {
         })
     }
 
+    fun MyVehicles(token: String)
+    {
+       webAPI?.api?.myVehicles(token)?.enqueue(object : Callback<List<MyVehiclesResponse>>
+       {
+           override fun onResponse(
+               call: Call<List<MyVehiclesResponse>>,
+               response: Response<List<MyVehiclesResponse>>
+           ) {
+               myVehiclesAPI?.onMyVehiclesSuccess(response)
+           }
+
+           override fun onFailure(call: Call<List<MyVehiclesResponse>>, t: Throwable) {
+               myVehiclesAPI?.onError(t.message!!)
+           }
+
+       })
+    }
+
     interface SignUpPhoneAPI {
         fun onSignUpPhoneSuccess(success: Response<SignUpPhoneNoResponse>)
         fun onError(error: String)
@@ -212,6 +239,11 @@ class Controller {
 
     interface AddVehiclesAPI {
         fun onAddVehicleSuccess(success:Response<AddVehiclesResponse>)
+        fun onError(error: String)
+    }
+
+    interface MyVehiclesAPI {
+        fun onMyVehiclesSuccess(success:Response<List<MyVehiclesResponse>>)
         fun onError(error: String)
     }
 }
