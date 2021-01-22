@@ -7,6 +7,7 @@ import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse;
 import com.driveawayz.SignUp.signupphone.response.SignUp1User;
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
 import com.driveawayz.SignUp.signupphone.response.UpdateAddress;
+import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse;
 import com.driveawayz.splashScreen.MeResponse;
 
@@ -82,6 +83,11 @@ public interface ApiInterface {
 
     @GET("/api/v1/vehicles")
     Call<List<MyVehiclesResponse>> myVehicles (
+            @Header("Authorization") String token
+    );
+
+    @GET("/api/v1/addresses")
+    Call<List<MyAddessesResponse>> myAddresses (
             @Header("Authorization") String token
     );
 

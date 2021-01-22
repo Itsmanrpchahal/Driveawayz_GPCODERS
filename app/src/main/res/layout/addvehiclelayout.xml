@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/margin_dp10"
+        app:cardBackgroundColor="@color/colorWhite"
+        android:layout_marginLeft="@dimen/margin_dp16"
+        android:layout_marginRight="@dimen/margin_dp16"
+        android:layout_marginTop="@dimen/margin_dp10">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/maketv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Make"
+                    android:textColor="@color/colorTextLight"
+                    android:layout_marginTop="@dimen/margin_dp20"
+                    android:layout_marginLeft="@dimen/margin_dp16">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/make_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/maketv"
+                    android:layout_marginLeft="@dimen/margin_dp16"
+                    android:layout_marginRight="@dimen/margin_dp16"
+                    android:backgroundTint="@color/colorTheme"
+                    android:layout_marginTop="@dimen/margin_dp2"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColorHint="@color/colorGreyLight"
+                    android:textColor="@color/colorBlack">
+
+                </EditText>
+
+                <TextView
+                    android:id="@+id/typetv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Type"
+                    android:layout_below="@id/make_et"
+                    android:textColor="@color/colorTextLight"
+                    android:layout_marginTop="@dimen/margin_dp15"
+                    android:layout_marginLeft="@dimen/margin_dp16">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/type_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/typetv"
+                    android:layout_marginLeft="@dimen/margin_dp16"
+                    android:layout_marginRight="@dimen/margin_dp16"
+                    android:backgroundTint="@color/colorTheme"
+                    android:layout_marginTop="@dimen/margin_dp2"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="@color/colorGreyLight"
+                    android:textColor="@color/colorBlack">
+
+                </EditText>
+
+                <TextView
+                    android:id="@+id/yeartv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Year"
+                    android:layout_below="@id/type_et"
+                    android:textColor="@color/colorTextLight"
+                    android:layout_marginTop="@dimen/margin_dp15"
+                    android:layout_marginLeft="@dimen/margin_dp16">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/year_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/yeartv"
+                    android:layout_marginLeft="@dimen/margin_dp16"
+                    android:layout_marginRight="@dimen/margin_dp16"
+                    android:backgroundTint="@color/colorTheme"
+                    android:layout_marginTop="@dimen/margin_dp2"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:textColorHint="@color/colorGreyLight"
+                    android:textColor="@color/colorBlack">
+
+                </EditText>
+
+                <TextView
+                    android:id="@+id/transsmisuiontv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Transmission"
+                    android:layout_below="@id/year_et"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginTop="@dimen/margin_dp30"
+                    android:layout_marginLeft="@dimen/margin_dp16">
+
+                </TextView>
+
+
+                <EditText
+                    android:id="@+id/transsmisuion_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/transsmisuiontv"
+                    android:layout_marginLeft="@dimen/margin_dp16"
+                    android:layout_marginRight="@dimen/margin_dp16"
+                    android:backgroundTint="@color/colorTheme"
+                    android:layout_marginTop="@dimen/margin_dp2"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColorHint="@color/colorGreyLight"
+                    android:textColor="@color/colorBlack">
+
+                </EditText>
+
+
+                <TextView
+                    android:id="@+id/licenceplatetv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Licence Plate #"
+                    android:layout_below="@id/transsmisuion_et"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginTop="@dimen/margin_dp30"
+                    android:layout_marginLeft="@dimen/margin_dp16">
+
+                </TextView>
+
+
+                <EditText
+                    android:id="@+id/licenceplate_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/licenceplatetv"
+                    android:layout_marginLeft="@dimen/margin_dp16"
+                    android:backgroundTint="@color/colorTheme"
+                    android:layout_marginRight="@dimen/margin_dp16"
+                    android:layout_marginTop="@dimen/margin_dp2"
+                    android:hint="3526"
+                    android:singleLine="false"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColorHint="@color/colorGreyLight"
+                    android:textColor="@color/colorBlack">
+
+                </EditText>
+
+                <TextView
+                    android:id="@+id/statetv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="State"
+                    android:layout_below="@id/licenceplate_et"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginTop="@dimen/margin_dp30"
+                    android:layout_marginLeft="@dimen/margin_dp16">
+
+                </TextView>
+
+
+                <EditText
+                    android:id="@+id/state_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/statetv"
+                    android:backgroundTint="@color/colorTheme"
+                    android:layout_marginLeft="@dimen/margin_dp16"
+                    android:layout_marginRight="@dimen/margin_dp16"
+                    android:layout_marginTop="@dimen/margin_dp2"
+                    android:singleLine="false"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:textColorHint="@color/colorGreyLight"
+                    android:textColor="@color/colorBlack">
+
+                </EditText>
+
+                <Button
+                    android:id="@+id/nextbt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/state_et"
+                    android:layout_marginLeft="@dimen/margin_dp20"
+                    android:layout_marginRight="@dimen/margin_dp20"
+                    android:layout_marginBottom="@dimen/margin_dp20"
+                    android:background="@drawable/color_black"
+                    android:text="Done"
+                    android:textColor="@color/colorWhite"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/textsize_sp16"
+                    android:layout_marginTop="@dimen/margin_dp50">
+
+                </Button>
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

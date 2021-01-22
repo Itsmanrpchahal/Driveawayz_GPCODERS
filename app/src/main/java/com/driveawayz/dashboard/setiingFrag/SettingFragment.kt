@@ -20,6 +20,7 @@ import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.setiingFrag.adatper.MyVehicelAdapter
+import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
 import com.driveawayz.splashScreen.MeResponse
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -30,7 +31,7 @@ import retrofit2.Response
 import java.io.File
 
 class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesAPI,
-    Controller.AddVehiclesAPI ,Controller.MeAPI{
+    Controller.AddVehiclesAPI ,Controller.MeAPI,Controller.MyAdderessAPI{
 
 
     private lateinit var part: MultipartBody.Part
@@ -87,6 +88,9 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                         profileview.visibility = View.GONE
                         myaddressview.visibility = View.VISIBLE
                         myvehicles_view.visibility = View.GONE
+                        pd.show()
+                        pd.setContentView(R.layout.loading)
+                        controller.MyAddresss("Bearer "+getStringVal(Constants.TOKEN))
                     }
 
                     item.itemId == R.id.nav_MyVehicles -> {
@@ -112,7 +116,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     private fun findIds(view: View?) {
         utility = Utility()
         controller = Controller()
-        controller.Controller(this, this,this)
+        controller.Controller(this, this,this,this)
         bottomnavigaton = view!!.findViewById(R.id.bottomnavigaton)
         profileview = view.findViewById(R.id.profileview)
         myaddressview = view.findViewById(R.id.myaddressview)
@@ -338,6 +342,14 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                 success.message(),
                 getString(R.string.close_up)
             )
+        }
+    }
+
+    override fun onMyAddressSuccess(success: Response<List<MyAddessesResponse>>) {
+        pd.dismiss()
+        if (success.isSuccessful)
+        {
+            Toast.makeText(context,""+success.body()?.size,Toast.LENGTH_SHORT).show()
         }
     }
 

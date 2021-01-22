@@ -2,7 +2,6 @@ package com.driveawayz.SignUp
 
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,19 +9,19 @@ import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import android.widget.*
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.driveawayz.Controller.Controller
 import com.driveawayz.R
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
-import com.stripe.android.SourceCallback
 import com.stripe.android.Stripe
-import com.stripe.android.model.*
+import com.stripe.android.TokenCallback
+import com.stripe.android.model.Card
+import com.stripe.android.model.PaymentIntent
 import com.stripe.android.view.CardInputWidget
 import com.stripe.model.PaymentMethod
-import java.lang.ref.WeakReference
+import com.stripe.model.PaymentMethod.create
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -52,21 +51,20 @@ class CompleteSignUp : AppCompatActivity() {
         cardinput = findViewById(R.id.cardinput)
         findIds()
         listeners()
-
     }
 
 
 
 
     private fun listeners() {
-       // com.stripe.Stripe.apiKey = Constants.STRIPEKEY
+        // com.stripe.Stripe.apiKey = Constants.STRIPEKEY
         back.setOnClickListener { onBackPressed() }
-        completebt.setOnClickListener {4242
+        completebt.setOnClickListener {
 
             val stripe1 = Stripe(this, Constants.STRIPEKEY!!)
-            com.stripe.Stripe.apiKey = Constants.STRIPEKEY
+            com.stripe.Stripe.apiKey = Constants.STRIPEKEY;
             val card: MutableMap<String, Any> = HashMap()
-            card.put("number", "4242424242424242")
+            card.put("number", "4000002500003155")
             card.put("exp_month", 11)
             card.put("exp_year", 2022)
             card.put("cvc", "251")
@@ -77,12 +75,15 @@ class CompleteSignUp : AppCompatActivity() {
 
             var paymentMethod : PaymentMethod
             try {
-                paymentMethod = PaymentMethod.create(params).detach()
-                Log.d("stoken", "" + paymentMethod)
+                paymentMethod = PaymentMethod.create(params)
+                Log.d("stoken", "" + paymentMethod.id)
             } catch (e: Exception)
             {
-                Log.d("error", "" + e.message)
+                Log.d("error", "" + e.cause)
             }
+
+            val paymentIntent : PaymentIntent
+
 
 
 
@@ -122,19 +123,22 @@ class CompleteSignUp : AppCompatActivity() {
                     )
 
                     val stripe1 = Stripe(this, Constants.STRIPEKEY)
-//
-//                    stripe1.createToken(card2, object : TokenCallback {
-//
-//                        override fun onError(error: java.lang.Exception) {
-//                            pd.dismiss()
-//                            Log.d("STRIPE_TOKEN",""+error)
-//                        }
-//
-//                        override fun onSuccess(token: Token) {
-//                            pd.dismiss()
-//                            Log.d("STRIPE_TOKEN",""+token)
-//                        }
-//                    })
+
+
+
+                    stripe1.createToken(card2, object : TokenCallback {
+
+                        override fun onError(error: java.lang.Exception) {
+                            pd.dismiss()
+                            Log.d("STRIPE_TOKEN", "" + error)
+                        }
+
+                        override fun onSuccess(token: com.stripe.android.model.Token?) {
+                            pd.dismiss()
+                            Log.d("STRIPE_TOKEN", "" + token)
+                        }
+
+                    })
 
                     // The synchronous way to do it (DON'T DO BOTH)
 
