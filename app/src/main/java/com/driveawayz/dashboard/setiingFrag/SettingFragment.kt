@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
@@ -16,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.driveawayz.Constant.BaseFrag
 import com.driveawayz.Controller.Controller
 import com.driveawayz.R
-import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
 import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
+import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.setiingFrag.adatper.MyAddress_Adapter
@@ -30,6 +31,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import okhttp3.MultipartBody
 import retrofit2.Response
 import java.io.File
+import java.util.*
+import javax.xml.bind.DatatypeConverter.parseDate
+import kotlin.collections.ArrayList
+
 
 class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesAPI,
     Controller.AddVehiclesAPI ,Controller.MeAPI,Controller.MyAdderessAPI,Controller.UpdateAddressAPI{
@@ -70,7 +75,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         findIds(view)
         pd.show()
         pd.setContentView(R.layout.loading)
-        controller.Me("Bearer "+getStringVal(Constants.TOKEN))
+        controller.Me("Bearer " + getStringVal(Constants.TOKEN))
         listeners()
         return view
     }
@@ -86,7 +91,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                         myvehicles_view.visibility = View.GONE
                         pd.show()
                         pd.setContentView(R.layout.loading)
-                        controller.Me("Bearer "+getStringVal(Constants.TOKEN))
+                        controller.Me("Bearer " + getStringVal(Constants.TOKEN))
                     }
 
                     item.itemId == R.id.nav_address -> {
@@ -95,7 +100,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                         myvehicles_view.visibility = View.GONE
                         pd.show()
                         pd.setContentView(R.layout.loading)
-                        controller.MyAddresss("Bearer "+getStringVal(Constants.TOKEN))
+                        controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
                     }
 
                     item.itemId == R.id.nav_MyVehicles -> {
@@ -122,7 +127,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     private fun findIds(view: View?) {
         utility = Utility()
         controller = Controller()
-        controller.Controller(this, this,this,this,this)
+        controller.Controller(this, this, this, this, this)
         bottomnavigaton = view!!.findViewById(R.id.bottomnavigaton)
         profileview = view.findViewById(R.id.profileview)
         myaddressview = view.findViewById(R.id.myaddressview)
@@ -251,7 +256,11 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                     addnewAddressPopup.dismiss()
                     pd.show()
                     pd.setContentView(R.layout.loading)
-                    controller.AddNewAddress("Bearer "+getStringVal(Constants.TOKEN),street_et.text.toString(),address_et.text.toString())
+                    controller.AddNewAddress(
+                        "Bearer " + getStringVal(Constants.TOKEN),
+                        street_et.text.toString(),
+                        address_et.text.toString()
+                    )
                 }
             }
         }
@@ -320,13 +329,15 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                 else -> {
                     pd.show()
                     pd.setContentView(R.layout.loading)
-                    controller.AddVehicle("Bearer "+getStringVal(Constants.TOKEN)
-                        ,make_et.text.toString()
-                        ,type_et.text.toString()
-                        ,year_et.text.toString()
-                        ,transsmisuion_et.text.toString()
-                        ,licenceplate_et.text.toString()
-                        ,state_et.text.toString())
+                    controller.AddVehicle(
+                        "Bearer " + getStringVal(Constants.TOKEN),
+                        make_et.text.toString(),
+                        type_et.text.toString(),
+                        year_et.text.toString(),
+                        transsmisuion_et.text.toString(),
+                        licenceplate_et.text.toString(),
+                        state_et.text.toString()
+                    )
 
                 }
             }
@@ -379,7 +390,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                 user_phn_number_et.isEnabled = false
                 user_phn_number_et.setText(success.body()?.phoneNumber.toString())
                 user_birthdate_et.isEnabled = false
-                user_birthdate_et.setText(success.body()?.dateOfBirth)
+                //changeDateTimeToDateTime(success.body()?.dateOfBirth.toString())
                 street.isEnabled = false
                 street.setText(success.body()?.address?.get(0)?.street)
                 city.isEnabled = false
@@ -413,7 +424,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     }
 
     override fun onUpdateAddress(success: Response<AddNewAddressResponse>) {
-       controller.MyAddresss("Bearer "+getStringVal(Constants.TOKEN) )
+       controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
     }
 
     override fun onError(error: String) {
@@ -424,5 +435,16 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
             getString(R.string.close_up)
         )
     }
+
+
+//    fun changeDateTimeToDateTime(time: String): String? {
+//        val ymdFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+//
+//        val EEEddMMMyyyy = SimpleDateFormat("EEE dd-MMM-yyyy", Locale.US)
+//        var outputDateStr = ""
+//        outputDateStr = DatatypeConverter.parseDate("2018-08-31", ymdFormat, EEEddMMMyyyy)
+//        Log.i("output_string", outputDateStr)
+//    }
+
 
 }
