@@ -3,7 +3,7 @@ package com.driveawayz.SignUp.signupphone.response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UpdateAddress {
+public class AddNewAddressResponse {
 
     @SerializedName("street")
     @Expose

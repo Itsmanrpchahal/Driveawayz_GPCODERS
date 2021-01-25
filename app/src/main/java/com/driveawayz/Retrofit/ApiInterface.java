@@ -2,11 +2,10 @@ package com.driveawayz.Retrofit;
 
 import com.driveawayz.Login.response.LoginResponse;
 import com.driveawayz.OTPScreen.response.NumberVerifyResponse;
-import com.driveawayz.SignUp.response.SignUp1Response;
 import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse;
 import com.driveawayz.SignUp.signupphone.response.SignUp1User;
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
-import com.driveawayz.SignUp.signupphone.response.UpdateAddress;
+import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse;
 import com.driveawayz.splashScreen.MeResponse;
@@ -51,7 +50,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/api/v1/address")
-    Call<UpdateAddress> updateAddress (
+    Call<AddNewAddressResponse> AddNewAddress(
             @Header("Authorization") String token,
             @Field("street") String street,
             @Field("address") String address

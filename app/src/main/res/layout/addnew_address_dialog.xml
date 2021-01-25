@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/margin_dp10"
+        app:cardBackgroundColor="@color/colorWhite"
+        android:layout_marginLeft="@dimen/margin_dp16"
+        android:layout_marginRight="@dimen/margin_dp16"
+        android:layout_marginTop="@dimen/margin_dp10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/mailingaddresstv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dob_et"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:layout_marginTop="@dimen/margin_dp30"
+                android:text="Mailing Address"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/textsize_sp20">
+
+            </TextView>
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="150dp"
+                android:layout_height="1.5dp"
+                android:layout_below="@id/mailingaddresstv"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:background="@color/colorBlack">
+
+            </View>
+
+
+            <TextView
+                android:id="@+id/streettv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view1"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:layout_marginTop="@dimen/margin_dp30"
+                android:text="Street"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/textsize_sp20">
+
+            </TextView>
+
+
+            <EditText
+                android:id="@+id/street_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/streettv"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:layout_marginTop="@dimen/margin_dp2"
+                android:layout_marginRight="@dimen/margin_dp16"
+                android:backgroundTint="@color/colorTheme"
+                android:hint="3526"
+                android:imeOptions="actionNext"
+                android:inputType="text|textCapSentences"
+                android:singleLine="true"
+                android:textColor="@color/colorBlack"
+                android:textColorHint="@color/colorGreyLight">
+
+            </EditText>
+
+
+            <TextView
+                android:id="@+id/addresstv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/street_et"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:layout_marginTop="@dimen/margin_dp30"
+                android:text="Address"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/textsize_sp20">
+
+            </TextView>
+
+
+            <EditText
+                android:id="@+id/address_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addresstv"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="@dimen/margin_dp16"
+                android:backgroundTint="@color/colorTheme"
+                android:hint="3526"
+                android:imeOptions="actionDone"
+                android:inputType="text|textCapSentences"
+                android:singleLine="false"
+                android:textColor="@color/colorBlack"
+                android:textColorHint="@color/colorGreyLight">
+
+            </EditText>
+
+            <Button
+                android:id="@+id/done_bt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/address_et"
+                android:layout_marginLeft="@dimen/margin_dp20"
+                android:layout_marginTop="@dimen/margin_dp30"
+                android:layout_marginRight="@dimen/margin_dp20"
+                android:layout_marginBottom="@dimen/margin_dp20"
+                android:background="@drawable/color_black"
+                android:text="Done"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textsize_sp16">
+
+            </Button>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

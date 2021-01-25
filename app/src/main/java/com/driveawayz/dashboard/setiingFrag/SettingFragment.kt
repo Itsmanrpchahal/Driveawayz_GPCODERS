@@ -17,21 +17,22 @@ import com.driveawayz.Constant.BaseFrag
 import com.driveawayz.Controller.Controller
 import com.driveawayz.R
 import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
+import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
+import com.driveawayz.dashboard.setiingFrag.adatper.MyAddress_Adapter
 import com.driveawayz.dashboard.setiingFrag.adatper.MyVehicelAdapter
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
 import com.driveawayz.splashScreen.MeResponse
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.button.MaterialButton
 import okhttp3.MultipartBody
 import retrofit2.Response
 import java.io.File
 
 class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesAPI,
-    Controller.AddVehiclesAPI ,Controller.MeAPI,Controller.MyAdderessAPI{
+    Controller.AddVehiclesAPI ,Controller.MeAPI,Controller.MyAdderessAPI,Controller.UpdateAddressAPI{
 
 
     private lateinit var part: MultipartBody.Part
@@ -41,15 +42,19 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     private lateinit var controller: Controller
     private var path: String = ""
     private lateinit var addvehiclepopup: Dialog
+    private lateinit var addnewAddressPopup : Dialog
     private var myVehicles = ArrayList<List<MyVehiclesResponse>>()
     private lateinit var myVehicelAdapter: MyVehicelAdapter
+    private lateinit var myAddressAdapter : MyAddress_Adapter
     private lateinit var bottomnavigaton: BottomNavigationView
     private lateinit var profileview: RelativeLayout
     private lateinit var myaddressview: RelativeLayout
     private lateinit var myvehicles_view: RelativeLayout
     private lateinit var uploadImage: ImageButton
     private lateinit var myvehicles_recycler: RecyclerView
+    private lateinit var myaddress_recycler : RecyclerView
     private lateinit var addnewvehicle_bt: Button
+    private lateinit var addnewaddress_bt : Button
     private lateinit var user_phn_number_et : EditText
     private lateinit var user_birthdate_et : EditText
     private lateinit var street : EditText
@@ -110,20 +115,23 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
 
         uploadImage.setOnClickListener(this)
         addnewvehicle_bt.setOnClickListener(this)
+        addnewaddress_bt.setOnClickListener(this)
 
     }
 
     private fun findIds(view: View?) {
         utility = Utility()
         controller = Controller()
-        controller.Controller(this, this,this,this)
+        controller.Controller(this, this,this,this,this)
         bottomnavigaton = view!!.findViewById(R.id.bottomnavigaton)
         profileview = view.findViewById(R.id.profileview)
         myaddressview = view.findViewById(R.id.myaddressview)
         myvehicles_view = view.findViewById(R.id.myvehicles_view)
         uploadImage = view.findViewById(R.id.uploadImage)
         myvehicles_recycler = view.findViewById(R.id.myvehicles_recycler)
+        myaddress_recycler = view.findViewById(R.id.myaddress_recycler)
         addnewvehicle_bt = view.findViewById(R.id.addnewvehicle_bt)
+        addnewaddress_bt = view.findViewById(R.id.addnewaddress_bt)
         user_phn_number_et = view.findViewById(R.id.user_phn_number_et)
         user_birthdate_et = view.findViewById(R.id.user_birthdate_et)
         city = view.findViewById(R.id.city)
@@ -202,6 +210,53 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         if (v == addnewvehicle_bt) {
             dialogOK()
         }
+
+        if (v == addnewaddress_bt)
+        {
+            addnewAddressDialog()
+        }
+    }
+
+    private fun addnewAddressDialog() {
+        addnewAddressPopup = Dialog(context!!)
+        val window: Window = addnewAddressPopup.getWindow()!!
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        addnewAddressPopup.setContentView(R.layout.addnew_address_dialog)
+        addnewAddressPopup.setCancelable(true)
+        addnewAddressPopup.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        var street_et : EditText
+        var address_et : EditText
+        var done_bt : Button
+
+        street_et = addnewAddressPopup.findViewById(R.id.street_et)
+        address_et = addnewAddressPopup.findViewById(R.id.address_et)
+        done_bt = addnewAddressPopup.findViewById(R.id.done_bt)
+
+        done_bt.setOnClickListener {
+            when{
+                street_et.text.isEmpty() -> {
+                    street_et.requestFocus()
+                    street_et.error = "Enter street"
+                }
+
+                address_et.text.isEmpty() -> {
+                    address_et.requestFocus()
+                    address_et.error = "Enter address"
+                }
+                else -> {
+                    addnewAddressPopup.dismiss()
+                    pd.show()
+                    pd.setContentView(R.layout.loading)
+                    controller.AddNewAddress("Bearer "+getStringVal(Constants.TOKEN),street_et.text.toString(),address_et.text.toString())
+                }
+            }
+        }
+
+        addnewAddressPopup.show()
     }
 
     private fun dialogOK() {
@@ -331,14 +386,14 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                 city.setText(success.body()?.address?.get(0)?.address)
             } else {
                 utility!!.relative_snackbar(
-                    requireActivity().window.currentFocus,
+                    requireActivity().window.decorView,
                     success.message(),
                     getString(R.string.close_up)
                 )
             }
         } else {
             utility!!.relative_snackbar(
-                requireActivity().window.currentFocus,
+                requireActivity().window.decorView,
                 success.message(),
                 getString(R.string.close_up)
             )
@@ -349,8 +404,16 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         pd.dismiss()
         if (success.isSuccessful)
         {
-            Toast.makeText(context,""+success.body()?.size,Toast.LENGTH_SHORT).show()
+            myaddress_recycler.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            myAddressAdapter = MyAddress_Adapter(context!!, success)
+            myaddress_recycler.adapter = myAddressAdapter
+
         }
+    }
+
+    override fun onUpdateAddress(success: Response<AddNewAddressResponse>) {
+       controller.MyAddresss("Bearer "+getStringVal(Constants.TOKEN) )
     }
 
     override fun onError(error: String) {

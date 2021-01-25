@@ -1,18 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/myaddressview"
     android:visibility="gone"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="55dp"
     android:background="@color/colorWhite">
 
+    <Button
+        android:id="@+id/addnewaddress_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_dp20"
+        android:layout_marginRight="@dimen/margin_dp20"
+        android:layout_marginBottom="@dimen/margin_dp20"
+        android:background="@drawable/color_black"
+        android:paddingRight="@dimen/margin_dp20"
+        android:text="Add a new address"
+        android:drawableLeft="@drawable/ic_baseline_directions_car_24"
+        android:paddingLeft="@dimen/margin_dp20"
+        android:textColor="@color/colorWhite"
+        android:textAllCaps="false"
+        android:textSize="@dimen/textsize_sp16"
+        android:layout_marginTop="@dimen/margin_dp30">
+
+    </Button>
+
+
     <TextView
+        android:id="@+id/myadddsstv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MyAddress"
-        android:textColor="@color/colorBlack">
+        android:text="My Addresses"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textsize_sp16"
+        android:textStyle="bold"
+        android:layout_below="@id/addnewaddress_bt"
+        android:layout_margin="@dimen/margin_dp16">
 
     </TextView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/margin_dp8"
+        app:cardElevation="@dimen/margin_dp8"
+        android:layout_marginLeft="@dimen/margin_dp16"
+        android:layout_marginRight="@dimen/margin_dp16"
+        android:layout_marginBottom="@dimen/margin_dp16"
+        android:layout_below="@+id/myadddsstv">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myaddress_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

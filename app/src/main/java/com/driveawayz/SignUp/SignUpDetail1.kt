@@ -15,7 +15,7 @@ import com.driveawayz.Constant.BaseClass
 import com.driveawayz.Controller.Controller
 import com.driveawayz.R
 import com.driveawayz.SignUp.signupphone.response.SignUp1User
-import com.driveawayz.SignUp.signupphone.response.UpdateAddress
+import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
 import retrofit2.Response
@@ -28,6 +28,7 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API,Controller.UpdateAddres
 
     private lateinit var name_et: EditText
     private lateinit var email_et: EditText
+    private lateinit var cpass_et : EditText
     private lateinit var pass_et: EditText
     private lateinit var street_et: EditText
     private lateinit var address_et: EditText
@@ -63,7 +64,7 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API,Controller.UpdateAddres
 
     private fun lisenters() {
 
-        back.setOnClickListener { onBackPressed() }
+        back.setOnClickListener { onBackPressed()}
         nextbt.setOnClickListener {
             when {
                 name_et.text.isEmpty() -> {
@@ -79,6 +80,17 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API,Controller.UpdateAddres
                 pass_et.text.isEmpty() -> {
                     pass_et.requestFocus()
                     pass_et.error = "Enter Password"
+                }
+
+                cpass_et.text.isEmpty() -> {
+                    cpass_et.requestFocus()
+                    cpass_et.error = "Enter confirm password"
+                }
+
+                !pass_et.text.toString().equals(cpass_et.text.toString()) ->
+                {
+                    cpass_et.requestFocus()
+                    cpass_et.error = "Password not matched"
                 }
 
                 dob_et.text.isEmpty() -> {
@@ -101,7 +113,7 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API,Controller.UpdateAddres
                     if (getStringVal(Constants.PHONENUMBERVERIFIED).equals("true"))
                     {
                         pd.show()
-                        controller.UpdateAddress(
+                        controller.AddNewAddress(
                             "Bearer " +getStringVal(Constants.TOKEN),
                             street_et.text.toString(),
                             address_et.text.toString()
@@ -179,6 +191,7 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API,Controller.UpdateAddres
         nextbt = findViewById(R.id.nextbt)
         dob_et = findViewById(R.id.dob_et)
         name_et = findViewById(R.id.name_et)
+        cpass_et = findViewById(R.id.cpass_et)
         email_et = findViewById(R.id.email_et)
         pass_et = findViewById(R.id.pass_et)
         street_et = findViewById(R.id.street_et)
@@ -203,7 +216,7 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API,Controller.UpdateAddres
             if (success.code()==201)
             {
                 setStringVal(Constants.TOKEN, success.body()?.accessToken)
-                controller.UpdateAddress(
+                controller.AddNewAddress(
                     "Bearer " + success.body()?.accessToken,
                     street_et.text.toString(),
                     address_et.text.toString()
@@ -232,7 +245,7 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API,Controller.UpdateAddres
 
     }
 
-    override fun onUpdateAddress(success: Response<UpdateAddress>) {
+    override fun onUpdateAddress(success: Response<AddNewAddressResponse>) {
         pd.dismiss()
         if (success.isSuccessful)
         {

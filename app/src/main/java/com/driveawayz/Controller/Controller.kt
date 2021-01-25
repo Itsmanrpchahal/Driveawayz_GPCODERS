@@ -3,11 +3,10 @@ package com.driveawayz.Controller
 import com.driveawayz.Login.response.LoginResponse
 import com.driveawayz.OTPScreen.response.NumberVerifyResponse
 import com.driveawayz.Retrofit.WebAPI
-import com.driveawayz.SignUp.response.SignUp1Response
 import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
 import com.driveawayz.SignUp.signupphone.response.SignUp1User
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse
-import com.driveawayz.SignUp.signupphone.response.UpdateAddress
+import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
 import com.driveawayz.splashScreen.MeResponse
@@ -67,12 +66,13 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(myVehicles : MyVehiclesAPI,addVehicle: AddVehiclesAPI,me: MeAPI,myAdderess: MyAdderessAPI)
+    fun Controller(myVehicles : MyVehiclesAPI,addVehicle: AddVehiclesAPI,me: MeAPI,myAdderess: MyAdderessAPI,updateAddress: UpdateAddressAPI)
     {
         myVehiclesAPI= myVehicles
         addVehiclesAPI = addVehicle
         meAPI = me
         myAdderessAPI = myAdderess
+        updateAddressAPI = updateAddress
         webAPI = WebAPI()
     }
 
@@ -130,15 +130,15 @@ class Controller {
         })
     }
 
-    fun UpdateAddress(token:String,street:String,address:String)
+    fun AddNewAddress(token:String, street:String, address:String)
     {
-        webAPI?.api?.updateAddress(token,street, address)?.enqueue(object :Callback<UpdateAddress>
+        webAPI?.api?.AddNewAddress(token,street, address)?.enqueue(object :Callback<AddNewAddressResponse>
         {
-            override fun onResponse(call: Call<UpdateAddress>, response: Response<UpdateAddress>) {
+            override fun onResponse(call: Call<AddNewAddressResponse>, response: Response<AddNewAddressResponse>) {
                 updateAddressAPI?.onUpdateAddress(response)
             }
 
-            override fun onFailure(call: Call<UpdateAddress>, t: Throwable) {
+            override fun onFailure(call: Call<AddNewAddressResponse>, t: Throwable) {
                 updateAddressAPI?.onError(t.message!!)
             }
 
@@ -240,7 +240,7 @@ class Controller {
     }
 
     interface UpdateAddressAPI{
-        fun onUpdateAddress(success : Response<com.driveawayz.SignUp.signupphone.response.UpdateAddress>)
+        fun onUpdateAddress(success : Response<AddNewAddressResponse>)
         fun onError(error: String)
     }
 

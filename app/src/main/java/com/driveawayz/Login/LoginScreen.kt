@@ -18,6 +18,7 @@ import com.driveawayz.R
 import com.driveawayz.SignUp.CompleteSignUp
 import com.driveawayz.SignUp.SignUpDetail1
 import com.driveawayz.SignUp.SignUpDetail2
+import com.driveawayz.SignUp.signupphone.SignUpPhoneNo
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.Dashboard
@@ -87,7 +88,7 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
             startActivity(
                 Intent(
                     this,
-                    SignUpDetail1::class.java
+                    SignUpPhoneNo::class.java
                 )
             )
         }
@@ -136,6 +137,7 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
                 )
             }
         } else {
+            pd.dismiss()
             utility.relative_snackbar(
                 window.currentFocus,
                 getString(R.string.entercorrect),

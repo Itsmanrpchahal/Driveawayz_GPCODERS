@@ -28,6 +28,20 @@
    </Button>
 
 
+   <TextView
+       android:id="@+id/myadddsstv"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="My Vehicles"
+       android:textColor="@color/black"
+       android:textSize="@dimen/textsize_sp16"
+       android:textStyle="bold"
+       android:layout_below="@id/addnewvehicle_bt"
+       android:layout_margin="@dimen/margin_dp16">
+
+   </TextView>
+
+
    <androidx.cardview.widget.CardView
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
@@ -37,13 +51,13 @@
        android:layout_marginLeft="@dimen/margin_dp16"
        android:layout_marginRight="@dimen/margin_dp16"
        android:layout_marginBottom="@dimen/margin_dp16"
-       android:layout_below="@+id/addnewvehicle_bt">
+       android:layout_below="@+id/myadddsstv">
 
       <androidx.recyclerview.widget.RecyclerView
           android:id="@+id/myvehicles_recycler"
-          android:background="@color/white"
           android:layout_width="match_parent"
-          android:layout_height="match_parent">
+          android:layout_height="match_parent"
+          android:background="@color/white">
 
       </androidx.recyclerview.widget.RecyclerView>
    </androidx.cardview.widget.CardView>
