@@ -29,19 +29,27 @@ class MyVehicelAdapter(var context: Context, var list: Response<List<MyVehiclesR
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        lateinit var make_tv: TextView
-        lateinit var type_tv: TextView
-        lateinit var licenceplate_tv: TextView
+        lateinit var make_year_tv: TextView
+        lateinit var year_tv : TextView
+        lateinit var type: TextView
+        lateinit var transsmisuion_tv : TextView
+        lateinit var licenceplate: TextView
+        lateinit var state : TextView
 
         fun bindItems(list: MyVehiclesResponse?) {
-            type_tv = itemView.findViewById(R.id.type_tv)
-            make_tv = itemView.findViewById(R.id.make_tv)
-            licenceplate_tv = itemView.findViewById(R.id.licenceplate_tv)
-            make_tv.setText(list!!.make)
-            type_tv.setText(list.type)
-            licenceplate_tv.setText(list.licensePlate)
+            type = itemView.findViewById(R.id.type)
+            year_tv = itemView.findViewById(R.id.year_tv)
+            make_year_tv = itemView.findViewById(R.id.make_year_tv)
+            licenceplate = itemView.findViewById(R.id.licenceplate)
+            transsmisuion_tv = itemView.findViewById(R.id.transsmisuion_tv)
+            state = itemView.findViewById(R.id.state)
 
-
+            make_year_tv.setText(list!!.make.toString())
+            type.setText(list.type.toString())
+            licenceplate.setText(list.licensePlate.toString())
+            year_tv.setText(list.year.toString())
+            transsmisuion_tv.setText(list.transmission.toString())
+            state.setText(list.state.toString())
         }
     }
 }

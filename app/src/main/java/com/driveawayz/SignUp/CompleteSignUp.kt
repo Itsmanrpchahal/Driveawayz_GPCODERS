@@ -20,7 +20,6 @@ import com.stripe.android.TokenCallback
 import com.stripe.android.model.Card
 import com.stripe.android.model.PaymentIntent
 import com.stripe.android.view.CardInputWidget
-import com.stripe.model.PaymentMethod
 import com.stripe.model.PaymentMethod.create
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,8 +39,9 @@ class CompleteSignUp : AppCompatActivity() {
     private lateinit var controller: Controller
     private var MONTH: Int = 0
     private var YEAR: Int = 0
-    private lateinit var stripe : Stripe
-    private lateinit var cardinput : CardInputWidget
+    private lateinit var stripe: Stripe
+    private lateinit var cardinput: CardInputWidget
+
     val c = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,11 +49,19 @@ class CompleteSignUp : AppCompatActivity() {
         setContentView(R.layout.activity_complete_sign_up)
 
         cardinput = findViewById(R.id.cardinput)
+        com.stripe.Stripe.apiKey = "pk_test_eAexCNVuFAFBrWrfthrvK5i500Jb0yc34o";
+        val card: MutableMap<String, Any> = HashMap()
+        card.put("number", "4000002500003155")
+        card.put("exp_month", 11)
+        card.put("exp_year", 2022)
+        card.put("cvc", "251")
+        var params: MutableMap<String, Any> = HashMap()
+        params["type"] = "card"
+        params["card"] = card
+
         findIds()
         listeners()
     }
-
-
 
 
     private fun listeners() {
@@ -61,28 +69,25 @@ class CompleteSignUp : AppCompatActivity() {
         back.setOnClickListener { onBackPressed() }
         completebt.setOnClickListener {
 
+
+//            Stripe.apiKey = "sk_test_51IC7sGFnqfIvXLmhDTVXPIGLHndYaiefCv1evIyjZY5TqR8wmcC5F9eWLd8qRU7q6cnUC33YVJwqI2JMjtLaLTdf00FDZxQs4K";
+//
+//            Map<String, Object> card = new HashMap<>();
+//            card.put("number", "4242424242424242");
+//            card.put("exp_month", 1);
+//            card.put("exp_year", 2022);
+//            card.put("cvc", "314");
+//            Map<String, Object> params = new HashMap<>();
+//            params.put("type", "card");
+//            params.put("card", card);
+//
+//            PaymentMethod paymentMethod =
+//            PaymentMethod.create(params);
+
             val stripe1 = Stripe(this, Constants.STRIPEKEY!!)
-            com.stripe.Stripe.apiKey = Constants.STRIPEKEY;
-            val card: MutableMap<String, Any> = HashMap()
-            card.put("number", "4000002500003155")
-            card.put("exp_month", 11)
-            card.put("exp_year", 2022)
-            card.put("cvc", "251")
-            val params: MutableMap<String, Any> = HashMap()
-            params["type"] = "card"
-            params["card"] = card
 
 
-            var paymentMethod : PaymentMethod
-            try {
-                paymentMethod = PaymentMethod.create(params)
-                Log.d("stoken", "" + paymentMethod.id)
-            } catch (e: Exception)
-            {
-                Log.d("error", "" + e.cause)
-            }
-
-            val paymentIntent : PaymentIntent
+            val paymentIntent: PaymentIntent
 
 
 

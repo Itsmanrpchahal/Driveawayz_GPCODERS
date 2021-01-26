@@ -29,12 +29,21 @@
             app:contentInsetRight="0dp"
             app:contentInsetStart="0dp">
 
+            <ImageButton
+                android:id="@+id/menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:src="@drawable/ic_baseline_menu_24">
+
+            </ImageButton>
+
 
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

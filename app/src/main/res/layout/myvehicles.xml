@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
@@ -8,63 +7,185 @@
 
     <ImageView
         android:id="@+id/card_image"
-        android:padding="8dp"
-        android:layout_centerVertical="true"
         android:layout_width="@dimen/margin_dp70"
         android:layout_height="@dimen/margin_dp70"
+        android:layout_centerVertical="true"
+        android:padding="8dp"
         android:src="@drawable/card">
 
     </ImageView>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layout"
-        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/margin_dp8"
         android:layout_toRightOf="@id/card_image"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="8dp">
 
 
         <TextView
-            android:id="@+id/make_tv"
+            android:id="@+id/make_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Make"
-            android:textColorHint="@color/black"
-            android:textColor="@color/black">
+            android:text="Make:"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey">
 
         </TextView>
+
+        <TextView
+            android:id="@+id/make_year_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_dp5"
+            android:layout_toRightOf="@id/make_year"
+            android:layout_toLeftOf="@+id/layout1"
+            android:hint="Make"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey">
+
+        </TextView>
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:id="@+id/year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Year:"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/year_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_dp5"
+                android:layout_toRightOf="@id/make_year"
+                android:layout_toLeftOf="@+id/layout1"
+                android:hint="Year"
+                android:textColor="@color/grey"
+                android:textColorHint="@color/grey">
+
+            </TextView>
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/type_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Type"
-            android:textColorHint="@color/black"
-            android:textColor="@color/black">
+            android:layout_below="@id/make_year"
+            android:hint="Type:"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black">
 
         </TextView>
 
 
         <TextView
-            android:id="@+id/licenceplate_tv"
+            android:id="@+id/type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/black"
-            android:hint="Licence Plate"
-            android:textColor="@color/black">
+            android:layout_below="@id/make_year"
+            android:layout_marginLeft="@dimen/margin_dp5"
+            android:layout_toRightOf="@id/make_year"
+            android:hint="type"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey">
 
         </TextView>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/transmisson_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/type_tv"
+            android:hint="Transmission:"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/transsmisuion_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/type"
+            android:layout_marginLeft="@dimen/margin_dp5"
+            android:layout_toRightOf="@id/transmisson_tv"
+            android:hint="type"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/licenceplate_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/transmisson_tv"
+            android:hint="Licence Plate:"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/licenceplate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/transmisson_tv"
+            android:layout_marginLeft="@dimen/margin_dp5"
+            android:layout_toRightOf="@id/licenceplate_tv"
+            android:hint="Licence plate"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/state_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/licenceplate_tv"
+            android:hint="State:"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black">
+
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/licenceplate"
+            android:layout_marginLeft="@dimen/margin_dp5"
+            android:layout_toRightOf="@id/state_tv"
+            android:hint="State"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/grey">
+
+        </TextView>
+
+    </RelativeLayout>
 
     <View
-        android:layout_below="@id/layout"
-        android:layout_marginTop="@dimen/margin_dp5"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@id/layout"
+        android:layout_marginTop="@dimen/margin_dp5"
         android:background="@color/black">
 
     </View>
