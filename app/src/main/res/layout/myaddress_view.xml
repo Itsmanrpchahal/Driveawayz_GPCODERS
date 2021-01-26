@@ -19,6 +19,7 @@
     <LinearLayout
         android:id="@+id/layout"
         android:padding="8dp"
+        android:layout_toLeftOf="@+id/edit_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -48,6 +49,18 @@
         </TextView>
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/edit_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_baseline_edit_location_alt_24"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/defaultmargin">
+
+    </ImageButton>
 
     <View
         android:layout_below="@id/layout"

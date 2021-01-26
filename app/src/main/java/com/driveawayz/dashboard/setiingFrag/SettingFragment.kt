@@ -21,6 +21,7 @@ import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
 import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
+import com.driveawayz.dashboard.setiingFrag.IF.UpdateAddress_IF
 import com.driveawayz.dashboard.setiingFrag.adatper.MyAddress_Adapter
 import com.driveawayz.dashboard.setiingFrag.adatper.MyVehicelAdapter
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
@@ -36,7 +37,8 @@ import kotlin.collections.ArrayList
 
 
 class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesAPI,
-    Controller.AddVehiclesAPI ,Controller.MeAPI,Controller.MyAdderessAPI,Controller.UpdateAddressAPI{
+    Controller.AddVehiclesAPI, Controller.MeAPI, Controller.MyAdderessAPI,
+    Controller.UpdateAddressAPI, UpdateAddress_IF {
 
 
     private lateinit var part: MultipartBody.Part
@@ -46,23 +48,25 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     private lateinit var controller: Controller
     private var path: String = ""
     private lateinit var addvehiclepopup: Dialog
-    private lateinit var addnewAddressPopup : Dialog
+    private lateinit var addnewAddressPopup: Dialog
     private var myVehicles = ArrayList<List<MyVehiclesResponse>>()
     private lateinit var myVehicelAdapter: MyVehicelAdapter
-    private lateinit var myAddressAdapter : MyAddress_Adapter
+    private lateinit var myAddressAdapter: MyAddress_Adapter
     private lateinit var bottomnavigaton: BottomNavigationView
     private lateinit var profileview: RelativeLayout
     private lateinit var myaddressview: RelativeLayout
     private lateinit var myvehicles_view: RelativeLayout
     private lateinit var uploadImage: ImageButton
     private lateinit var myvehicles_recycler: RecyclerView
-    private lateinit var myaddress_recycler : RecyclerView
+    private lateinit var myaddress_recycler: RecyclerView
     private lateinit var addnewvehicle_bt: Button
-    private lateinit var addnewaddress_bt : Button
-    private lateinit var user_phn_number_et : EditText
-    private lateinit var user_birthdate_et : EditText
-    private lateinit var street : EditText
-    private lateinit var city : EditText
+    private lateinit var addnewaddress_bt: Button
+    private lateinit var user_phn_number_et: EditText
+    private lateinit var user_birthdate_et: EditText
+    private lateinit var street: EditText
+    private lateinit var city: EditText
+    private var addressID: String = ""
+    private lateinit var addressesList: ArrayList<MyAddessesResponse>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,13 +74,18 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         // Inflate the layout for this fragment
         val view: View
         view = inflater.inflate(R.layout.fragment_setting, container, false)
-
+        addressesList = ArrayList()
         findIds(view)
         pd.show()
         pd.setContentView(R.layout.loading)
         controller.Me("Bearer " + getStringVal(Constants.TOKEN))
+        updateaddressIf = this
         listeners()
         return view
+    }
+
+    companion object {
+        var updateaddressIf: UpdateAddress_IF? = null
     }
 
     private fun listeners() {
@@ -215,13 +224,12 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
             dialogOK()
         }
 
-        if (v == addnewaddress_bt)
-        {
-            addnewAddressDialog()
+        if (v == addnewaddress_bt) {
+            addnewAddressDialog("1")
         }
     }
 
-    private fun addnewAddressDialog() {
+    private fun addnewAddressDialog(type: String) {
         addnewAddressPopup = Dialog(context!!)
         val window: Window = addnewAddressPopup.getWindow()!!
         window.setLayout(
@@ -232,16 +240,20 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         addnewAddressPopup.setCancelable(true)
         addnewAddressPopup.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        var street_et : EditText
-        var address_et : EditText
-        var done_bt : Button
+        var street_et: EditText
+        var address_et: EditText
+        var done_bt: Button
 
         street_et = addnewAddressPopup.findViewById(R.id.street_et)
         address_et = addnewAddressPopup.findViewById(R.id.address_et)
         done_bt = addnewAddressPopup.findViewById(R.id.done_bt)
+        if (!type.equals("1")) {
 
+           // street_et.setText(addressesList.get(addressID.toInt()).street)
+            done_bt.setText("Update")
+        }
         done_bt.setOnClickListener {
-            when{
+            when {
                 street_et.text.isEmpty() -> {
                     street_et.requestFocus()
                     street_et.error = "Enter street"
@@ -294,7 +306,9 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         transsmisuion_et = addvehiclepopup.findViewById(R.id.year_et)
         state_et = addvehiclepopup.findViewById(R.id.state_et)
         licenceplate_et = addvehiclepopup.findViewById(R.id.licenceplate_et)
+
         nextbt.setOnClickListener {
+
             when {
                 make_et.text.isEmpty() -> {
                     make_et.requestFocus()
@@ -382,10 +396,8 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
 
     override fun onMeSuccess(success: Response<MeResponse>) {
         pd.dismiss()
-        if (success.isSuccessful)
-        {
-            if(success.code()==200)
-            {
+        if (success.isSuccessful) {
+            if (success.code() == 200) {
                 user_phn_number_et.isEnabled = false
                 user_phn_number_et.setText(success.body()?.phoneNumber.toString())
                 user_birthdate_et.isEnabled = false
@@ -412,18 +424,25 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
 
     override fun onMyAddressSuccess(success: Response<List<MyAddessesResponse>>) {
         pd.dismiss()
-        if (success.isSuccessful)
-        {
+        if (success.isSuccessful) {
+            for (i in success.body()?.indices!!) {
+                addressesList.addAll(listOf(success.body()!!.get(i)))
+            }
             myaddress_recycler.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             myAddressAdapter = MyAddress_Adapter(context!!, success)
             myaddress_recycler.adapter = myAddressAdapter
-
+        } else {
+            utility!!.relative_snackbar(
+                requireActivity().window.currentFocus,
+                success.message(),
+                getString(R.string.close_up)
+            )
         }
     }
 
     override fun onUpdateAddress(success: Response<AddNewAddressResponse>) {
-       controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
+        controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
     }
 
     override fun onError(error: String) {
@@ -433,6 +452,12 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
             error,
             getString(R.string.close_up)
         )
+    }
+
+    override fun getID(id: String?) {
+
+        addressID = id.toString()
+        addnewAddressDialog("2")
     }
 
 
