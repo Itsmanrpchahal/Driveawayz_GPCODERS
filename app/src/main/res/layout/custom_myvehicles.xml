@@ -18,7 +18,7 @@
        android:background="@drawable/color_black"
        android:paddingRight="@dimen/margin_dp20"
        android:text="Add a new vehicle"
-       android:drawableLeft="@drawable/ic_baseline_directions_car_24"
+       android:drawableLeft="@drawable/addvehicle"
        android:paddingLeft="@dimen/margin_dp20"
        android:textColor="@color/colorWhite"
        android:textAllCaps="false"

@@ -24,7 +24,7 @@ import java.util.*
 
 
 @Suppress("DEPRECATION")
-class SignUpDetail1 : BaseClass(), Controller.SignUp1API,Controller.UpdateAddressAPI {
+class SignUpDetail1 : BaseClass(), Controller.SignUp1API,Controller.AddNewAddress {
 
     private lateinit var name_et: EditText
     private lateinit var email_et: EditText

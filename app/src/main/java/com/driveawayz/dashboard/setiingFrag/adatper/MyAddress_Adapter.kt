@@ -16,7 +16,6 @@ import retrofit2.Response
 class MyAddress_Adapter (var context: Context,var list: Response<List<MyAddessesResponse>>) :
     RecyclerView.Adapter<MyAddress_Adapter.ViewHolder>() {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var v = LayoutInflater.from(parent.context).inflate(R.layout.myaddress_view, parent, false)
         return ViewHolder(v)
@@ -26,7 +25,6 @@ class MyAddress_Adapter (var context: Context,var list: Response<List<MyAddesses
         var listData = list.body()?.get(position)
         holder.bindItems(listData)
         holder.edit_address.setOnClickListener {
-
                 SettingFragment.updateaddressIf?.getID(position.toString())
         }
     }

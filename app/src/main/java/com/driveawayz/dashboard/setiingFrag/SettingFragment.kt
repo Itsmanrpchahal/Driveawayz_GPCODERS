@@ -3,14 +3,15 @@ package com.driveawayz.dashboard.setiingFrag
 import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,19 +27,19 @@ import com.driveawayz.dashboard.setiingFrag.adatper.MyAddress_Adapter
 import com.driveawayz.dashboard.setiingFrag.adatper.MyVehicelAdapter
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
+import com.driveawayz.dashboard.setiingFrag.response.UpdateAddressResponse
 import com.driveawayz.splashScreen.MeResponse
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import okhttp3.MultipartBody
 import retrofit2.Response
 import java.io.File
-import java.util.*
 import kotlin.collections.ArrayList
 
 
 class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesAPI,
     Controller.AddVehiclesAPI, Controller.MeAPI, Controller.MyAdderessAPI,
-    Controller.UpdateAddressAPI, UpdateAddress_IF {
+    Controller.AddNewAddress, UpdateAddress_IF ,Controller.UpdateAddressAPI{
 
 
     private lateinit var part: MultipartBody.Part
@@ -118,7 +119,6 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                         pd.show()
                         pd.setContentView(R.layout.loading)
                         controller.MyVehicles("Bearer " + getStringVal(Constants.TOKEN))
-
                     }
                 }
                 return true
@@ -135,7 +135,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     private fun findIds(view: View?) {
         utility = Utility()
         controller = Controller()
-        controller.Controller(this, this, this, this, this)
+        controller.Controller(this, this, this, this, this,this)
         bottomnavigaton = view!!.findViewById(R.id.bottomnavigaton)
         profileview = view.findViewById(R.id.profileview)
         myaddressview = view.findViewById(R.id.myaddressview)
@@ -249,9 +249,12 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         done_bt = addnewAddressPopup.findViewById(R.id.done_bt)
         if (!type.equals("1")) {
 
-           // street_et.setText(addressesList.get(addressID.toInt()).street)
+
+            street_et.setText(addressesList.get(addressID.toInt()).street)
+            address_et.setText(addressesList.get(addressID.toInt()).address)
             done_bt.setText("Update")
         }
+
         done_bt.setOnClickListener {
             when {
                 street_et.text.isEmpty() -> {
@@ -264,14 +267,50 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                     address_et.error = "Enter address"
                 }
                 else -> {
-                    addnewAddressPopup.dismiss()
-                    pd.show()
-                    pd.setContentView(R.layout.loading)
-                    controller.AddNewAddress(
-                        "Bearer " + getStringVal(Constants.TOKEN),
-                        street_et.text.toString(),
-                        address_et.text.toString()
-                    )
+                    if (type.equals("1"))
+                    {
+                        addnewAddressPopup.dismiss()
+                        pd.show()
+                        pd.setContentView(R.layout.loading)
+                        hideKeyboard()
+                        if (utility.isConnectingToInternet(context))
+                        {
+                            controller.AddNewAddress(
+                                "Bearer " + getStringVal(Constants.TOKEN),
+                                street_et.text.toString(),
+                                address_et.text.toString()
+                            )
+                        } else {
+                            utility!!.relative_snackbar(
+                                requireActivity().window.currentFocus,
+                                getString(R.string.nointernet),
+                                getString(R.string.close_up)
+                            )
+                        }
+
+                    } else {
+                        addnewAddressPopup.dismiss()
+                        pd.show()
+                        pd.setContentView(R.layout.loading)
+                        hideKeyboard()
+                        if (utility.isConnectingToInternet(context))
+                        {
+                            controller.UpdateAddress(
+                                "Bearer " + getStringVal(Constants.TOKEN),
+                                addressesList.get(addressID.toInt()).id.toString(),
+                                street_et.text.toString(),
+                                address_et.text.toString()
+                            )
+                        } else {
+                            utility!!.relative_snackbar(
+                                requireActivity().window.currentFocus,
+                                getString(R.string.nointernet),
+                                getString(R.string.close_up)
+                            )
+                        }
+
+                    }
+
                 }
             }
         }
@@ -342,6 +381,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                 else -> {
                     pd.show()
                     pd.setContentView(R.layout.loading)
+                    hideKeyboard()
                     controller.AddVehicle(
                         "Bearer " + getStringVal(Constants.TOKEN),
                         make_et.text.toString(),
@@ -425,6 +465,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     override fun onMyAddressSuccess(success: Response<List<MyAddessesResponse>>) {
         pd.dismiss()
         if (success.isSuccessful) {
+            addressesList = ArrayList()
             for (i in success.body()?.indices!!) {
                 addressesList.addAll(listOf(success.body()!!.get(i)))
             }
@@ -442,7 +483,25 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     }
 
     override fun onUpdateAddress(success: Response<AddNewAddressResponse>) {
-        controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
+       pd.dismiss()
+        addnewAddressPopup.dismiss()
+
+
+    }
+
+    override fun onUpdateAddressSuccess(success: Response<UpdateAddressResponse>) {
+
+        if (success.isSuccessful){
+            addnewAddressPopup.dismiss()
+            controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
+        }else {
+            utility!!.relative_snackbar(
+                requireActivity().window.currentFocus,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
+
     }
 
     override fun onError(error: String) {
@@ -460,6 +519,14 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         addnewAddressDialog("2")
     }
 
+    private fun hideKeyboard() {
+        try {
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(activity?.currentFocus!!.windowToken, 0)
+        } catch (e: Exception) {
+
+        }
+    }
 
 //    fun changeDateTimeToDateTime(time: String): String? {
 //        val ymdFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)

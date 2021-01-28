@@ -8,6 +8,7 @@ import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
 import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse;
+import com.driveawayz.dashboard.setiingFrag.response.UpdateAddressResponse;
 import com.driveawayz.splashScreen.MeResponse;
 
 import java.util.List;
@@ -18,6 +19,8 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface ApiInterface {
 
@@ -88,6 +91,15 @@ public interface ApiInterface {
     @GET("/api/v1/addresses")
     Call<List<MyAddessesResponse>> myAddresses (
             @Header("Authorization") String token
+    );
+
+    @FormUrlEncoded
+    @PUT("/api/v1/updateAddress/{input}")
+    Call<UpdateAddressResponse> updateAddress(
+            @Header("Authorization") String token,
+            @Path("input") String id,
+            @Field("street") String street,
+            @Field("address") String address
     );
 
 }

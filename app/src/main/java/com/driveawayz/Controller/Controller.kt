@@ -9,6 +9,7 @@ import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse
 import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
+import com.driveawayz.dashboard.setiingFrag.response.UpdateAddressResponse
 import com.driveawayz.splashScreen.MeResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,11 +23,11 @@ class Controller {
     var phoneNumberAPI : VerifyPhoneAPI? = null
     var loginAPI : LoginAPI? = null
     var meAPI : MeAPI? = null
-    var updateAddressAPI : UpdateAddressAPI? = null
+    var addNewAddressAPI : AddNewAddress? = null
     var addVehiclesAPI : AddVehiclesAPI? = null
     var myVehiclesAPI : MyVehiclesAPI?= null
     var myAdderessAPI : MyAdderessAPI? = null
-
+    var updateAddressAPI : UpdateAddressAPI? = null
 
     fun Controller(signUpPhone: SignUpPhoneAPI)
     {
@@ -41,9 +42,9 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(signUp1: SignUp1API,updateAddress: UpdateAddressAPI){
+    fun Controller(signUp1: SignUp1API, addNewAddress: AddNewAddress){
         signUp1API = signUp1
-        updateAddressAPI = updateAddress
+        addNewAddressAPI = addNewAddress
         webAPI = WebAPI()
     }
 
@@ -66,13 +67,14 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(myVehicles : MyVehiclesAPI,addVehicle: AddVehiclesAPI,me: MeAPI,myAdderess: MyAdderessAPI,updateAddress: UpdateAddressAPI)
+    fun Controller(myVehicles : MyVehiclesAPI, addVehicle: AddVehiclesAPI, me: MeAPI, myAdderess: MyAdderessAPI, addNewAddress: AddNewAddress,updateAdrress : UpdateAddressAPI)
     {
         myVehiclesAPI= myVehicles
         addVehiclesAPI = addVehicle
         meAPI = me
         myAdderessAPI = myAdderess
-        updateAddressAPI = updateAddress
+        addNewAddressAPI = addNewAddress
+        updateAddressAPI = updateAdrress
         webAPI = WebAPI()
     }
 
@@ -135,11 +137,11 @@ class Controller {
         webAPI?.api?.AddNewAddress(token,street, address)?.enqueue(object :Callback<AddNewAddressResponse>
         {
             override fun onResponse(call: Call<AddNewAddressResponse>, response: Response<AddNewAddressResponse>) {
-                updateAddressAPI?.onUpdateAddress(response)
+                addNewAddressAPI?.onUpdateAddress(response)
             }
 
             override fun onFailure(call: Call<AddNewAddressResponse>, t: Throwable) {
-                updateAddressAPI?.onError(t.message!!)
+                addNewAddressAPI?.onError(t.message!!)
             }
 
         })
@@ -229,6 +231,24 @@ class Controller {
         });
     }
 
+    fun UpdateAddress(token: String,id:String,street: String,address: String)
+    {
+        webAPI?.api?.updateAddress(token, id,street, address)?.enqueue(object :Callback<UpdateAddressResponse>
+        {
+            override fun onResponse(
+                call: Call<UpdateAddressResponse>,
+                response: Response<UpdateAddressResponse>
+            ) {
+                updateAddressAPI?.onUpdateAddressSuccess(response)
+            }
+
+            override fun onFailure(call: Call<UpdateAddressResponse>, t: Throwable) {
+               updateAddressAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
     interface SignUpPhoneAPI {
         fun onSignUpPhoneSuccess(success: Response<SignUpPhoneNoResponse>)
         fun onError(error: String)
@@ -239,7 +259,7 @@ class Controller {
         fun onError(error:String)
     }
 
-    interface UpdateAddressAPI{
+    interface AddNewAddress{
         fun onUpdateAddress(success : Response<AddNewAddressResponse>)
         fun onError(error: String)
     }
@@ -272,5 +292,10 @@ class Controller {
     interface MyAdderessAPI {
         fun onMyAddressSuccess(success: Response<List<MyAddessesResponse>>)
         fun onError(error: String)
+    }
+    
+    interface UpdateAddressAPI {
+        fun onUpdateAddressSuccess(success : Response<UpdateAddressResponse>)
+        fun onError(error: String);
     }
 }

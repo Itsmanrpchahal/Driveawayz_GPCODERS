@@ -15,7 +15,6 @@ import com.driveawayz.Constant.BaseClass
 import com.driveawayz.Controller.Controller
 import com.driveawayz.Login.response.LoginResponse
 import com.driveawayz.R
-import com.driveawayz.SignUp.CompleteSignUp
 import com.driveawayz.SignUp.SignUpDetail1
 import com.driveawayz.SignUp.SignUpDetail2
 import com.driveawayz.SignUp.signupphone.SignUpPhoneNo
@@ -126,8 +125,8 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
         if (success.isSuccessful) {
 
             if (success.code() == 201) {
-                setStringVal(Constants.TOKEN, success.body()?.accessToken)
-                controller.Me("Bearer "+success.body()?.accessToken!!)
+                setStringVal(Constants.TOKEN, success.body()?.access_token)
+                controller.Me("Bearer "+success.body()?.access_token!!)
 
             } else if (success.code() == 401) {
                 utility.relative_snackbar(
