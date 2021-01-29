@@ -20,7 +20,6 @@ import com.stripe.android.TokenCallback
 import com.stripe.android.model.Card
 import com.stripe.android.model.PaymentIntent
 import com.stripe.android.view.CardInputWidget
-import com.stripe.model.PaymentMethod.create
 import java.text.SimpleDateFormat
 import java.util.*
 

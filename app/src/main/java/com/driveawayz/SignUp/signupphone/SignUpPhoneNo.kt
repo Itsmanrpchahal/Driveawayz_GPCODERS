@@ -6,8 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Gravity
-import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -16,7 +14,6 @@ import com.driveawayz.Controller.Controller
 import com.driveawayz.Login.LoginScreen
 import com.driveawayz.OTPScreen.OTPScreen
 import com.driveawayz.R
-import com.driveawayz.SignUp.SignUpDetail1
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
