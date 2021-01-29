@@ -44,12 +44,12 @@ class MyVehicelAdapter(var context: Context, var list: Response<List<MyVehiclesR
             transsmisuion_tv = itemView.findViewById(R.id.transsmisuion_tv)
             state = itemView.findViewById(R.id.state)
 
-            make_year_tv.setText(list!!.make.toString())
-            type.setText(list.type.toString())
-            licenceplate.setText(list.licensePlate.toString())
-            year_tv.setText(list.year.toString())
-            transsmisuion_tv.setText(list.transmission.toString())
-            state.setText(list.state.toString())
+            make_year_tv.setText(list!!.getMake().toString())
+            type.setText(list.getType().toString())
+            licenceplate.setText(list.getLicensePlate().toString())
+            year_tv.setText(list.getYear().toString())
+            transsmisuion_tv.setText(list.getTransmission().toString())
+            state.setText(list.getState().toString())
         }
     }
 }

@@ -171,7 +171,7 @@ class OTPScreen : BaseClass(), Controller.SignUpPhoneAPI, Controller.VerifyPhone
     override fun onVerifyPhoneSuccess(success: Response<NumberVerifyResponse>) {
         pd.dismiss()
         if (success.isSuccessful) {
-            if (!success.body()!!.status.equals("pending")) {
+            if (!success.body()!!.getStatus().equals("pending")) {
                 setStringVal(Constants.CODE,code)
                 setStringVal(Constants.MOBILENUMBER,mobileno)
                 startActivity(Intent(this, SignUpDetail1::class.java))

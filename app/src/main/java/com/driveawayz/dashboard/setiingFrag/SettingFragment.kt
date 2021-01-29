@@ -439,13 +439,13 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         if (success.isSuccessful) {
             if (success.code() == 200) {
                 user_phn_number_et.isEnabled = false
-                user_phn_number_et.setText(success.body()?.phoneNumber.toString())
+                user_phn_number_et.setText(success.body()?.getPhoneNumber().toString())
                 user_birthdate_et.isEnabled = false
                 //changeDateTimeToDateTime(success.body()?.dateOfBirth.toString())
                 street.isEnabled = false
-                street.setText(success.body()?.address?.get(0)?.street)
+                street.setText(success.body()?.getAddress()?.get(0)?.street)
                 city.isEnabled = false
-                city.setText(success.body()?.address?.get(0)?.address)
+                city.setText(success.body()?.getAddress()?.get(0)?.address)
             } else {
                 utility!!.relative_snackbar(
                     requireActivity().window.decorView,

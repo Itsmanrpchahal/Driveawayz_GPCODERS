@@ -14,8 +14,8 @@ import androidx.core.content.ContextCompat
 import com.driveawayz.Constant.BaseClass
 import com.driveawayz.Controller.Controller
 import com.driveawayz.R
-import com.driveawayz.SignUp.signupphone.response.SignUp1User
 import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
+import com.driveawayz.SignUp.signupphone.response.SignUp1user
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
 import retrofit2.Response
@@ -209,15 +209,15 @@ class SignUpDetail1 : BaseClass(), Controller.SignUp1API,Controller.AddNewAddres
     }
 
 
-    override fun onSignUpSuccess(success: Response<SignUp1User>) {
+    override fun onSignUpSuccess(success: Response<SignUp1user>) {
         //pd.dismiss()
         if (success.isSuccessful)
         {
             if (success.code()==201)
             {
-                setStringVal(Constants.TOKEN, success.body()?.accessToken)
+                setStringVal(Constants.TOKEN, success.body()?.getAccessToken())
                 controller.AddNewAddress(
-                    "Bearer " + success.body()?.accessToken,
+                    "Bearer " + success.body()?.getAccessToken(),
                     street_et.text.toString(),
                     address_et.text.toString()
                 )

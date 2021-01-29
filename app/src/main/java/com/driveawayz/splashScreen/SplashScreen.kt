@@ -65,14 +65,14 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
             if (!getStringVal(Constants.TOKEN).equals("")) {
                 if (success.isSuccessful) {
                     if (success.code() == 200) {
-                        setStringVal(Constants.NAME,success.body()?.name)
-                        setStringVal(Constants.EMAIL,success.body()?.email)
-                        setStringVal(Constants.DOB,success.body()?.dateOfBirth)
-                        setStringVal(Constants.MOBILENUMBER,success.body()?.phoneNumber)
+                        setStringVal(Constants.NAME,success.body()?.getName())
+                        setStringVal(Constants.EMAIL,success.body()?.getEmail())
+                        setStringVal(Constants.DOB,success.body()?.getDateOfBirth())
+                        setStringVal(Constants.MOBILENUMBER,success.body()?.getPhoneNumber())
                         setStringVal(Constants.PHONENUMBERVERIFIED,
-                            success.body()?.phoneVerified.toString()
+                            success.body()?.getPhoneVerified().toString()
                         )
-                        if (success.body()?.address?.size == 0) {
+                        if (success.body()?.getAddress()?.size == 0) {
                             startActivity(
                                 Intent(
                                     this,
@@ -83,7 +83,7 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
 
                             finish()
 
-                        } else if (success.body()?.vehicle?.size == 0) {
+                        } else if (success.body()?.getVehicle()?.size == 0) {
                             startActivity(
                                 Intent(
                                     this,
@@ -154,12 +154,12 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
     }
 
     override fun onMeSuccess(success: Response<MeResponse>) {
-        Log.d("success", "" + success.body()?.address)
+        Log.d("success", "" + success.body()?.getAddress())
 
         methodRequiresPermission(success)
-        setStringVal(Constants.ADDRESS, success.body()?.address?.size.toString())
-        setStringVal(Constants.VEHICLES, success.body()?.vehicle?.size.toString())
-        setStringVal(Constants.CARDS, success.body()?.cards?.size.toString())
+        setStringVal(Constants.ADDRESS, success.body()?.getAddress()?.size.toString())
+        setStringVal(Constants.VEHICLES, success.body()?.getVehicle()?.size.toString())
+        setStringVal(Constants.CARDS, success.body()?.getCards()?.size.toString())
 
 
     }

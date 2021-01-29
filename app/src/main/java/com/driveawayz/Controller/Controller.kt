@@ -4,9 +4,9 @@ import com.driveawayz.Login.response.LoginResponse
 import com.driveawayz.OTPScreen.response.NumberVerifyResponse
 import com.driveawayz.Retrofit.WebAPI
 import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
-import com.driveawayz.SignUp.signupphone.response.SignUp1User
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse
 import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
+import com.driveawayz.SignUp.signupphone.response.SignUp1user
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
 import com.driveawayz.dashboard.setiingFrag.response.UpdateAddressResponse
@@ -116,16 +116,16 @@ class Controller {
 
     fun SignUp1(name:String,email : String,password :String,dateOfBirth : String,phoneNumber : String,phoneVerified : Boolean)
     {
-        webAPI?.api?.signUp(name, email, password, dateOfBirth, phoneNumber,phoneVerified)?.enqueue(object :Callback<SignUp1User>
+        webAPI?.api?.signUp(name, email, password, dateOfBirth, phoneNumber,phoneVerified)?.enqueue(object :Callback<SignUp1user>
         {
             override fun onResponse(
-                call: Call<SignUp1User>,
-                response: Response<SignUp1User>
+                call: Call<SignUp1user>,
+                response: Response<SignUp1user>
             ) {
                     signUp1API?.onSignUpSuccess(response)
             }
 
-            override fun onFailure(call: Call<SignUp1User>, t: Throwable) {
+            override fun onFailure(call: Call<SignUp1user>, t: Throwable) {
                 t.message?.let { signUp1API?.onError(it) }
             }
 
@@ -255,7 +255,7 @@ class Controller {
     }
 
     interface SignUp1API {
-        fun onSignUpSuccess(success : Response<SignUp1User>)
+        fun onSignUpSuccess(success : Response<SignUp1user>)
         fun onError(error:String)
     }
 

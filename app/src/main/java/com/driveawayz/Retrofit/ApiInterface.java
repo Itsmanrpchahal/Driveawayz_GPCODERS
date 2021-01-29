@@ -2,10 +2,10 @@ package com.driveawayz.Retrofit;
 
 import com.driveawayz.Login.response.LoginResponse;
 import com.driveawayz.OTPScreen.response.NumberVerifyResponse;
-import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse;
-import com.driveawayz.SignUp.signupphone.response.SignUp1User;
-import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
 import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse;
+import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse;
+import com.driveawayz.SignUp.signupphone.response.SignUp1user;
+import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.UpdateAddressResponse;
@@ -42,7 +42,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/api/v1/auth/signup")
-    Call<SignUp1User> signUp (
+    Call<SignUp1user> signUp (
         @Field("name") String name,
         @Field("email") String email,
         @Field("password") String password,
@@ -89,7 +89,7 @@ public interface ApiInterface {
     );
 
     @GET("/api/v1/addresses")
-    Call<List<MyAddessesResponse>> myAddresses (
+        Call<List<MyAddessesResponse>> myAddresses (
             @Header("Authorization") String token
     );
 
