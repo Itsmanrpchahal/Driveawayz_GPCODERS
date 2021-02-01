@@ -1,11 +1,17 @@
 package com.driveawayz.Login
 
 import android.app.ProgressDialog
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -38,6 +44,7 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
     private lateinit var pd: ProgressDialog
     private lateinit var labeled: RelativeLayout
     private lateinit var controller: Controller
+    private lateinit var notC : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +53,32 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
         findIds()
         lisenters()
     }
+
+    //Check Internet Connection
+    private var broadcastReceiver : BroadcastReceiver = object : BroadcastReceiver()
+    {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val notConnected = p1!!.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY,false)
+
+            if (notConnected)
+            {
+                Utility.noConnectionDialog(this@LoginScreen,"1")
+            } else {
+                Utility.noConnectionDialog(this@LoginScreen,"0")
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        registerReceiver(broadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(broadcastReceiver)
+    }
+
 
     private fun lisenters() {
         back.setOnClickListener { onBackPressed() }
@@ -71,11 +104,7 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
                         controller.Login(email_et.text.toString(), pass_et.text.toString())
 
                     } else {
-                        utility.relative_snackbar(
-                            window.currentFocus,
-                            getString(R.string.nointernet),
-                            getString(R.string.close_up)
-                        )
+                        registerReceiver(broadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
                     }
 
                     // startActivity(Intent(this, Dashboard::class.java))
@@ -103,14 +132,9 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
         controller = Controller()
         controller.Controller(this,this)
         val window: Window = getWindow()
-// clear FLAG_TRANSLUCENT_STATUS flag:
-// clear FLAG_TRANSLUCENT_STATUS flag:
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-// finally change the color
-// finally change the color
+
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorLightTheme))
         back = findViewById(R.id.back)
         signInbt = findViewById(R.id.signInbt)
@@ -196,7 +220,7 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
                         (Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()
                 }
-            }else{
+            } else{
                 utility.relative_snackbar(window.decorView,getString(R.string.nointernet),getString(R.string.close_up))
             }
         }

@@ -1,8 +1,12 @@
 package com.driveawayz.dashboard.homeFrag
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.location.Address
 import android.location.Geocoder
+import android.net.ConnectivityManager
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -18,6 +22,7 @@ import androidx.fragment.app.FragmentManager
 import com.driveawayz.Constant.BaseFrag
 import com.driveawayz.R
 import com.driveawayz.Utilities.GpsTracker
+import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.homeFrag.customPlacepicker.AutoCompleteAdapter
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -51,6 +56,7 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback {
     private var lng: Double = 0.0
     var placesClient: PlacesClient? = null
     lateinit var adapter: AutoCompleteAdapter
+    private lateinit var utility: Utility
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -90,7 +96,13 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback {
 
     private fun listeners() {
         setDestination_bt.setOnClickListener {
-            manager.beginTransaction().replace(R.id.nav_host_fragment,BookDriver()).addToBackStack(null).commit()
+            if (utility.isConnectingToInternet(context))
+            {
+                manager.beginTransaction().replace(R.id.nav_host_fragment,BookDriver()).addToBackStack(null).commit()
+            } else {
+                context?.registerReceiver(broadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+            }
+
         }
     }
 
@@ -101,11 +113,35 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback {
         setdestination_et.setOnItemClickListener(autocompleteClickListener)
         adapter = AutoCompleteAdapter(context,placesClient)
         setdestination_et.setAdapter(adapter)
+        utility = Utility()
+    }
+
+    //Check Internet Connection
+    private var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val notConnected =
+                p1!!.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
+
+            if (notConnected) {
+                Utility.noConnectionDialog(context, "1")
+            } else {
+                Utility.noConnectionDialog(context, "0")
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        context?.unregisterReceiver(broadcastReceiver)
     }
 
     override fun onStart() {
         super.onStart()
         mapviewdrop?.getMapAsync(this)
+        context?.registerReceiver(
+            broadcastReceiver,
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
     }
 
     override fun onMapReady(p0: GoogleMap?) {

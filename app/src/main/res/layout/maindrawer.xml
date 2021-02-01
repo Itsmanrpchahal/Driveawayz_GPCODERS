@@ -108,6 +108,21 @@
 
             </Button>
 
+            <Button
+                android:id="@+id/logout_nav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Logout"
+                android:textAllCaps="false"
+                android:background="@color/colorWhite"
+                android:textColor="@color/colorBlack"
+                android:drawableLeft="@drawable/ic_baseline_power_settings_new_24"
+                android:textAlignment="textStart"
+                android:drawablePadding="@dimen/margin_dp25"
+                android:padding="@dimen/margin_dp10">
+
+            </Button>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

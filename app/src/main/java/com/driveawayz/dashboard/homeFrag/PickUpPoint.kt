@@ -1,9 +1,13 @@
 package com.driveawayz.dashboard.homeFrag
 
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.location.Address
 import android.location.Geocoder
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.driveawayz.R
 import com.driveawayz.Utilities.GpsTracker
+import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.homeFrag.customPlacepicker.AutoCompleteAdapter
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -53,6 +58,7 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
     private var lng: Double = 0.0
     var placesClient: PlacesClient? = null
     lateinit var adapter: AutoCompleteAdapter
+    private lateinit var utility: Utility
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -94,10 +100,16 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
 
     private fun listeners() {
         setPickUpBt.setOnClickListener {
-            manager.beginTransaction().replace(
-                R.id.nav_host_fragment,
-                DropedPoint()
-            ).addToBackStack(null).commit()
+            if (utility.isConnectingToInternet(context))
+            {
+                manager.beginTransaction().replace(
+                    R.id.nav_host_fragment,
+                    DropedPoint()
+                ).addToBackStack(null).commit()
+            } else {
+                context?.registerReceiver(broadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+            }
+
         }
     }
 
@@ -108,11 +120,36 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
         pickupEt.setOnItemClickListener(autocompleteClickListener)
         adapter = AutoCompleteAdapter(context,placesClient)
         pickupEt.setAdapter(adapter)
+        utility  = Utility()
+    }
+
+
+    //Check Internet Connection
+    private var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val notConnected =
+                p1!!.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
+
+            if (notConnected) {
+                Utility.noConnectionDialog(context, "1")
+            } else {
+                Utility.noConnectionDialog(context, "0")
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        context?.unregisterReceiver(broadcastReceiver)
     }
 
     override fun onStart() {
         super.onStart()
         mapviewpickup?.getMapAsync(this)
+        context?.registerReceiver(
+            broadcastReceiver,
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
     }
 
     override fun onMapReady(p0: GoogleMap?) {
@@ -191,7 +228,7 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
                                 val location = LatLng(lat, lng)
                                 Log.d("LATLNG",""+lat+"   "+lng)
                                 pickupEt.setText(addresses.get(0).getAddressLine(0).toString())
-
+                                pickupEt.setSelection(pickupEt.text.length)
                                 mMap.clear()
 
                                 if (mapviewpickup != null) {

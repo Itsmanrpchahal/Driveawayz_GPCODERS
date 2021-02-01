@@ -1,28 +1,35 @@
 package com.driveawayz.dashboard.homeFrag
 
 import android.app.Dialog
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.driveawayz.R
+import com.driveawayz.Utilities.Utility
 
 
 class BookDriver : Fragment() {
 
-    private lateinit var bookdriver_bt : Button
-    private lateinit var popup : Dialog
-    private lateinit var okpopup : Dialog
+    private lateinit var bookdriver_bt: Button
+    private lateinit var popup: Dialog
+    private lateinit var okpopup: Dialog
     private lateinit var cancel_bt: Button
+    private lateinit var utility: Utility
     private lateinit var accept_bt: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view : View
+        val view: View
 
         view = inflater.inflate(R.layout.fragment_book_driver, container, false)
 
@@ -32,7 +39,41 @@ class BookDriver : Fragment() {
     }
 
     private fun listeners() {
-        bookdriver_bt.setOnClickListener {  Dialog() }
+        bookdriver_bt.setOnClickListener {
+
+            if (utility.isConnectingToInternet(context)) {
+                Dialog()
+            } else {
+                context?.registerReceiver(broadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+            }
+        }
+    }
+
+    //Check Internet Connection
+    private var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val notConnected =
+                p1!!.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
+
+            if (notConnected) {
+                Utility.noConnectionDialog(context, "1")
+            } else {
+                Utility.noConnectionDialog(context, "0")
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        context?.registerReceiver(
+            broadcastReceiver,
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        context?.unregisterReceiver(broadcastReceiver)
     }
 
     private fun Dialog() {
@@ -46,6 +87,8 @@ class BookDriver : Fragment() {
         popup.setCancelable(true)
         popup.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         popup.show()
+
+
 
         accept_bt = popup.findViewById(R.id.accept_bt)
         cancel_bt = popup.findViewById(R.id.accept_bt)
@@ -69,13 +112,14 @@ class BookDriver : Fragment() {
         okpopup.setCancelable(true)
         okpopup.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val ok_bt : Button
+        val ok_bt: Button
         ok_bt = okpopup.findViewById(R.id.ok_bt)
         ok_bt.setOnClickListener { okpopup.dismiss() }
         okpopup.show()
     }
 
     private fun findIds(view: View) {
+        utility = Utility()
         bookdriver_bt = view.findViewById(R.id.bookdriver_bt)
     }
 

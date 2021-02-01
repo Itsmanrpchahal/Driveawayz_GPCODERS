@@ -3,11 +3,14 @@ package com.driveawayz.dashboard.setiingFrag
 import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
@@ -39,7 +42,7 @@ import kotlin.collections.ArrayList
 
 class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesAPI,
     Controller.AddVehiclesAPI, Controller.MeAPI, Controller.MyAdderessAPI,
-    Controller.AddNewAddress, UpdateAddress_IF ,Controller.UpdateAddressAPI{
+    Controller.AddNewAddress, UpdateAddress_IF, Controller.UpdateAddressAPI {
 
 
     private lateinit var part: MultipartBody.Part
@@ -95,30 +98,56 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when {
                     item.itemId == R.id.nav_profile -> {
-                        profileview.visibility = View.VISIBLE
-                        myaddressview.visibility = View.GONE
-                        myvehicles_view.visibility = View.GONE
-                        pd.show()
-                        pd.setContentView(R.layout.loading)
-                        controller.Me("Bearer " + getStringVal(Constants.TOKEN))
+
+                        if (utility.isConnectingToInternet(context)) {
+                            profileview.visibility = View.VISIBLE
+                            myaddressview.visibility = View.GONE
+                            myvehicles_view.visibility = View.GONE
+                            pd.show()
+                            pd.setContentView(R.layout.loading)
+                            controller.Me("Bearer " + getStringVal(Constants.TOKEN))
+                        } else {
+                            context?.registerReceiver(
+                                broadcastReceiver,
+                                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+                            )
+                        }
+
                     }
 
                     item.itemId == R.id.nav_address -> {
-                        profileview.visibility = View.GONE
-                        myaddressview.visibility = View.VISIBLE
-                        myvehicles_view.visibility = View.GONE
-                        pd.show()
-                        pd.setContentView(R.layout.loading)
-                        controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
+                        if (utility.isConnectingToInternet(context)) {
+                            profileview.visibility = View.GONE
+                            myaddressview.visibility = View.VISIBLE
+                            myvehicles_view.visibility = View.GONE
+                            pd.show()
+                            pd.setContentView(R.layout.loading)
+                            controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
+                        } else {
+                            context?.registerReceiver(
+                                broadcastReceiver,
+                                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+                            )
+                        }
                     }
 
                     item.itemId == R.id.nav_MyVehicles -> {
-                        profileview.visibility = View.GONE
-                        myaddressview.visibility = View.GONE
-                        myvehicles_view.visibility = View.VISIBLE
-                        pd.show()
-                        pd.setContentView(R.layout.loading)
-                        controller.MyVehicles("Bearer " + getStringVal(Constants.TOKEN))
+
+                        if (utility.isConnectingToInternet(context)) {
+                            profileview.visibility = View.GONE
+                            myaddressview.visibility = View.GONE
+                            myvehicles_view.visibility = View.VISIBLE
+                            pd.show()
+                            pd.setContentView(R.layout.loading)
+                            controller.MyVehicles("Bearer " + getStringVal(Constants.TOKEN))
+                        } else {
+                            context?.registerReceiver(
+                                broadcastReceiver,
+                                IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+                            )
+                        }
+
+
                     }
                 }
                 return true
@@ -132,10 +161,37 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
 
     }
 
+    //Check Internet Connection
+    private var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val notConnected =
+                p1!!.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)
+
+            if (notConnected) {
+                Utility.noConnectionDialog(context, "1")
+            } else {
+                Utility.noConnectionDialog(context, "0")
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        context?.registerReceiver(
+            broadcastReceiver,
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        context?.unregisterReceiver(broadcastReceiver)
+    }
+
     private fun findIds(view: View?) {
         utility = Utility()
         controller = Controller()
-        controller.Controller(this, this, this, this, this,this)
+        controller.Controller(this, this, this, this, this, this)
         bottomnavigaton = view!!.findViewById(R.id.bottomnavigaton)
         profileview = view.findViewById(R.id.profileview)
         myaddressview = view.findViewById(R.id.myaddressview)
@@ -202,13 +258,13 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
             //ToDo: Hit upload image api here
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             utility!!.relative_snackbar(
-                requireActivity().window.currentFocus,
+                activity?.window?.decorView,
                 ImagePicker.getError(data),
                 getString(R.string.close_up)
             )
         } else {
             utility!!.relative_snackbar(
-                requireActivity().window.currentFocus,
+                activity?.window?.decorView,
                 "Task Cancelled",
                 getString(R.string.close_up)
             )
@@ -267,14 +323,12 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                     address_et.error = "Enter address"
                 }
                 else -> {
-                    if (type.equals("1"))
-                    {
+                    if (type.equals("1")) {
                         addnewAddressPopup.dismiss()
                         pd.show()
                         pd.setContentView(R.layout.loading)
                         hideKeyboard()
-                        if (utility.isConnectingToInternet(context))
-                        {
+                        if (utility.isConnectingToInternet(context)) {
                             controller.AddNewAddress(
                                 "Bearer " + getStringVal(Constants.TOKEN),
                                 street_et.text.toString(),
@@ -293,8 +347,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                         pd.show()
                         pd.setContentView(R.layout.loading)
                         hideKeyboard()
-                        if (utility.isConnectingToInternet(context))
-                        {
+                        if (utility.isConnectingToInternet(context)) {
                             controller.UpdateAddress(
                                 "Bearer " + getStringVal(Constants.TOKEN),
                                 addressesList.get(addressID.toInt()).id.toString(),
@@ -413,20 +466,18 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
 
             } else {
                 utility!!.relative_snackbar(
-                    requireActivity().window.currentFocus,
+                    requireActivity().window.decorView,
                     success.message(),
                     getString(R.string.close_up)
                 )
             }
         } else {
             utility!!.relative_snackbar(
-                requireActivity().window.currentFocus,
+                requireActivity().window.decorView,
                 success.message(),
                 getString(R.string.close_up)
             )
         }
-
-
     }
 
     override fun onAddVehicleSuccess(success: Response<AddVehiclesResponse>) {
@@ -475,7 +526,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
             myaddress_recycler.adapter = myAddressAdapter
         } else {
             utility!!.relative_snackbar(
-                requireActivity().window.currentFocus,
+                requireActivity().window.decorView,
                 success.message(),
                 getString(R.string.close_up)
             )
@@ -483,31 +534,27 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     }
 
     override fun onUpdateAddress(success: Response<AddNewAddressResponse>) {
-       pd.dismiss()
+        pd.dismiss()
         addnewAddressPopup.dismiss()
-
-
     }
 
     override fun onUpdateAddressSuccess(success: Response<UpdateAddressResponse>) {
-
-        if (success.isSuccessful){
+        if (success.isSuccessful) {
             addnewAddressPopup.dismiss()
             controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
-        }else {
+        } else {
             utility!!.relative_snackbar(
-                requireActivity().window.currentFocus,
+                requireActivity().window.decorView,
                 success.message(),
                 getString(R.string.close_up)
             )
         }
-
     }
 
     override fun onError(error: String) {
         pd.dismiss()
         utility!!.relative_snackbar(
-            requireActivity().window.currentFocus,
+            requireActivity().window.decorView,
             error,
             getString(R.string.close_up)
         )

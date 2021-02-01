@@ -1,15 +1,19 @@
 package com.driveawayz.Utilities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.icu.text.SimpleDateFormat;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.driveawayz.R;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
@@ -53,24 +57,45 @@ public class Utility {
         snackbar.show();
     }
 
-    public static String changeDateTimeToDateTime(String time)
-    {
+    public static void noConnectionDialog(final Context context, String c) {
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.nointernet);
+        Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        ImageButton close;
+        close = dialog.findViewById(R.id.close);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        if (c.equals("1")) {
+            dialog.show();
+        } else {
+            dialog.dismiss();
+        }
+    }
+
+
+    public static String changeDateTimeToDateTime(String time) {
         String date = time;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Date testDate = null;
         try {
             testDate = sdf.parse(date);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd,yyyy hh:mm a");
         String newFormat = formatter.format(testDate);
-        System.out.println(".....Date..."+newFormat);
+        System.out.println(".....Date..." + newFormat);
 
         return newFormat;
     }
-
-
 
 
     public static boolean isValidPassword(final String password) {

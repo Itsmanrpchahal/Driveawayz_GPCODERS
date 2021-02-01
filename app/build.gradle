@@ -57,8 +57,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
 
-    //ToDo: Material Navigation View Library
-    implementation 'com.shreyaspatil:MaterialNavigationView:1.2'
+
 
     //ToDo: Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
@@ -70,9 +69,7 @@ dependencies {
     //ToDo: OTP Screen
     implementation 'com.github.aabhasr1:OtpView:v1.1.2-ktx'
 
-    //ToDo: Material Navigation View Library
-    implementation 'com.shreyaspatil:MaterialNavigationView:1.2'
-
+   
     //ToDo: Round Image View
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 

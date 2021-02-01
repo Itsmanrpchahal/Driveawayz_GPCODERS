@@ -1,6 +1,7 @@
 package com.driveawayz.dashboard
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -17,7 +18,11 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import com.driveawayz.Constant.BaseClass
+import com.driveawayz.MainActivity
 import com.driveawayz.R
+import com.driveawayz.Utilities.Constants
+import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.homeFrag.PickUpPoint
 import com.driveawayz.dashboard.mydriveFrag.MyDrivesFragment
 import com.driveawayz.dashboard.notificationFrag.NotificationFragment
@@ -29,7 +34,7 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.maindrawer.*
 import org.w3c.dom.Text
 
-class Dashboard : AppCompatActivity(), View.OnClickListener {
+class Dashboard : BaseClass(), View.OnClickListener {
 
     private lateinit var frameLayout: NavController
     private lateinit var drawerLayout: DrawerLayout
@@ -41,6 +46,8 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
     private lateinit var notifications_nav : Button
     private lateinit var setting_nav : Button
     private lateinit var support_nav : Button
+    private lateinit var logout_nav : Button
+    private lateinit var utility: Utility
     private lateinit var fragmentManager : FragmentManager
 
 
@@ -60,6 +67,7 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
         paymentmethod_nav.setOnClickListener(this)
         setting_nav.setOnClickListener(this)
         support_nav.setOnClickListener(this)
+        logout_nav.setOnClickListener(this)
 
     }
 
@@ -79,6 +87,9 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorTheme))
+        utility = Utility()
+
+
         drawerLayout = findViewById(R.id.drawer_layout)
         appbarmain = findViewById(R.id.appbarmain)
         menu = findViewById(R.id.menu)
@@ -88,6 +99,7 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
         paymentmethod_nav = findViewById(R.id.paymentmethod_nav)
         setting_nav = findViewById(R.id.setting_nav)
         support_nav = findViewById(R.id.support_nav)
+        logout_nav = findViewById(R.id.logout_nav)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(true)
@@ -319,6 +331,7 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
 
             R.id.support_nav -> {
                 openCloseDrawer()
+
                 fragmentManager.popBackStack()
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment,SupportFragment()).addToBackStack(null).commit()
 
@@ -345,6 +358,12 @@ class Dashboard : AppCompatActivity(), View.OnClickListener {
                 support_nav.setBackgroundColor(resources.getColor(R.color.colorTheme))
                 support_nav.setTextColor(resources.getColor(R.color.white))
                 support_nav.setCompoundDrawablesWithIntrinsicBounds(R.drawable.support_white,0,0,0)
+            }
+
+            R.id.logout_nav -> {
+                clearStringVal(Constants.TOKEN)
+                startActivity(Intent(this,MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                finish()
             }
 
         }

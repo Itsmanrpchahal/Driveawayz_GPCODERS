@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:background="@color/white"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/nointernet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/defaultmargin"
+        android:scaleType="fitXY"
+        android:src="@drawable/nointernet">
+
+    </ImageView>
+
+    <ImageButton
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_dp5"
+        android:src="@drawable/ic_baseline_close_24"
+        android:background="@color/transparent"
+        android:layout_alignParentRight="true">
+
+    </ImageButton>
+
+</RelativeLayout>

@@ -5,6 +5,7 @@ import com.driveawayz.MainActivity
 import com.driveawayz.R
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
@@ -31,13 +32,13 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
         getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
+        )
 
         utility = Utility()
         controller = Controller()
         controller.Controller(this)
         if (!getStringVal(Constants.TOKEN).equals("")) {
-            controller.Me("Bearer "+getStringVal(Constants.TOKEN)!!)
+            controller.Me("Bearer " + getStringVal(Constants.TOKEN)!!)
         } else {
             startActivity(
                 Intent(
@@ -59,16 +60,17 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
         android.Manifest.permission.CAMERA,
         android.Manifest.permission.ACCESS_FINE_LOCATION
     ) {
-        Handler().postDelayed({
 
+        Handler(Looper.getMainLooper()).postDelayed({
             if (!getStringVal(Constants.TOKEN).equals("")) {
                 if (success.isSuccessful) {
                     if (success.code() == 200) {
-                        setStringVal(Constants.NAME,success.body()?.getName())
-                        setStringVal(Constants.EMAIL,success.body()?.getEmail())
-                        setStringVal(Constants.DOB,success.body()?.getDateOfBirth())
-                        setStringVal(Constants.MOBILENUMBER,success.body()?.getPhoneNumber())
-                        setStringVal(Constants.PHONENUMBERVERIFIED,
+                        setStringVal(Constants.NAME, success.body()?.getName())
+                        setStringVal(Constants.EMAIL, success.body()?.getEmail())
+                        setStringVal(Constants.DOB, success.body()?.getDateOfBirth())
+                        setStringVal(Constants.MOBILENUMBER, success.body()?.getPhoneNumber())
+                        setStringVal(
+                            Constants.PHONENUMBERVERIFIED,
                             success.body()?.getPhoneVerified().toString()
                         )
                         if (success.body()?.getAddress()?.size == 0) {
@@ -132,8 +134,7 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
             }
 
             finish()
-
-        }, 2000)
+        },2000)
     }
 
     private val quickPermissionsOptions = QuickPermissionsOptions(
