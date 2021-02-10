@@ -7,6 +7,7 @@ import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse
 import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
 import com.driveawayz.SignUp.signupphone.response.SignUp1user
+import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
 import com.driveawayz.dashboard.setiingFrag.response.UpdateAddressResponse
@@ -28,6 +29,7 @@ class Controller {
     var myVehiclesAPI : MyVehiclesAPI?= null
     var myAdderessAPI : MyAdderessAPI? = null
     var updateAddressAPI : UpdateAddressAPI? = null
+    var rateAPI : RateAPI? = null
 
     fun Controller(signUpPhone: SignUpPhoneAPI)
     {
@@ -77,6 +79,14 @@ class Controller {
         updateAddressAPI = updateAdrress
         webAPI = WebAPI()
     }
+
+    fun Controller(myVehicles: MyVehiclesAPI,rate: RateAPI)
+    {
+        myVehiclesAPI = myVehicles
+        rateAPI = rate
+        webAPI = WebAPI()
+    }
+
 
     fun SignUpPhone(mobileNumber : String,channel : String)
     {
@@ -249,6 +259,24 @@ class Controller {
         })
     }
 
+    fun Rate(token: String,id: String)
+    {
+        webAPI?.api?.rate(token, id)?.enqueue(object : Callback<MyVehicleRateResponse>
+        {
+            override fun onResponse(
+                call: Call<MyVehicleRateResponse>,
+                response: Response<MyVehicleRateResponse>
+            ) {
+                rateAPI?.onRateSuccess(response)
+            }
+
+            override fun onFailure(call: Call<MyVehicleRateResponse>, t: Throwable) {
+               rateAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
     interface SignUpPhoneAPI {
         fun onSignUpPhoneSuccess(success: Response<SignUpPhoneNoResponse>)
         fun onError(error: String)
@@ -297,5 +325,10 @@ class Controller {
     interface UpdateAddressAPI {
         fun onUpdateAddressSuccess(success : Response<UpdateAddressResponse>)
         fun onError(error: String);
+    }
+
+    interface RateAPI {
+        fun onRateSuccess(success : Response<MyVehicleRateResponse>)
+        fun onError(error: String)
     }
 }

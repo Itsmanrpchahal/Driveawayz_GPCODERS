@@ -21,6 +21,7 @@ import android.widget.Button
 import androidx.fragment.app.FragmentManager
 import com.driveawayz.Constant.BaseFrag
 import com.driveawayz.R
+import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.GpsTracker
 import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.homeFrag.customPlacepicker.AutoCompleteAdapter
@@ -80,6 +81,13 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback {
             lat = gpsTracker.latitude
             lng = gpsTracker.longitude
 
+            val geocoder : Geocoder
+            geocoder = Geocoder(context,Locale.getDefault())
+            val address : List<Address>
+            address = geocoder.getFromLocation(lat,lng,1)
+
+            setdestination_et.setText(address.get(0).getAddressLine(0))
+
         } else {
             gpsTracker.showSettingsAlert()
         }
@@ -98,7 +106,18 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback {
         setDestination_bt.setOnClickListener {
             if (utility.isConnectingToInternet(context))
             {
-                manager.beginTransaction().replace(R.id.nav_host_fragment,BookDriver()).addToBackStack(null).commit()
+                if (setdestination_et.text.isEmpty())
+                {
+                    setdestination_et.requestFocus()
+                    setdestination_et.setError("Enter Pickup address")
+                } else {
+                    setStringVal(Constants.LAT_D, lat.toString())
+                    setStringVal(Constants.LNG_D, lng.toString())
+                    setStringVal(Constants.DROPADDRESS,setdestination_et.text.toString())
+
+                    manager.beginTransaction().replace(R.id.nav_host_fragment,BookDriver()).addToBackStack(null).commit()
+                }
+
             } else {
                 context?.registerReceiver(broadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
             }

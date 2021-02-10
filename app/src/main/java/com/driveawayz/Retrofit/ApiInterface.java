@@ -6,6 +6,7 @@ import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse;
 import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse;
 import com.driveawayz.SignUp.signupphone.response.SignUp1user;
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
+import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.UpdateAddressResponse;
@@ -20,6 +21,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiInterface {
@@ -102,4 +104,9 @@ public interface ApiInterface {
             @Field("address") String address
     );
 
+    @GET("/api/v1/vehicle/{input}")
+    Call<MyVehicleRateResponse> rate (
+      @Header("Authorization") String token,
+      @Path("input") String id
+    );
 }

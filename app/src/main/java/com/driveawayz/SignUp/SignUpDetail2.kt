@@ -17,6 +17,7 @@ import com.driveawayz.R
 import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
+import com.driveawayz.dashboard.Dashboard
 import retrofit2.Response
 
 class SignUpDetail2 : BaseClass(),Controller.AddVehiclesAPI {
@@ -130,7 +131,7 @@ class SignUpDetail2 : BaseClass(),Controller.AddVehiclesAPI {
         {
             if (success.code()==201)
             {
-                startActivity(Intent(this, CompleteSignUp::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                startActivity(Intent(this, Dashboard::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
                 finish()
             } else {
                 utility.relative_snackbar(

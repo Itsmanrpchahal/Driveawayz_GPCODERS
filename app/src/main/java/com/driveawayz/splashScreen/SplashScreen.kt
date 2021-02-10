@@ -37,16 +37,11 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
         utility = Utility()
         controller = Controller()
         controller.Controller(this)
+
         if (!getStringVal(Constants.TOKEN).equals("")) {
             controller.Me("Bearer " + getStringVal(Constants.TOKEN)!!)
         } else {
-            startActivity(
-                Intent(
-                    this,
-                    MainActivity::class.java
-                )
-            )
-            finish()
+           methodRequiresPermission1()
         }
 
 
@@ -134,8 +129,38 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
             }
 
             finish()
-        },2000)
+        },3000)
+
+//        Handler(Looper.getMainLooper()).postDelayed({
+//
+//        },3000)
     }
+
+
+    private fun methodRequiresPermission1() = runWithPermissions(
+        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        android.Manifest.permission.CAMERA,
+        android.Manifest.permission.ACCESS_FINE_LOCATION
+    ) {
+
+        Handler(Looper.getMainLooper()).postDelayed({
+
+                startActivity(
+                    Intent(
+                        this,
+                        MainActivity::class.java
+                    )
+                )
+            finish()
+            }
+        ,3000)
+
+//        Handler(Looper.getMainLooper()).postDelayed({
+//
+//        },3000)
+    }
+
 
     private val quickPermissionsOptions = QuickPermissionsOptions(
         rationaleMessage = "Custom  rational messsage",

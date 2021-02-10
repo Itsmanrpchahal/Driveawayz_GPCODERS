@@ -74,6 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv1"
+                        android:textColor="@color/colorBlack"
                         android:backgroundTint="@color/colorTheme"
                         android:layout_marginLeft="@dimen/margin_dp20"
                         android:layout_marginRight="@dimen/margin_dp20"
@@ -104,17 +105,31 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Select Vehicle"
-                                android:textColor="@color/colorTextLight"></TextView>
+                                android:textColor="@color/black"></TextView>
 
-
-                            <EditText
-                                android:id="@+id/select_vehicle_et"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/colorTheme"
-                                android:inputType="text">
+                                android:layout_height="wrap_content">
 
-                            </EditText>
+
+                                <androidx.appcompat.widget.AppCompatSpinner
+                                    android:id="@+id/select_vehicle_spinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/margin_dp35"
+                                    android:background="@color/white"
+                                    android:autofillHints="Select Vehicle"
+                                    android:inputType="text">
+
+                                </androidx.appcompat.widget.AppCompatSpinner>
+
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorTheme">
+
+                            </View>
                         </LinearLayout>
 
                         <LinearLayout
@@ -137,6 +152,7 @@
                             <EditText
                                 android:id="@+id/hours_et"
                                 android:layout_width="match_parent"
+                                android:textColor="@color/colorBlack"
                                 android:backgroundTint="@color/colorTheme"
                                 android:layout_height="wrap_content"
                                 android:inputType="number">
@@ -177,6 +193,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:enabled="true"
+                                android:textColor="@color/colorBlack"
                                 android:editable="false"
                                 android:backgroundTint="@color/colorTheme"
                                 android:focusable="false"
@@ -207,6 +224,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:enabled="true"
+                                android:textColor="@color/black"
                                 android:backgroundTint="@color/colorTheme"
                                 android:editable="false"
                                 android:focusable="false"

@@ -44,7 +44,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     Controller.AddVehiclesAPI, Controller.MeAPI, Controller.MyAdderessAPI,
     Controller.AddNewAddress, UpdateAddress_IF, Controller.UpdateAddressAPI {
 
-
+    
     private lateinit var part: MultipartBody.Part
     private lateinit var bitMap: Bitmap
     private var utility = Utility()

@@ -25,14 +25,7 @@
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="@dimen/margin_dp40"
                 android:layout_marginBottom="@dimen/margin_dp40"
-                android:text="Thank you for driving with us, we
-apperciate your bussiness. The hourly
-rate for our driver at starting desti-
-nation is $44.00 per hour. By Clicking
-accept you allow DriverVille to pre-
-authorize your credit card for $250.00
-. You will be only be charged at the
-closing of drive the actual time used."
+                android:text=""
                 android:textAlignment="textStart"
                 android:layout_marginLeft="@dimen/margin_dp10"
                 android:layout_marginRight="@dimen/margin_dp10">

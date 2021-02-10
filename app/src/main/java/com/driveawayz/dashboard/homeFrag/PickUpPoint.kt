@@ -21,7 +21,9 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.driveawayz.Constant.BaseFrag
 import com.driveawayz.R
+import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.GpsTracker
 import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.homeFrag.customPlacepicker.AutoCompleteAdapter
@@ -46,7 +48,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class PickUpPoint : Fragment(), OnMapReadyCallback {
+class PickUpPoint : BaseFrag(), OnMapReadyCallback {
 
     lateinit var manager: FragmentManager
     lateinit var setPickUpBt: Button
@@ -88,7 +90,12 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
         if (gpsTracker.canGetLocation()) {
             lat = gpsTracker.latitude
             lng = gpsTracker.longitude
+            val geocoder : Geocoder
+            geocoder = Geocoder(context,Locale.getDefault())
+            val address : List<Address>
+            address = geocoder.getFromLocation(lat,lng,1)
 
+            pickupEt.setText(address.get(0).getAddressLine(0))
         } else {
             gpsTracker.showSettingsAlert()
         }
@@ -102,10 +109,21 @@ class PickUpPoint : Fragment(), OnMapReadyCallback {
         setPickUpBt.setOnClickListener {
             if (utility.isConnectingToInternet(context))
             {
-                manager.beginTransaction().replace(
-                    R.id.nav_host_fragment,
-                    DropedPoint()
-                ).addToBackStack(null).commit()
+                if (setPickUpBt.text.isEmpty())
+                {
+                    pickupEt.requestFocus()
+                    pickupEt.setError("Enter Pickup address")
+                } else {
+                    setStringVal(Constants.LAT, lat.toString())
+                    setStringVal(Constants.LNG, lng.toString())
+                    setStringVal(Constants.PICKUPADDRESS,pickupEt.text.toString())
+
+                    manager.beginTransaction().replace(
+                        R.id.nav_host_fragment,
+                        DropedPoint()
+                    ).addToBackStack(null).commit()
+                }
+
             } else {
                 context?.registerReceiver(broadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
             }
