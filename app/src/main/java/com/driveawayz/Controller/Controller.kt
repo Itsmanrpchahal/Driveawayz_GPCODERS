@@ -7,6 +7,7 @@ import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse
 import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
 import com.driveawayz.SignUp.signupphone.response.SignUp1user
+import com.driveawayz.dashboard.homeFrag.response.BookRide
 import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
@@ -30,6 +31,7 @@ class Controller {
     var myAdderessAPI : MyAdderessAPI? = null
     var updateAddressAPI : UpdateAddressAPI? = null
     var rateAPI : RateAPI? = null
+    var bookRideAPI : BookRideAPI? = null
 
     fun Controller(signUpPhone: SignUpPhoneAPI)
     {
@@ -80,10 +82,11 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(myVehicles: MyVehiclesAPI,rate: RateAPI)
+    fun Controller(myVehicles: MyVehiclesAPI,rate: RateAPI,bookRide: BookRideAPI)
     {
         myVehiclesAPI = myVehicles
         rateAPI = rate
+        bookRideAPI = bookRide
         webAPI = WebAPI()
     }
 
@@ -277,6 +280,21 @@ class Controller {
         })
     }
 
+    fun RideBook(token: String,pickLocation:String,destination:String,destinationLatLong:String,pickUpLatLong:String,numberOfGuests:String,numberOfHours:String,pickDate:String,pickTime:String,vehicleId:String,rideCharge:String)
+    {
+        webAPI?.api?.bookRide(token, pickLocation, destination, destinationLatLong, pickUpLatLong, numberOfGuests, numberOfHours, pickDate, pickTime, vehicleId, rideCharge)?.enqueue(object : Callback<BookRide>
+        {
+            override fun onResponse(call: Call<BookRide>, response: Response<BookRide>) {
+                bookRideAPI?.onBookRideSuccess(response)
+            }
+
+            override fun onFailure(call: Call<BookRide>, t: Throwable) {
+                bookRideAPI?.onError(t.localizedMessage)
+            }
+
+        })
+    }
+
     interface SignUpPhoneAPI {
         fun onSignUpPhoneSuccess(success: Response<SignUpPhoneNoResponse>)
         fun onError(error: String)
@@ -329,6 +347,11 @@ class Controller {
 
     interface RateAPI {
         fun onRateSuccess(success : Response<MyVehicleRateResponse>)
+        fun onError(error: String)
+    }
+
+    interface BookRideAPI {
+        fun onBookRideSuccess(success: Response<BookRide>)
         fun onError(error: String)
     }
 }

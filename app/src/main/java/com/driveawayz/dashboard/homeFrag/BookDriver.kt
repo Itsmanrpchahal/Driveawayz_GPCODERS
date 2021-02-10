@@ -23,6 +23,7 @@ import com.driveawayz.Controller.Controller
 import com.driveawayz.R
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
+import com.driveawayz.dashboard.homeFrag.response.BookRide
 import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
 import retrofit2.Response
@@ -33,7 +34,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI {
+class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Controller.BookRideAPI{
 
     private lateinit var bookdriver_bt: Button
     private lateinit var popup: Dialog
@@ -54,11 +55,12 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI {
     lateinit var mTimePicker: TimePickerDialog
     var price: Int = 0
     val c = Calendar.getInstance()
-    val hour = c.get(Calendar.HOUR_OF_DAY)
-    val minute = c.get(Calendar.MINUTE)
-    lateinit var checkDate: String
+    var vehicleID : Int = 0
+    var total : Float = 0.0f
+    var datetime: String = ""
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -189,7 +191,7 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI {
         val format1 = "yyyy-MM-dd'T'HH:mm:ss'Z'"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         val sdf1 = SimpleDateFormat(format1, Locale.UK)
-        var datetime = sdf1.format(c.time)
+         datetime = sdf1.format(c.time)
         Log.d("TIME", "" + datetime)
         pick_date_et.setText(sdf.format(c.time))
         picktime_et.setText("")
@@ -236,7 +238,7 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI {
 
         var rate: Float = java.lang.Float.valueOf(price.toString())
         val hourr: Float = java.lang.Float.valueOf(hours_et.text.toString())
-        val total: Float =
+         total  =
             rate * hourr
 
         accept_bt = popup.findViewById(R.id.accept_bt)
@@ -256,8 +258,25 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI {
         cancel_bt.setOnClickListener(View.OnClickListener { popup.dismiss() })
 
         accept_bt.setOnClickListener(View.OnClickListener {
-            popup.dismiss()
-            dialogOK()
+            if (utility.isConnectingToInternet(context))
+            {
+                pd.show()
+                pd.setContentView(R.layout.loading)
+                controller.RideBook("Bearer "+getStringVal(Constants.TOKEN),
+                    getStringVal(Constants.PICKUPADDRESS)!!,
+                    getStringVal(Constants.DROPADDRESS)!!,
+                    getStringVal(Constants.LAT_D)!!+","+getStringVal(Constants.LNG_D)!!,
+                    getStringVal(Constants.LAT)!!+","+getStringVal(Constants.LNG)!!,
+                    numberofgueststv.text.toString(),
+                    hours_et.text.toString(),
+                    datetime,
+                    picktime_et.text.toString(),
+                    vehicleID.toString(),
+                    total.toString()
+                )
+
+            }
+
         })
     }
 
@@ -287,7 +306,7 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI {
         pd!!.setCancelable(false)
 
         controller = Controller()
-        controller.Controller(this, this)
+        controller.Controller(this, this,this)
         controller.MyVehicles("Bearer " + getStringVal(Constants.TOKEN))
         pd.show()
         pd.setContentView(R.layout.loading)
@@ -333,6 +352,8 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI {
                             "Bearer " + getStringVal(Constants.TOKEN),
                             myVehicles.get(position).getId().toString()
                         )
+
+                        vehicleID = myVehicles.get(position).getId()!!
                         pd.show()
                     }
 
@@ -358,6 +379,15 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI {
                     getString(R.string.close_up)
                 )
             }
+        }
+    }
+
+    override fun onBookRideSuccess(success: Response<BookRide>) {
+        pd.dismiss()
+        if (success.isSuccessful)
+        {
+            popup.dismiss()
+            dialogOK()
         }
     }
 

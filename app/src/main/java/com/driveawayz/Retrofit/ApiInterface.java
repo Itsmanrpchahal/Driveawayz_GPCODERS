@@ -6,6 +6,7 @@ import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse;
 import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse;
 import com.driveawayz.SignUp.signupphone.response.SignUp1user;
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
+import com.driveawayz.dashboard.homeFrag.response.BookRide;
 import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse;
@@ -29,14 +30,14 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/api/v1/auth/sendMessage")
-    Call<SignUpPhoneNoResponse> signUpPhone (
+    Call<SignUpPhoneNoResponse> signUpPhone(
             @Field("mobileNumber") String mobileNumber,
             @Field("channel") String channel
     );
 
     @FormUrlEncoded
     @POST("/api/v1/auth/verification")
-    Call<NumberVerifyResponse> verifyPhone (
+    Call<NumberVerifyResponse> verifyPhone(
             @Field("mobileNumber") String mobileNumber,
             @Field("code") String code
     );
@@ -44,13 +45,13 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/api/v1/auth/signup")
-    Call<SignUp1user> signUp (
-        @Field("name") String name,
-        @Field("email") String email,
-        @Field("password") String password,
-        @Field("dateOfBirth") String dateOfBirth,
-        @Field("phoneNumber") String phoneNumber,
-        @Field("phoneVerified") Boolean phoneVerified
+    Call<SignUp1user> signUp(
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("password") String password,
+            @Field("dateOfBirth") String dateOfBirth,
+            @Field("phoneNumber") String phoneNumber,
+            @Field("phoneVerified") Boolean phoneVerified
     );
 
     @FormUrlEncoded
@@ -63,19 +64,19 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/api/v1/auth/login")
-    Call<LoginResponse> login (
-      @Field("email") String email,
-      @Field("password") String password
+    Call<LoginResponse> login(
+            @Field("email") String email,
+            @Field("password") String password
     );
 
     @GET("/api/v1/user/me")
-    Call<MeResponse> me (
-      @Header("Authorization") String token
+    Call<MeResponse> me(
+            @Header("Authorization") String token
     );
 
     @FormUrlEncoded
     @POST("/api/v1/vehicle")
-    Call<AddVehiclesResponse> addVehicle (
+    Call<AddVehiclesResponse> addVehicle(
             @Header("Authorization") String token,
             @Field("make") String make,
             @Field("type") String type,
@@ -86,12 +87,12 @@ public interface ApiInterface {
     );
 
     @GET("/api/v1/vehicles")
-    Call<List<MyVehiclesResponse>> myVehicles (
+    Call<List<MyVehiclesResponse>> myVehicles(
             @Header("Authorization") String token
     );
 
     @GET("/api/v1/addresses")
-        Call<List<MyAddessesResponse>> myAddresses (
+    Call<List<MyAddessesResponse>> myAddresses(
             @Header("Authorization") String token
     );
 
@@ -105,8 +106,24 @@ public interface ApiInterface {
     );
 
     @GET("/api/v1/vehicle/{input}")
-    Call<MyVehicleRateResponse> rate (
-      @Header("Authorization") String token,
-      @Path("input") String id
+    Call<MyVehicleRateResponse> rate(
+            @Header("Authorization") String token,
+            @Path("input") String id
+    );
+
+    @FormUrlEncoded
+    @POST("/api/v1/ride")
+    Call<BookRide> bookRide(
+            @Header("Authorization") String token,
+            @Field("pickLocation") String pickLocation,
+            @Field("destination") String destination,
+            @Field("destinationLatLong") String destinationLatLong,
+            @Field("pickUpLatLong") String pickUpLatLong,
+            @Field("numberOfGuests") String numberOfGuests,
+            @Field("numberOfHours") String numberOfHours,
+            @Field("pickDate") String pickDate,
+            @Field("pickTime") String pickTime,
+            @Field("vehicleId") String vehicleId,
+            @Field("rideCharge") String rideCharge
     );
 }
