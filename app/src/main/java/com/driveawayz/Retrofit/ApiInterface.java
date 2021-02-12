@@ -8,18 +8,25 @@ import com.driveawayz.SignUp.signupphone.response.SignUp1user;
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
 import com.driveawayz.dashboard.homeFrag.response.BookRide;
 import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse;
+import com.driveawayz.dashboard.mydriveFrag.MyDrivesResponse;
+import com.driveawayz.dashboard.setiingFrag.response.DeleteAddressResponse;
+import com.driveawayz.dashboard.setiingFrag.response.DeleteVehicleReponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.UpdateAddressResponse;
+import com.driveawayz.dashboard.setiingFrag.response.UploadImageResponse;
 import com.driveawayz.splashScreen.MeResponse;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
@@ -126,4 +133,28 @@ public interface ApiInterface {
             @Field("vehicleId") String vehicleId,
             @Field("rideCharge") String rideCharge
     );
+
+    @GET("/api/v1/myRides")
+    Call<MyDrivesResponse> myDrives(
+            @Header("Authorization") String token
+    );
+
+    @DELETE("/api/v1/address/{input}")
+    Call<DeleteAddressResponse> deleteAddress(
+            @Header("Authorization") String token,
+            @Path("input") String id
+    );
+
+
+    @DELETE("/api/v1/vehicle/{input}")
+    Call<DeleteVehicleReponse> deleteVehicle(
+            @Header("Authorization") String token,
+            @Path("input") String id
+    );
+
+    @Multipart
+    @POST("/api/v1/user/upload")
+    Call<UploadImageResponse> uploadImage(
+            @Header("Authorization") String token,
+            @Part MultipartBody.Part image);
 }

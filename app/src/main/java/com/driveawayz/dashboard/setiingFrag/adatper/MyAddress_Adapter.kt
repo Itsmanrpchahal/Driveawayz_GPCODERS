@@ -25,7 +25,11 @@ class MyAddress_Adapter (var context: Context,var list: Response<List<MyAddesses
         var listData = list.body()?.get(position)
         holder.bindItems(listData)
         holder.edit_address.setOnClickListener {
-                SettingFragment.updateaddressIf?.getID(position.toString())
+                SettingFragment.updateaddressIf?.getID(position.toString(),"edit")
+        }
+
+        holder.delete_address.setOnClickListener {
+            SettingFragment.updateaddressIf?.getID(position.toString(),"delete")
         }
     }
 
@@ -38,11 +42,13 @@ class MyAddress_Adapter (var context: Context,var list: Response<List<MyAddesses
         lateinit var street_tv : TextView
         lateinit var address_tv : TextView
         lateinit var edit_address : ImageButton
+        lateinit var delete_address : ImageButton
         fun bindItems(list: MyAddessesResponse?)
         {
             street_tv = itemView.findViewById(R.id.street_tv)
             address_tv = itemView.findViewById(R.id.address_tv)
             edit_address = itemView.findViewById(R.id.edit_address)
+            delete_address = itemView.findViewById(R.id.delete_address)
             street_tv.setText(list?.street)
             address_tv.setText(list?.address)
         }

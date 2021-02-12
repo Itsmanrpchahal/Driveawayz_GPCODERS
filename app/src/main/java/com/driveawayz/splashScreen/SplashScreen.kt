@@ -179,12 +179,21 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
     }
 
     override fun onMeSuccess(success: Response<MeResponse>) {
+
+        if (success.isSuccessful)
+        {
+            methodRequiresPermission(success)
+            setStringVal(Constants.ADDRESS, success.body()?.getAddress()?.size.toString())
+            setStringVal(Constants.VEHICLES, success.body()?.getVehicle()?.size.toString())
+            setStringVal(Constants.CARDS, success.body()?.getCards()?.size.toString())
+            setStringVal(Constants.NAME,success.body()?.getName())
+        } else {
+            clearStringVal(Constants.TOKEN)
+
+        }
         Log.d("success", "" + success.body()?.getAddress())
 
-        methodRequiresPermission(success)
-        setStringVal(Constants.ADDRESS, success.body()?.getAddress()?.size.toString())
-        setStringVal(Constants.VEHICLES, success.body()?.getVehicle()?.size.toString())
-        setStringVal(Constants.CARDS, success.body()?.getCards()?.size.toString())
+
 
 
     }

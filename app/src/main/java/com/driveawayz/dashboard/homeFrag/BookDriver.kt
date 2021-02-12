@@ -52,7 +52,6 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Con
     private lateinit var controller: Controller
     private lateinit var myVehicles: ArrayList<MyVehiclesResponse>
     private lateinit var myVehiclesName: ArrayList<String>
-    lateinit var mTimePicker: TimePickerDialog
     var price: Int = 0
     val c = Calendar.getInstance()
     var vehicleID : Int = 0

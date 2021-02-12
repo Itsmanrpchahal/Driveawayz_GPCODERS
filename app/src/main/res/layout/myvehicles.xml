@@ -80,6 +80,18 @@
             </TextView>
         </LinearLayout>
 
+        <ImageButton
+            android:id="@+id/delete_vehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_delete_forever_24"
+            android:background="@color/transparent"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/layout1"
+            android:layout_marginTop="@dimen/defaultmargin">
+
+        </ImageButton>
+
 
         <TextView
             android:id="@+id/type_tv"

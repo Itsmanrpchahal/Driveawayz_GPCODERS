@@ -49,7 +49,7 @@ class Dashboard : BaseClass(), View.OnClickListener {
     private lateinit var logout_nav : Button
     private lateinit var utility: Utility
     private lateinit var fragmentManager : FragmentManager
-
+    private lateinit var title : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,9 +103,10 @@ class Dashboard : BaseClass(), View.OnClickListener {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(true)
+        title = findViewById(R.id.title)
 
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment,PickUpPoint()).commit()
-
+        title.setText("Home")
 
         home_nav.setBackgroundColor(resources.getColor(R.color.colorTheme))
         home_nav.setTextColor(resources.getColor(R.color.white))
@@ -167,6 +168,7 @@ class Dashboard : BaseClass(), View.OnClickListener {
         support_nav.setBackgroundColor(resources.getColor(R.color.white))
         support_nav.setTextColor(resources.getColor(R.color.black))
         support_nav.setCompoundDrawablesWithIntrinsicBounds(R.drawable.support_black,0,0,0)
+        title.setText("Home")
     }
 
     override fun onClick(v: View?) {
@@ -181,7 +183,7 @@ class Dashboard : BaseClass(), View.OnClickListener {
                 openCloseDrawer()
                 fragmentManager.popBackStack()
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment,PickUpPoint()).addToBackStack(null).commit()
-
+                title.setText("Home")
 
                 home_nav.setBackgroundColor(resources.getColor(R.color.colorTheme))
                 home_nav.setTextColor(resources.getColor(R.color.white))
@@ -213,6 +215,7 @@ class Dashboard : BaseClass(), View.OnClickListener {
                 openCloseDrawer()
                 fragmentManager.popBackStack()
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment,NotificationFragment()).addToBackStack(null).commit()
+                title.setText("Notifications")
 
                 home_nav.setBackgroundColor(resources.getColor(R.color.white))
                 home_nav.setTextColor(resources.getColor(R.color.black))
@@ -243,6 +246,7 @@ class Dashboard : BaseClass(), View.OnClickListener {
                 openCloseDrawer()
                 fragmentManager.popBackStack()
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment,MyDrivesFragment()).addToBackStack(null).commit()
+                title.setText("MyDrives")
 
                 home_nav.setBackgroundColor(resources.getColor(R.color.white))
                 home_nav.setTextColor(resources.getColor(R.color.black))
@@ -273,6 +277,7 @@ class Dashboard : BaseClass(), View.OnClickListener {
                 openCloseDrawer()
                 fragmentManager.popBackStack()
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment,PaymentFragment()).addToBackStack(null).commit()
+                title.setText("Payment Methods")
 
                 home_nav.setBackgroundColor(resources.getColor(R.color.white))
                 home_nav.setTextColor(resources.getColor(R.color.black))
@@ -303,6 +308,7 @@ class Dashboard : BaseClass(), View.OnClickListener {
                 openCloseDrawer()
                 fragmentManager.popBackStack()
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment,SettingFragment()).addToBackStack(null).commit()
+                title.setText("Setting")
 
                 home_nav.setBackgroundColor(resources.getColor(R.color.white))
                 home_nav.setTextColor(resources.getColor(R.color.black))
@@ -334,6 +340,7 @@ class Dashboard : BaseClass(), View.OnClickListener {
 
                 fragmentManager.popBackStack()
                 fragmentManager.beginTransaction().replace(R.id.nav_host_fragment,SupportFragment()).addToBackStack(null).commit()
+                title.setText("Support")
 
                 home_nav.setBackgroundColor(resources.getColor(R.color.white))
                 home_nav.setTextColor(resources.getColor(R.color.black))

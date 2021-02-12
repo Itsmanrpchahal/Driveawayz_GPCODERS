@@ -118,4 +118,7 @@ dependencies {
 
     //ToDo: ImagerCropper
     implementation 'com.github.dhaval2404:imagepicker:1.7.1'
+
+    //ToDo : RoundImageView
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 }

@@ -256,7 +256,7 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback {
                                             0
                                         ).latitude + "   " + addresses.get(0).longitude
                                     )
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.loc1))
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.location))
                                 )
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 16f))
 

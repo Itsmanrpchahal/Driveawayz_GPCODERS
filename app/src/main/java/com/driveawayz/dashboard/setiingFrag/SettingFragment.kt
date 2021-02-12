@@ -25,26 +25,38 @@ import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
 import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
+import com.driveawayz.dashboard.setiingFrag.IF.DeleteVehicleIF
 import com.driveawayz.dashboard.setiingFrag.IF.UpdateAddress_IF
 import com.driveawayz.dashboard.setiingFrag.adatper.MyAddress_Adapter
 import com.driveawayz.dashboard.setiingFrag.adatper.MyVehicelAdapter
-import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
-import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
-import com.driveawayz.dashboard.setiingFrag.response.UpdateAddressResponse
+import com.driveawayz.dashboard.setiingFrag.response.*
 import com.driveawayz.splashScreen.MeResponse
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.makeramen.roundedimageview.RoundedImageView
+import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.custom_profile.*
 import okhttp3.MultipartBody
 import retrofit2.Response
 import java.io.File
-import kotlin.collections.ArrayList
+import java.text.SimpleDateFormat
 
 
-class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesAPI,
-    Controller.AddVehiclesAPI, Controller.MeAPI, Controller.MyAdderessAPI,
-    Controller.AddNewAddress, UpdateAddress_IF, Controller.UpdateAddressAPI {
+class SettingFragment : BaseFrag(),
+    View.OnClickListener,
+    Controller.MyVehiclesAPI,
+    Controller.AddVehiclesAPI,
+    Controller.MeAPI,
+    Controller.MyAdderessAPI,
+    Controller.AddNewAddress,
+    UpdateAddress_IF,
+    Controller.UpdateAddressAPI,
+    Controller.DeleteAddressAPI ,
+    Controller.DeleteVehicleAPI,
+    DeleteVehicleIF ,
+Controller.UploadImageAPI{
 
-    
+
     private lateinit var part: MultipartBody.Part
     private lateinit var bitMap: Bitmap
     private var utility = Utility()
@@ -53,7 +65,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     private var path: String = ""
     private lateinit var addvehiclepopup: Dialog
     private lateinit var addnewAddressPopup: Dialog
-    private var myVehicles = ArrayList<List<MyVehiclesResponse>>()
+    private var myVehicles = ArrayList<MyVehiclesResponse>()
     private lateinit var myVehicelAdapter: MyVehicelAdapter
     private lateinit var myAddressAdapter: MyAddress_Adapter
     private lateinit var bottomnavigaton: BottomNavigationView
@@ -69,6 +81,8 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     private lateinit var user_birthdate_et: EditText
     private lateinit var street: EditText
     private lateinit var city: EditText
+    private lateinit var EditInfo : Button
+    private lateinit var userimage : CircleImageView
     private var addressID: String = ""
     private lateinit var addressesList: ArrayList<MyAddessesResponse>
     override fun onCreateView(
@@ -84,12 +98,14 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         pd.setContentView(R.layout.loading)
         controller.Me("Bearer " + getStringVal(Constants.TOKEN))
         updateaddressIf = this
+        deleteVehicleIF = this
         listeners()
         return view
     }
 
     companion object {
         var updateaddressIf: UpdateAddress_IF? = null
+        var deleteVehicleIF : DeleteVehicleIF? = null
     }
 
     private fun listeners() {
@@ -158,6 +174,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         uploadImage.setOnClickListener(this)
         addnewvehicle_bt.setOnClickListener(this)
         addnewaddress_bt.setOnClickListener(this)
+        EditInfo.setOnClickListener(this)
 
     }
 
@@ -191,7 +208,7 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
     private fun findIds(view: View?) {
         utility = Utility()
         controller = Controller()
-        controller.Controller(this, this, this, this, this, this)
+        controller.Controller(this, this, this, this, this, this, this, this,this)
         bottomnavigaton = view!!.findViewById(R.id.bottomnavigaton)
         profileview = view.findViewById(R.id.profileview)
         myaddressview = view.findViewById(R.id.myaddressview)
@@ -203,8 +220,10 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         addnewaddress_bt = view.findViewById(R.id.addnewaddress_bt)
         user_phn_number_et = view.findViewById(R.id.user_phn_number_et)
         user_birthdate_et = view.findViewById(R.id.user_birthdate_et)
+        userimage = view.findViewById(R.id.userimage)
         city = view.findViewById(R.id.city)
         street = view.findViewById(R.id.street)
+        EditInfo = view.findViewById(R.id.EditInfo)
         pd = ProgressDialog(context)
         pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         pd!!.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
@@ -253,7 +272,10 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
 
             path = filePath!!
             bitMap = MediaStore.Images.Media.getBitmap(context?.contentResolver, fileUri)
-            part = Utility.sendImageFileToserver(context?.filesDir, bitMap, "image")
+            part = Utility.sendImageFileToserver(context?.filesDir, bitMap, "file")
+            userimage.setImageBitmap(bitMap)
+            pd.show()
+            controller.UploadImage("Bearer "+getStringVal(Constants.TOKEN),part)
 
             //ToDo: Hit upload image api here
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
@@ -283,6 +305,11 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         if (v == addnewaddress_bt) {
             addnewAddressDialog("1")
         }
+
+        if (v == EditInfo)
+        {
+
+        }
     }
 
     private fun addnewAddressDialog(type: String) {
@@ -304,7 +331,6 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         address_et = addnewAddressPopup.findViewById(R.id.address_et)
         done_bt = addnewAddressPopup.findViewById(R.id.done_bt)
         if (!type.equals("1")) {
-
 
             street_et.setText(addressesList.get(addressID.toInt()).street)
             address_et.setText(addressesList.get(addressID.toInt()).address)
@@ -435,15 +461,25 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                     pd.show()
                     pd.setContentView(R.layout.loading)
                     hideKeyboard()
-                    controller.AddVehicle(
-                        "Bearer " + getStringVal(Constants.TOKEN),
-                        make_et.text.toString(),
-                        type_et.text.toString(),
-                        year_et.text.toString(),
-                        transsmisuion_et.text.toString(),
-                        licenceplate_et.text.toString(),
-                        state_et.text.toString()
-                    )
+                    if (utility.isConnectingToInternet(context)) {
+                        controller.AddVehicle(
+                            "Bearer " + getStringVal(Constants.TOKEN),
+                            make_et.text.toString(),
+                            type_et.text.toString(),
+                            year_et.text.toString(),
+                            transsmisuion_et.text.toString(),
+                            licenceplate_et.text.toString(),
+                            state_et.text.toString()
+                        )
+                    }
+                    else {
+                        utility!!.relative_snackbar(
+                            requireActivity().window.currentFocus,
+                            getString(R.string.nointernet),
+                            getString(R.string.close_up)
+                        )
+                    }
+
 
                 }
             }
@@ -457,6 +493,10 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         pd.dismiss()
         if (success.isSuccessful) {
             myVehicles = ArrayList()
+
+            for (i in success.body()?.indices!!) {
+                myVehicles.addAll(listOf(success.body()!!.get(i)))
+            }
             if (success.code() == 200) {
 
                 myvehicles_recycler.layoutManager =
@@ -492,7 +532,17 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
                 user_phn_number_et.isEnabled = false
                 user_phn_number_et.setText(success.body()?.getPhoneNumber().toString())
                 user_birthdate_et.isEnabled = false
-                //changeDateTimeToDateTime(success.body()?.dateOfBirth.toString())
+
+                val date1 = success.body()?.getDateOfBirth()?.substring(0, 10)
+                var date = date1
+                var spf = SimpleDateFormat("yyyy-mm-dd")
+                val newDate = spf.parse(date)
+                spf = SimpleDateFormat("dd/MM/yyyy")
+                date = spf.format(newDate)
+                println(date)
+                user_birthdate_et.setText(date)
+
+
                 street.isEnabled = false
                 street.setText(success.body()?.getAddress()?.get(0)?.street)
                 city.isEnabled = false
@@ -551,6 +601,67 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         }
     }
 
+    override fun onDeleteAddrressSuccess(success: Response<DeleteAddressResponse>) {
+        if (success.isSuccessful) {
+            if (success.code() == 200) {
+                controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
+            } else {
+                utility!!.relative_snackbar(
+                    requireActivity().window.decorView,
+                    success.message(),
+                    getString(R.string.close_up)
+                )
+            }
+        } else {
+            utility!!.relative_snackbar(
+                requireActivity().window.decorView,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
+    }
+
+    override fun onDeleteVehcleSuccess(success: Response<DeleteVehicleReponse>) {
+        if (success.isSuccessful)
+        {
+            controller.MyVehicles("Bearer " + getStringVal(Constants.TOKEN))
+        } else {
+            utility!!.relative_snackbar(
+                requireActivity().window.decorView,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
+
+    }
+
+    override fun onUploadImageSuccess(success: Response<UploadImageResponse>) {
+        pd.dismiss()
+        if (success.isSuccessful)
+        {
+            if (success.code()==201)
+            {
+                utility!!.relative_snackbar(
+                    requireActivity().window.decorView,
+                    "Image updated",
+                    getString(R.string.close_up)
+                )
+            } else {
+                utility!!.relative_snackbar(
+                    requireActivity().window.decorView,
+                    success.message(),
+                    getString(R.string.close_up)
+                )
+            }
+        } else {
+            utility!!.relative_snackbar(
+                requireActivity().window.decorView,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
+    }
+
     override fun onError(error: String) {
         pd.dismiss()
         utility!!.relative_snackbar(
@@ -560,10 +671,19 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         )
     }
 
-    override fun getID(id: String?) {
+    override fun getID(id: String?, type: String) {
 
         addressID = id.toString()
-        addnewAddressDialog("2")
+        if (type.equals("delete")) {
+            pd.show()
+            controller.DeleteAddress(
+                "Bearer " + getStringVal(Constants.TOKEN), addressesList.get(
+                    addressID.toInt()
+                ).id.toString()
+            )
+        } else {
+            addnewAddressDialog("2")
+        }
     }
 
     private fun hideKeyboard() {
@@ -573,6 +693,14 @@ class SettingFragment : BaseFrag(), View.OnClickListener, Controller.MyVehiclesA
         } catch (e: Exception) {
 
         }
+    }
+
+    override fun getID(id: String?) {
+        pd.show()
+        controller.DeleteVehicle(
+            "Bearer " + getStringVal(Constants.TOKEN),
+            myVehicles.get(id?.toInt()!!).getId()
+        )
     }
 
 //    fun changeDateTimeToDateTime(time: String): String? {

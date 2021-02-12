@@ -83,7 +83,7 @@ public class Utility {
 
     public static String changeDateTimeToDateTime(String time) {
         String date = time;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss.mmm");
         Date testDate = null;
         try {
             testDate = sdf.parse(date);

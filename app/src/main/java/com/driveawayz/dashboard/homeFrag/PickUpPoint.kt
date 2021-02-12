@@ -257,7 +257,7 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback {
 
                                 mMap.addMarker(
                                     MarkerOptions().position(location).title(addresses.get(0).getAddressLine(0)+"    "+addresses.get(0).latitude+"   "+addresses.get(0).longitude)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.loc1))
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.location))
                                 )
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 16f))
 

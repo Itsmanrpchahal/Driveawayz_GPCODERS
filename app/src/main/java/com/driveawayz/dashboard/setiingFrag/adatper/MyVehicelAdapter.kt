@@ -4,9 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.driveawayz.R
+import com.driveawayz.dashboard.setiingFrag.SettingFragment
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
 import retrofit2.Response
 
@@ -19,7 +21,7 @@ class MyVehicelAdapter(var context: Context, var list: Response<List<MyVehiclesR
 
     override fun onBindViewHolder(holder: MyVehicelAdapter.ViewHolder, position: Int) {
         var listData = list.body()?.get(position)
-        holder.bindItems(listData)
+        holder.bindItems(listData,position)
     }
 
     override fun getItemCount(): Int {
@@ -35,14 +37,16 @@ class MyVehicelAdapter(var context: Context, var list: Response<List<MyVehiclesR
         lateinit var transsmisuion_tv : TextView
         lateinit var licenceplate: TextView
         lateinit var state : TextView
+        lateinit var delete_vehicle : ImageButton
 
-        fun bindItems(list: MyVehiclesResponse?) {
+        fun bindItems(list: MyVehiclesResponse?, position: Int) {
             type = itemView.findViewById(R.id.type)
             year_tv = itemView.findViewById(R.id.year_tv)
             make_year_tv = itemView.findViewById(R.id.make_year_tv)
             licenceplate = itemView.findViewById(R.id.licenceplate)
             transsmisuion_tv = itemView.findViewById(R.id.transsmisuion_tv)
             state = itemView.findViewById(R.id.state)
+            delete_vehicle = itemView.findViewById(R.id.delete_vehicle)
 
             make_year_tv.setText(list!!.getMake().toString())
             type.setText(list.getType().toString())
@@ -50,6 +54,10 @@ class MyVehicelAdapter(var context: Context, var list: Response<List<MyVehiclesR
             year_tv.setText(list.getYear().toString())
             transsmisuion_tv.setText(list.getTransmission().toString())
             state.setText(list.getState().toString())
+
+            delete_vehicle.setOnClickListener {
+                SettingFragment.deleteVehicleIF?.getID(position.toString())
+            }
         }
     }
 }

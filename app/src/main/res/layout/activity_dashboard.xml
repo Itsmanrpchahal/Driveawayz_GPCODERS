@@ -56,6 +56,18 @@
 
                         </ImageButton>
 
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/white"
+                            android:layout_centerInParent="true"
+                            android:textSize="@dimen/defaultmargin"
+                            android:textStyle="bold">
+
+                        </TextView>
+
 
                     </RelativeLayout>
 
