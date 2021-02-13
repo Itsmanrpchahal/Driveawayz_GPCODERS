@@ -32,6 +32,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorTrans"
                     android:layout_marginLeft="90dp"
+                    android:visibility="gone"
                     android:clickable="false"
                     android:src="@drawable/ic_upload">
 
@@ -50,29 +51,33 @@
 
 
 
-            <TextView
+            <EditText
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="John"
+                android:singleLine="true"
+                android:textColor="@color/black"
                 android:layout_below="@id/userimage"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/defaultmargin"
                 android:textSize="@dimen/textsize_sp16">
 
-            </TextView>
+            </EditText>
 
-            <TextView
+            <EditText
                 android:id="@+id/user_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="John@gmail.com"
+                android:singleLine="true"
+                android:textColor="@color/black"
                 android:layout_below="@id/user_name"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/margin_dp10"
                 android:textSize="@dimen/textsize_sp12">
 
-            </TextView>
+            </EditText>
 
             <RelativeLayout
                 android:id="@+id/infolayout"
@@ -123,6 +128,7 @@
                     android:backgroundTint="@color/colorTheme"
                     android:background="@color/colorTrans"
                     android:hint="136263560"
+                    android:inputType="number"
                     android:enabled="false"
                     android:textColor="@color/colorBlack"
                     android:layout_marginLeft="@dimen/margin_dp5">
@@ -166,7 +172,8 @@
                     android:layout_marginRight="@dimen/margin_dp30"
                     android:background="@color/colorTrans"
                     android:hint="Mar 18 2018"
-                    android:enabled="false"
+                    android:clickable="true"
+                    android:focusable="false"
                     android:backgroundTint="@color/colorTheme"
                     android:textColor="@color/colorBlack"
                     android:layout_marginLeft="@dimen/margin_dp5">

@@ -175,15 +175,15 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
         {
             if (success.code()==200)
             {
-                setStringVal(Constants.NAME,success.body()?.getName())
-                setStringVal(Constants.EMAIL,success.body()?.getEmail())
-                setStringVal(Constants.DOB,success.body()?.getDateOfBirth())
-                setStringVal(Constants.MOBILENUMBER,success.body()?.getPhoneNumber())
+                setStringVal(Constants.NAME,success.body()?.name)
+                setStringVal(Constants.EMAIL,success.body()?.email)
+                setStringVal(Constants.DOB,success.body()?.dateOfBirth)
+                setStringVal(Constants.MOBILENUMBER,success.body()?.phoneNumber)
                 setStringVal(Constants.PHONENUMBERVERIFIED,
-                    success.body()?.getPhoneVerified().toString()
+                    success.body()?.phoneVerified.toString()
                 )
 
-                if (success.body()?.getAddress()?.size==0) {
+                if (success.body()?.address?.size==0) {
                     startActivity(
                         Intent(
                             this,
@@ -194,7 +194,7 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
 
                     finish()
 
-                } else if (success.body()?.getVehicle()?.size==0) {
+                } else if (success.body()?.vehicle?.size==0) {
                     startActivity(
                         Intent(
                             this,

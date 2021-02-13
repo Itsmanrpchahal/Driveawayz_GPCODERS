@@ -60,15 +60,15 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
             if (!getStringVal(Constants.TOKEN).equals("")) {
                 if (success.isSuccessful) {
                     if (success.code() == 200) {
-                        setStringVal(Constants.NAME, success.body()?.getName())
-                        setStringVal(Constants.EMAIL, success.body()?.getEmail())
-                        setStringVal(Constants.DOB, success.body()?.getDateOfBirth())
-                        setStringVal(Constants.MOBILENUMBER, success.body()?.getPhoneNumber())
+                        setStringVal(Constants.NAME, success.body()?.name)
+                        setStringVal(Constants.EMAIL, success.body()?.email)
+                        setStringVal(Constants.DOB, success.body()?.dateOfBirth)
+                        setStringVal(Constants.MOBILENUMBER, success.body()?.phoneNumber)
                         setStringVal(
                             Constants.PHONENUMBERVERIFIED,
-                            success.body()?.getPhoneVerified().toString()
+                            success.body()?.phoneNumber.toString()
                         )
-                        if (success.body()?.getAddress()?.size == 0) {
+                        if (success.body()?.address?.size == 0) {
                             startActivity(
                                 Intent(
                                     this,
@@ -79,7 +79,7 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
 
                             finish()
 
-                        } else if (success.body()?.getVehicle()?.size == 0) {
+                        } else if (success.body()?.vehicle?.size == 0) {
                             startActivity(
                                 Intent(
                                     this,
@@ -183,15 +183,15 @@ class SplashScreen : BaseClass(), Controller.MeAPI {
         if (success.isSuccessful)
         {
             methodRequiresPermission(success)
-            setStringVal(Constants.ADDRESS, success.body()?.getAddress()?.size.toString())
-            setStringVal(Constants.VEHICLES, success.body()?.getVehicle()?.size.toString())
-            setStringVal(Constants.CARDS, success.body()?.getCards()?.size.toString())
-            setStringVal(Constants.NAME,success.body()?.getName())
+            setStringVal(Constants.ADDRESS, success.body()?.address?.size.toString())
+            setStringVal(Constants.VEHICLES, success.body()?.vehicle?.size.toString())
+            setStringVal(Constants.CARDS, success.body()?.cards?.size.toString())
+            setStringVal(Constants.NAME,success.body()?.name)
         } else {
             clearStringVal(Constants.TOKEN)
 
         }
-        Log.d("success", "" + success.body()?.getAddress())
+        Log.d("success", "" + success.body()?.address)
 
 
 

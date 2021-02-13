@@ -23,4 +23,5 @@ object Constants {
     var DROPADDRESS ="DROPADDRESS"
 //    val STRIPEKEY: String? = "pk_test_OTNta0F2CKTUpYDDM7igKdml"
     val STRIPEKEY: String? = "pk_test_eAexCNVuFAFBrWrfthrvK5i500Jb0yc34o"
+    var BASE_URL = "https://arcane-harbor-96521.herokuapp.com"
 }

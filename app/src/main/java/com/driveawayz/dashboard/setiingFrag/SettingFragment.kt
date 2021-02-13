@@ -1,6 +1,7 @@
 package com.driveawayz.dashboard.setiingFrag
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.BroadcastReceiver
@@ -13,11 +14,13 @@ import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.driveawayz.Constant.BaseFrag
 import com.driveawayz.Controller.Controller
 import com.driveawayz.R
@@ -40,6 +43,8 @@ import okhttp3.MultipartBody
 import retrofit2.Response
 import java.io.File
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class SettingFragment : BaseFrag(),
@@ -81,10 +86,14 @@ Controller.UploadImageAPI{
     private lateinit var user_birthdate_et: EditText
     private lateinit var street: EditText
     private lateinit var city: EditText
+    private lateinit var user_email : EditText
+    private lateinit var user_name : EditText
     private lateinit var EditInfo : Button
     private lateinit var userimage : CircleImageView
     private var addressID: String = ""
+    private  var datetime = ""
     private lateinit var addressesList: ArrayList<MyAddessesResponse>
+    val c = Calendar.getInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -175,6 +184,7 @@ Controller.UploadImageAPI{
         addnewvehicle_bt.setOnClickListener(this)
         addnewaddress_bt.setOnClickListener(this)
         EditInfo.setOnClickListener(this)
+        user_birthdate_et.setOnClickListener(this)
 
     }
 
@@ -220,10 +230,12 @@ Controller.UploadImageAPI{
         addnewaddress_bt = view.findViewById(R.id.addnewaddress_bt)
         user_phn_number_et = view.findViewById(R.id.user_phn_number_et)
         user_birthdate_et = view.findViewById(R.id.user_birthdate_et)
+        user_name = view.findViewById(R.id.user_name)
         userimage = view.findViewById(R.id.userimage)
         city = view.findViewById(R.id.city)
         street = view.findViewById(R.id.street)
         EditInfo = view.findViewById(R.id.EditInfo)
+        user_email = view.findViewById(R.id.user_email)
         pd = ProgressDialog(context)
         pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         pd!!.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
@@ -274,7 +286,7 @@ Controller.UploadImageAPI{
             bitMap = MediaStore.Images.Media.getBitmap(context?.contentResolver, fileUri)
             part = Utility.sendImageFileToserver(context?.filesDir, bitMap, "file")
             userimage.setImageBitmap(bitMap)
-            pd.show()
+            //pd.show()
             controller.UploadImage("Bearer "+getStringVal(Constants.TOKEN),part)
 
             //ToDo: Hit upload image api here
@@ -309,7 +321,64 @@ Controller.UploadImageAPI{
         if (v == EditInfo)
         {
 
+            if (EditInfo.text.equals("Edit Information"))
+            {
+                EditInfo.setText("Update")
+                user_phn_number_et.isEnabled = true
+                //user_birthdate_et.isClickable = true
+                user_name.isEnabled = true
+                user_email.isEnabled = true
+                uploadImage.visibility = View.VISIBLE
+            } else if (EditInfo.text.equals("Update"))
+            {
+                EditInfo.setText("Edit Information")
+                user_phn_number_et.isEnabled = false
+                user_name.isEnabled = false
+                user_email.isEnabled = false
+                uploadImage.visibility = View.GONE
+            }
         }
+
+
+        var dateSetListener = object : DatePickerDialog.OnDateSetListener {
+            override fun onDateSet(
+                view: DatePicker, year: Int, monthOfYear: Int,
+                dayOfMonth: Int
+            ) {
+                c.set(Calendar.YEAR, year)
+                c.set(Calendar.MONTH, monthOfYear)
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                updateDateInView()
+            }
+
+        }
+
+        if (v == user_birthdate_et)
+        {
+             if (EditInfo.text.toString().equals("Update"))
+            {
+                val datePickerDialog = DatePickerDialog(
+                    context!!,
+                    R.style.DialogTheme,
+                    dateSetListener,
+                    c.get(Calendar.YEAR),
+                    c.get(Calendar.MONTH),
+                    c.get(Calendar.DAY_OF_MONTH)
+                )
+                datePickerDialog.datePicker.maxDate = System.currentTimeMillis() + 1000
+                datePickerDialog.show()
+            }
+        }
+    }
+
+    private fun updateDateInView() {
+        val myFormat = "dd/MM/yyyy" // mention the format you need
+        val format1 = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        val sdf1 = SimpleDateFormat(format1, Locale.UK)
+        datetime = sdf1.format(c.time)
+        Log.d("TIME", "" + datetime)
+        user_birthdate_et.setText(sdf.format(c.time))
     }
 
     private fun addnewAddressDialog(type: String) {
@@ -530,10 +599,13 @@ Controller.UploadImageAPI{
         if (success.isSuccessful) {
             if (success.code() == 200) {
                 user_phn_number_et.isEnabled = false
-                user_phn_number_et.setText(success.body()?.getPhoneNumber().toString())
-                user_birthdate_et.isEnabled = false
+                user_phn_number_et.setText(success.body()?.phoneNumber.toString())
+                user_name.setText(success.body()?.name)
+                user_name.isEnabled = false
+                user_email.setText(success.body()?.email.toString())
+                user_email.isEnabled = false
 
-                val date1 = success.body()?.getDateOfBirth()?.substring(0, 10)
+                val date1 = success.body()?.dateOfBirth?.substring(0, 10)
                 var date = date1
                 var spf = SimpleDateFormat("yyyy-mm-dd")
                 val newDate = spf.parse(date)
@@ -541,12 +613,13 @@ Controller.UploadImageAPI{
                 date = spf.format(newDate)
                 println(date)
                 user_birthdate_et.setText(date)
+                Glide.with(context!!).load(Constants.BASE_URL+"/profile-images/"+success.body()?.profilePic?.imageUrl).into(userimage)
 
 
                 street.isEnabled = false
-                street.setText(success.body()?.getAddress()?.get(0)?.street)
+                street.setText(success.body()?.address?.get(0)?.street)
                 city.isEnabled = false
-                city.setText(success.body()?.getAddress()?.get(0)?.address)
+                city.setText(success.body()?.address?.get(0)?.address)
             } else {
                 utility!!.relative_snackbar(
                     requireActivity().window.decorView,
