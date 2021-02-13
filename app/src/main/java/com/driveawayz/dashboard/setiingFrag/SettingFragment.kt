@@ -56,10 +56,11 @@ class SettingFragment : BaseFrag(),
     Controller.AddNewAddress,
     UpdateAddress_IF,
     Controller.UpdateAddressAPI,
-    Controller.DeleteAddressAPI ,
+    Controller.DeleteAddressAPI,
     Controller.DeleteVehicleAPI,
-    DeleteVehicleIF ,
-Controller.UploadImageAPI{
+    DeleteVehicleIF,
+    Controller.UploadImageAPI,
+    Controller.UpdateProfileAPI {
 
 
     private lateinit var part: MultipartBody.Part
@@ -86,12 +87,12 @@ Controller.UploadImageAPI{
     private lateinit var user_birthdate_et: EditText
     private lateinit var street: EditText
     private lateinit var city: EditText
-    private lateinit var user_email : EditText
-    private lateinit var user_name : EditText
-    private lateinit var EditInfo : Button
-    private lateinit var userimage : CircleImageView
+    private lateinit var user_email: EditText
+    private lateinit var user_name: EditText
+    private lateinit var EditInfo: Button
+    private lateinit var userimage: CircleImageView
     private var addressID: String = ""
-    private  var datetime = ""
+    private var datetime = ""
     private lateinit var addressesList: ArrayList<MyAddessesResponse>
     val c = Calendar.getInstance()
     override fun onCreateView(
@@ -114,7 +115,7 @@ Controller.UploadImageAPI{
 
     companion object {
         var updateaddressIf: UpdateAddress_IF? = null
-        var deleteVehicleIF : DeleteVehicleIF? = null
+        var deleteVehicleIF: DeleteVehicleIF? = null
     }
 
     private fun listeners() {
@@ -218,7 +219,7 @@ Controller.UploadImageAPI{
     private fun findIds(view: View?) {
         utility = Utility()
         controller = Controller()
-        controller.Controller(this, this, this, this, this, this, this, this,this)
+        controller.Controller(this, this, this, this, this, this, this, this, this, this)
         bottomnavigaton = view!!.findViewById(R.id.bottomnavigaton)
         profileview = view.findViewById(R.id.profileview)
         myaddressview = view.findViewById(R.id.myaddressview)
@@ -286,8 +287,8 @@ Controller.UploadImageAPI{
             bitMap = MediaStore.Images.Media.getBitmap(context?.contentResolver, fileUri)
             part = Utility.sendImageFileToserver(context?.filesDir, bitMap, "file")
             userimage.setImageBitmap(bitMap)
-            //pd.show()
-            controller.UploadImage("Bearer "+getStringVal(Constants.TOKEN),part)
+            pd.show()
+            controller.UploadImage("Bearer " + getStringVal(Constants.TOKEN), part)
 
             //ToDo: Hit upload image api here
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
@@ -318,24 +319,37 @@ Controller.UploadImageAPI{
             addnewAddressDialog("1")
         }
 
-        if (v == EditInfo)
-        {
+        if (v == EditInfo) {
 
-            if (EditInfo.text.equals("Edit Information"))
-            {
+            if (EditInfo.text.equals("Edit Information")) {
                 EditInfo.setText("Update")
                 user_phn_number_et.isEnabled = true
                 //user_birthdate_et.isClickable = true
                 user_name.isEnabled = true
                 user_email.isEnabled = true
                 uploadImage.visibility = View.VISIBLE
-            } else if (EditInfo.text.equals("Update"))
-            {
+            } else if (EditInfo.text.equals("Update")) {
                 EditInfo.setText("Edit Information")
                 user_phn_number_et.isEnabled = false
                 user_name.isEnabled = false
                 user_email.isEnabled = false
                 uploadImage.visibility = View.GONE
+
+                when {
+                    user_name.text.isEmpty() -> {
+                        user_name.requestFocus()
+                        user_name.setError("Enter Username")
+                    }
+
+                    user_email.text.isEmpty() -> {
+                        user_email.requestFocus()
+                        user_email.setError("Enter Email")
+                    }
+                    else -> {
+                        pd.show()
+                        controller.UpdateProfile("Bearer "+getStringVal(Constants.TOKEN),user_name.text.toString(),user_email.text.toString(),datetime)
+                    }
+                }
             }
         }
 
@@ -353,10 +367,8 @@ Controller.UploadImageAPI{
 
         }
 
-        if (v == user_birthdate_et)
-        {
-             if (EditInfo.text.toString().equals("Update"))
-            {
+        if (v == user_birthdate_et) {
+            if (EditInfo.text.toString().equals("Update")) {
                 val datePickerDialog = DatePickerDialog(
                     context!!,
                     R.style.DialogTheme,
@@ -540,8 +552,7 @@ Controller.UploadImageAPI{
                             licenceplate_et.text.toString(),
                             state_et.text.toString()
                         )
-                    }
-                    else {
+                    } else {
                         utility!!.relative_snackbar(
                             requireActivity().window.currentFocus,
                             getString(R.string.nointernet),
@@ -613,9 +624,11 @@ Controller.UploadImageAPI{
                 date = spf.format(newDate)
                 println(date)
                 user_birthdate_et.setText(date)
-                Glide.with(context!!).load(Constants.BASE_URL+"/profile-images/"+success.body()?.profilePic?.imageUrl).into(userimage)
+                Glide.with(context!!)
+                    .load(Constants.BASE_URL + "/profile-images/" + success.body()?.profilePic?.imageUrl)
+                    .into(userimage)
 
-
+                datetime = success.body()?.dateOfBirth!!
                 street.isEnabled = false
                 street.setText(success.body()?.address?.get(0)?.street)
                 city.isEnabled = false
@@ -695,8 +708,7 @@ Controller.UploadImageAPI{
     }
 
     override fun onDeleteVehcleSuccess(success: Response<DeleteVehicleReponse>) {
-        if (success.isSuccessful)
-        {
+        if (success.isSuccessful) {
             controller.MyVehicles("Bearer " + getStringVal(Constants.TOKEN))
         } else {
             utility!!.relative_snackbar(
@@ -710,10 +722,8 @@ Controller.UploadImageAPI{
 
     override fun onUploadImageSuccess(success: Response<UploadImageResponse>) {
         pd.dismiss()
-        if (success.isSuccessful)
-        {
-            if (success.code()==201)
-            {
+        if (success.isSuccessful) {
+            if (success.code() == 201) {
                 utility!!.relative_snackbar(
                     requireActivity().window.decorView,
                     "Image updated",
@@ -726,6 +736,25 @@ Controller.UploadImageAPI{
                     getString(R.string.close_up)
                 )
             }
+        } else {
+            utility!!.relative_snackbar(
+                requireActivity().window.decorView,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
+    }
+
+    override fun onUpdateProfileSuccess(success: Response<UpdateProfileResponse>) {
+        pd.dismiss()
+        if (success.isSuccessful)
+        {
+            EditInfo.text = "Edit Information"
+            utility!!.relative_snackbar(
+                requireActivity().window.decorView,
+                "Profile Updated",
+                getString(R.string.close_up)
+            )
         } else {
             utility!!.relative_snackbar(
                 requireActivity().window.decorView,

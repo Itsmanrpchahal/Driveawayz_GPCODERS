@@ -14,6 +14,7 @@ import com.driveawayz.dashboard.setiingFrag.response.DeleteVehicleReponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.UpdateAddressResponse;
+import com.driveawayz.dashboard.setiingFrag.response.UpdateProfileResponse;
 import com.driveawayz.dashboard.setiingFrag.response.UploadImageResponse;
 import com.driveawayz.splashScreen.MeResponse;
 
@@ -157,4 +158,13 @@ public interface ApiInterface {
     Call<UploadImageResponse> uploadImage(
             @Header("Authorization") String token,
             @Part MultipartBody.Part image);
+
+    @FormUrlEncoded
+    @PUT("/api/v1/user/me")
+    Call<UpdateProfileResponse> updateProfile(
+            @Header("Authorization") String token,
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("dateOfBirth") String dateOfBirth
+    );
 }

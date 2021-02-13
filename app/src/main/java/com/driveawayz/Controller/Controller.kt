@@ -36,6 +36,7 @@ class Controller {
     var deleteAddressAPI: DeleteAddressAPI? = null
     var deleteVehiclesAPI: DeleteVehicleAPI? = null
     var uploadImageAPI: UploadImageAPI? = null
+    var updateProfileAPI : UpdateProfileAPI? = null
 
     fun Controller(signUpPhone: SignUpPhoneAPI) {
         signUpPhoneAPI = signUpPhone
@@ -84,7 +85,8 @@ class Controller {
         updateAdrress: UpdateAddressAPI,
         deleteAddress: DeleteAddressAPI,
         deleteVehicle: DeleteVehicleAPI,
-        uploadImage: UploadImageAPI
+        uploadImage: UploadImageAPI,
+        updateProfile : UpdateProfileAPI
     ) {
         myVehiclesAPI = myVehicles
         addVehiclesAPI = addVehicle
@@ -94,6 +96,8 @@ class Controller {
         updateAddressAPI = updateAdrress
         deleteAddressAPI = deleteAddress
         deleteVehiclesAPI = deleteVehicle
+        uploadImageAPI = uploadImage
+        updateProfileAPI = updateProfile
         webAPI = WebAPI()
     }
 
@@ -400,6 +404,24 @@ class Controller {
         })
     }
 
+    fun UpdateProfile(token: String,username:String,email: String,dateOfBirth: String)
+    {
+        webAPI?.api?.updateProfile(token,username,email,dateOfBirth)?.enqueue(object :Callback<UpdateProfileResponse>
+        {
+            override fun onResponse(
+                call: Call<UpdateProfileResponse>,
+                response: Response<UpdateProfileResponse>
+            ) {
+                updateProfileAPI?.onUpdateProfileSuccess(response)
+            }
+
+            override fun onFailure(call: Call<UpdateProfileResponse>, t: Throwable) {
+                updateProfileAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
     interface SignUpPhoneAPI {
         fun onSignUpPhoneSuccess(success: Response<SignUpPhoneNoResponse>)
         fun onError(error: String)
@@ -477,6 +499,11 @@ class Controller {
 
     interface UploadImageAPI {
         fun onUploadImageSuccess(success: Response<UploadImageResponse>)
+        fun onError(error: String)
+    }
+
+    interface UpdateProfileAPI {
+        fun onUpdateProfileSuccess(success:Response<UpdateProfileResponse>)
         fun onError(error: String)
     }
 }
