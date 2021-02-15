@@ -68,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:text="Payment Methods"
                 android:textAllCaps="false"
+                android:visibility="gone"
                 android:background="@color/colorWhite"
                 android:textColor="@color/colorBlack"
                 android:drawableLeft="@drawable/ic_card"
@@ -116,7 +117,7 @@
                 android:textAllCaps="false"
                 android:background="@color/colorWhite"
                 android:textColor="@color/colorBlack"
-                android:drawableLeft="@drawable/ic_baseline_power_settings_new_24"
+                android:drawableLeft="@drawable/logout"
                 android:textAlignment="textStart"
                 android:drawablePadding="@dimen/margin_dp25"
                 android:padding="@dimen/margin_dp10">

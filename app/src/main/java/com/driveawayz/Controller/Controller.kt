@@ -76,6 +76,12 @@ class Controller {
         webAPI = WebAPI()
     }
 
+    fun Controller(  myAdderess: MyAdderessAPI)
+    {
+        myAdderessAPI = myAdderess
+        webAPI = WebAPI()
+    }
+
     fun Controller(
         myVehicles: MyVehiclesAPI,
         addVehicle: AddVehiclesAPI,

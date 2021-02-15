@@ -1,10 +1,13 @@
 package com.driveawayz.dashboard.homeFrag
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.net.ConnectivityManager
@@ -13,20 +16,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.Toast
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.driveawayz.Constant.BaseFrag
+import com.driveawayz.Controller.Controller
 import com.driveawayz.R
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.GpsTracker
 import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.homeFrag.customPlacepicker.AutoCompleteAdapter
+import com.driveawayz.dashboard.setiingFrag.adatper.MyAddress_Adapter
+import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
+import com.driveawayz.splashScreen.MeResponse
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -43,12 +51,13 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+import retrofit2.Response
 import java.io.IOException
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class PickUpPoint : BaseFrag(), OnMapReadyCallback {
+class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
 
     lateinit var manager: FragmentManager
     lateinit var setPickUpBt: Button
@@ -60,7 +69,12 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback {
     private var lng: Double = 0.0
     var placesClient: PlacesClient? = null
     lateinit var adapter: AutoCompleteAdapter
+    private lateinit var controller: Controller
+    private lateinit var pd: ProgressDialog
+    private lateinit var select_address_spinner: AppCompatSpinner
     private lateinit var utility: Utility
+    private lateinit var myAddresses: ArrayList<MyAddessesResponse>
+    private lateinit var addressesList: ArrayList<String>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,6 +94,11 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback {
         autocompleteAddress()
         Places.initialize(context!!, getResources().getString(R.string.googleclientId));
         findIds(view, savedInstanceState)
+        controller = Controller()
+        controller.Controller(this)
+        controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
+        pd.show()
+        pd.setContentView(R.layout.loading)
         manager = getActivity()?.getSupportFragmentManager()!!
 
         mapviewpickup = manager.findFragmentById(R.id.mapviewpickup) as SupportMapFragment?
@@ -90,12 +109,12 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback {
         if (gpsTracker.canGetLocation()) {
             lat = gpsTracker.latitude
             lng = gpsTracker.longitude
-            val geocoder : Geocoder
-            geocoder = Geocoder(context,Locale.getDefault())
-            val address : List<Address>
-            address = geocoder.getFromLocation(lat,lng,1)
+            val geocoder: Geocoder
+            geocoder = Geocoder(context, Locale.getDefault())
+            val address: List<Address>
+            address = geocoder.getFromLocation(lat, lng, 1)
 
-            pickupEt.setText(address.get(0).getAddressLine(0))
+            //pickupEt.setText(address.get(0).getAddressLine(0))
         } else {
             gpsTracker.showSettingsAlert()
         }
@@ -107,16 +126,14 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback {
 
     private fun listeners() {
         setPickUpBt.setOnClickListener {
-            if (utility.isConnectingToInternet(context))
-            {
-                if (setPickUpBt.text.isEmpty())
-                {
+            if (utility.isConnectingToInternet(context)) {
+                if (pickupEt.text.toString().equals("")) {
                     pickupEt.requestFocus()
                     pickupEt.setError("Enter Pickup address")
                 } else {
                     setStringVal(Constants.LAT, lat.toString())
                     setStringVal(Constants.LNG, lng.toString())
-                    setStringVal(Constants.PICKUPADDRESS,pickupEt.text.toString())
+                    setStringVal(Constants.PICKUPADDRESS, pickupEt.text.toString())
 
                     manager.beginTransaction().replace(
                         R.id.nav_host_fragment,
@@ -125,7 +142,10 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback {
                 }
 
             } else {
-                context?.registerReceiver(broadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+                context?.registerReceiver(
+                    broadcastReceiver,
+                    IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+                )
             }
 
         }
@@ -134,11 +154,17 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback {
     private fun findIds(view: View?, savedInstanceState: Bundle?) {
         setPickUpBt = view!!.findViewById(R.id.setPickUp_bt)
         pickupEt = view!!.findViewById(R.id.pickup_et)
+        select_address_spinner = view.findViewById(R.id.select_address_spinner)
         pickupEt.threshold = 1
         pickupEt.setOnItemClickListener(autocompleteClickListener)
-        adapter = AutoCompleteAdapter(context,placesClient)
+        adapter = AutoCompleteAdapter(context, placesClient)
         pickupEt.setAdapter(adapter)
-        utility  = Utility()
+        utility = Utility()
+        pd = ProgressDialog(context)
+        pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        pd!!.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        pd!!.isIndeterminate = true
+        pd!!.setCancelable(false)
     }
 
 
@@ -234,17 +260,19 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback {
                             try {
                                 val addresses: List<Address> = geocoder.getFromLocationName(loc, 15)
 
-                               // val latLngs: MutableList<LatLng> = ArrayList(addresses.size)
-                               // Log.d("latLngs", latLngs.toString())
-9
-                                val lat2 : Double = java.lang.String.valueOf(addresses.get(0).latitude).toDouble()
-                                val lng2 : Double = java.lang.String.valueOf(addresses.get(0).longitude).toDouble()
+                                // val latLngs: MutableList<LatLng> = ArrayList(addresses.size)
+                                // Log.d("latLngs", latLngs.toString())
+                                9
+                                val lat2: Double =
+                                    java.lang.String.valueOf(addresses.get(0).latitude).toDouble()
+                                val lng2: Double =
+                                    java.lang.String.valueOf(addresses.get(0).longitude).toDouble()
 
                                 lat = lat2
                                 lng = lng2
-                                Log.d("LATLONG",""+lat2+"   "+lng2)
+                                Log.d("LATLONG", "" + lat2 + "   " + lng2)
                                 val location = LatLng(lat, lng)
-                                Log.d("LATLNG",""+lat+"   "+lng)
+                                Log.d("LATLNG", "" + lat + "   " + lng)
                                 pickupEt.setText(addresses.get(0).getAddressLine(0).toString())
                                 pickupEt.setSelection(pickupEt.text.length)
                                 mMap.clear()
@@ -256,7 +284,11 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback {
                                 }
 
                                 mMap.addMarker(
-                                    MarkerOptions().position(location).title(addresses.get(0).getAddressLine(0)+"    "+addresses.get(0).latitude+"   "+addresses.get(0).longitude)
+                                    MarkerOptions().position(location).title(
+                                        addresses.get(0).getAddressLine(0) + "    " + addresses.get(
+                                            0
+                                        ).latitude + "   " + addresses.get(0).longitude
+                                    )
                                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.location))
                                 )
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 16f))
@@ -281,5 +313,66 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback {
         } catch (e: Exception) {
 
         }
+    }
+
+    override fun onMyAddressSuccess(success: Response<List<MyAddessesResponse>>) {
+        pd.dismiss()
+        if (success.isSuccessful) {
+            myAddresses = ArrayList()
+            for (i in success.body()?.indices!!) {
+                myAddresses.addAll(listOf(success.body()!!.get(i)))
+            }
+
+            addressesList = ArrayList()
+            addressesList.add("Select address")
+            for (i in 0 until myAddresses.size) {
+                addressesList.add(myAddresses.get(i).address.toString())
+                val adapter = ArrayAdapter(context!!, R.layout.spinnertv, addressesList)
+                select_address_spinner.adapter = adapter
+                select_address_spinner.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            select_address_spinner.selectedItem
+                            if (position != 0) {
+                                Toast.makeText(
+                                    context,
+                                    "" + myAddresses.get(position - 1).street,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+
+                            //pd.show()
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                        }
+
+                    }
+            }
+
+        } else {
+            utility!!.relative_snackbar(
+                requireActivity().window.decorView,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
+    }
+
+
+    override fun onError(error: String) {
+        pd.dismiss()
+        utility!!.relative_snackbar(
+            requireActivity().window.decorView,
+            error,
+            getString(R.string.close_up)
+        )
     }
 }

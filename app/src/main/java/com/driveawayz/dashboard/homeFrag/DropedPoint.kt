@@ -1,9 +1,12 @@
 package com.driveawayz.dashboard.homeFrag
 
+import android.app.ProgressDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.net.ConnectivityManager
@@ -14,17 +17,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.AutoCompleteTextView
-import android.widget.Button
+import android.widget.*
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.fragment.app.FragmentManager
 import com.driveawayz.Constant.BaseFrag
+import com.driveawayz.Controller.Controller
 import com.driveawayz.R
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.GpsTracker
 import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.homeFrag.customPlacepicker.AutoCompleteAdapter
+import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -42,10 +47,11 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+import retrofit2.Response
 import java.io.IOException
 import java.util.*
 
-class DropedPoint : BaseFrag(),OnMapReadyCallback {
+class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
 
     private lateinit var setDestination_bt: Button
     lateinit var manager: FragmentManager
@@ -57,7 +63,12 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback {
     private var lng: Double = 0.0
     var placesClient: PlacesClient? = null
     lateinit var adapter: AutoCompleteAdapter
+    private lateinit var select_address_spinner : AppCompatSpinner
     private lateinit var utility: Utility
+    private lateinit var myAddresses: ArrayList<MyAddessesResponse>
+    private lateinit var addressesList: ArrayList<String>
+    private lateinit var pd: ProgressDialog
+    private lateinit var controller : Controller
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,7 +97,7 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback {
             val address : List<Address>
             address = geocoder.getFromLocation(lat,lng,1)
 
-            setdestination_et.setText(address.get(0).getAddressLine(0))
+           // setdestination_et.setText(address.get(0).getAddressLine(0))
 
         } else {
             gpsTracker.showSettingsAlert()
@@ -106,7 +117,7 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback {
         setDestination_bt.setOnClickListener {
             if (utility.isConnectingToInternet(context))
             {
-                if (setdestination_et.text.isEmpty())
+                if (setdestination_et.text.toString().equals(""))
                 {
                     setdestination_et.requestFocus()
                     setdestination_et.setError("Enter Pickup address")
@@ -128,11 +139,20 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback {
     private fun findIds(view: View?) {
         setDestination_bt = view?.findViewById(R.id.setDestination_bt)!!
         setdestination_et = view?.findViewById(R.id.setdestination_et)!!
+        select_address_spinner = view?.findViewById(R.id.select_address_spinner)
         setdestination_et.threshold = 1
         setdestination_et.setOnItemClickListener(autocompleteClickListener)
         adapter = AutoCompleteAdapter(context,placesClient)
         setdestination_et.setAdapter(adapter)
         utility = Utility()
+        pd = ProgressDialog(context)
+        pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        pd!!.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        pd!!.isIndeterminate = true
+        pd!!.setCancelable(false)
+        controller = Controller()
+        controller.Controller(this)
+        controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
     }
 
     //Check Internet Connection
@@ -281,5 +301,64 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback {
 
         }
 
+    }
+
+    override fun onMyAddressSuccess(success: Response<List<MyAddessesResponse>>) {
+        pd.dismiss()
+        if (success.isSuccessful) {
+            myAddresses = ArrayList()
+            for (i in success.body()?.indices!!) {
+                myAddresses.addAll(listOf(success.body()!!.get(i)))
+            }
+
+            addressesList = ArrayList()
+            addressesList.add("Select address")
+            for (i in 0 until myAddresses.size) {
+                addressesList.add(myAddresses.get(i).address.toString())
+                val adapter = ArrayAdapter(context!!, R.layout.spinnertv, addressesList)
+                select_address_spinner.adapter = adapter
+                select_address_spinner.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            select_address_spinner.selectedItem
+                            if (position != 0) {
+                                Toast.makeText(
+                                    context,
+                                    "" + myAddresses.get(position - 1).street,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+
+                            //pd.show()
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                        }
+
+                    }
+            }
+
+        } else {
+            utility!!.relative_snackbar(
+                requireActivity().window.decorView,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
+    }
+
+    override fun onError(error: String) {
+        utility!!.relative_snackbar(
+            requireActivity().window.decorView,
+            error,
+            getString(R.string.close_up)
+        )
     }
 }
