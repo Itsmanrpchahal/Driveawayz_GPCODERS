@@ -22,6 +22,10 @@ class MyVehicelAdapter(var context: Context, var list: Response<List<MyVehiclesR
     override fun onBindViewHolder(holder: MyVehicelAdapter.ViewHolder, position: Int) {
         var listData = list.body()?.get(position)
         holder.bindItems(listData,position)
+        if (position == (itemCount-1))
+        {
+            holder.view.visibility = View.GONE
+        }
     }
 
     override fun getItemCount(): Int {
@@ -38,6 +42,7 @@ class MyVehicelAdapter(var context: Context, var list: Response<List<MyVehiclesR
         lateinit var licenceplate: TextView
         lateinit var state : TextView
         lateinit var delete_vehicle : ImageButton
+        lateinit var view : View
 
         fun bindItems(list: MyVehiclesResponse?, position: Int) {
             type = itemView.findViewById(R.id.type)
@@ -47,6 +52,7 @@ class MyVehicelAdapter(var context: Context, var list: Response<List<MyVehiclesR
             transsmisuion_tv = itemView.findViewById(R.id.transsmisuion_tv)
             state = itemView.findViewById(R.id.state)
             delete_vehicle = itemView.findViewById(R.id.delete_vehicle)
+            view = itemView.findViewById(R.id.view)
 
             make_year_tv.setText(list!!.getMake().toString())
             type.setText(list.getType().toString())

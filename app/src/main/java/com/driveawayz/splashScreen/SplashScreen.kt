@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.driveawayz.Constant.BaseClass
 import com.driveawayz.Controller.Controller
+import com.driveawayz.SignUp.CompleteSignUp
 import com.driveawayz.SignUp.SignUpDetail1
 import com.driveawayz.SignUp.SignUpDetail2
 import com.driveawayz.Utilities.Constants

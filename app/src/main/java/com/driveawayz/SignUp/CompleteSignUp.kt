@@ -48,15 +48,7 @@ class CompleteSignUp : AppCompatActivity() {
         setContentView(R.layout.activity_complete_sign_up)
 
         cardinput = findViewById(R.id.cardinput)
-        com.stripe.Stripe.apiKey = "pk_test_eAexCNVuFAFBrWrfthrvK5i500Jb0yc34o";
-        val card: MutableMap<String, Any> = HashMap()
-        card.put("number", "4000002500003155")
-        card.put("exp_month", 11)
-        card.put("exp_year", 2022)
-        card.put("cvc", "251")
-        var params: MutableMap<String, Any> = HashMap()
-        params["type"] = "card"
-        params["card"] = card
+
 
         findIds()
         listeners()
@@ -82,8 +74,6 @@ class CompleteSignUp : AppCompatActivity() {
 //
 //            PaymentMethod paymentMethod =
 //            PaymentMethod.create(params);
-
-            val stripe1 = Stripe(this, Constants.STRIPEKEY!!)
 
 
             val paymentIntent: PaymentIntent

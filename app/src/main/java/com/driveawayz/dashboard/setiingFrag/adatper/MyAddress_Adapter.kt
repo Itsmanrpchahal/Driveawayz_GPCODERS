@@ -31,6 +31,12 @@ class MyAddress_Adapter (var context: Context,var list: Response<List<MyAddesses
         holder.delete_address.setOnClickListener {
             SettingFragment.updateaddressIf?.getID(position.toString(),"delete")
         }
+        
+        if (position == (itemCount-1))
+        {
+            holder.view.visibility = View.GONE
+        }
+
     }
 
     override fun getItemCount(): Int {
@@ -43,12 +49,14 @@ class MyAddress_Adapter (var context: Context,var list: Response<List<MyAddesses
         lateinit var address_tv : TextView
         lateinit var edit_address : ImageButton
         lateinit var delete_address : ImageButton
+        lateinit var view : View
         fun bindItems(list: MyAddessesResponse?)
         {
             street_tv = itemView.findViewById(R.id.street_tv)
             address_tv = itemView.findViewById(R.id.address_tv)
             edit_address = itemView.findViewById(R.id.edit_address)
             delete_address = itemView.findViewById(R.id.delete_address)
+            view = itemView.findViewById(R.id.view)
             street_tv.setText(list?.street)
             address_tv.setText(list?.address)
         }
