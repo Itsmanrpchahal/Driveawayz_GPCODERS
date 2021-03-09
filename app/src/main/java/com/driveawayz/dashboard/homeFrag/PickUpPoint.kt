@@ -75,6 +75,7 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
     private lateinit var utility: Utility
     private lateinit var myAddresses: ArrayList<MyAddessesResponse>
     private lateinit var addressesList: ArrayList<String>
+    private var selectedAddress :String = "Select address"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -127,9 +128,8 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
     private fun listeners() {
         setPickUpBt.setOnClickListener {
 
-
             if (utility.isConnectingToInternet(context)) {
-                if (pickupEt.text.toString().equals("")) {
+                if (pickupEt.text.toString().equals("") && selectedAddress.equals("Select address")) {
                     pickupEt.requestFocus()
                     pickupEt.setError("Enter Pickup address")
                 } else {
@@ -142,14 +142,12 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
                         DropedPoint()
                     ).addToBackStack(null).commit()
                 }
-
             } else {
                 context?.registerReceiver(
                     broadcastReceiver,
                     IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
                 )
             }
-
         }
     }
 
@@ -339,7 +337,7 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
                         ) {
                             select_address_spinner.selectedItem
                             if (position != 0) {
-
+                                selectedAddress = myAddresses.get(position-1).address+" ,"+myAddresses.get(position-1).street
                                 setStringVal(Constants.LAT, "0.0")
                                 setStringVal(Constants.LNG, "0.0")
                                 setStringVal(Constants.PICKUPADDRESS, myAddresses.get(position-1).address+" ,"+myAddresses.get(position-1).street)

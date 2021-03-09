@@ -69,6 +69,7 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
     private lateinit var addressesList: ArrayList<String>
     private lateinit var pd: ProgressDialog
     private lateinit var controller : Controller
+    private  var selectedAddress : String ="Select address"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -117,7 +118,7 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
         setDestination_bt.setOnClickListener {
             if (utility.isConnectingToInternet(context))
             {
-                if (setdestination_et.text.toString().equals(""))
+                if (setdestination_et.text.toString().equals("") && selectedAddress.equals("Select address"))
                 {
                     setdestination_et.requestFocus()
                     setdestination_et.setError("Enter Pickup address")
@@ -330,6 +331,7 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
                                 setStringVal(Constants.LAT_D, "0.0")
                                 setStringVal(Constants.LNG_D, "0.0")
                                 setStringVal(Constants.DROPADDRESS,myAddresses.get(position-1).address+" ,"+myAddresses.get(position-1).street)
+                                selectedAddress = myAddresses.get(position-1).address+" ,"+myAddresses.get(position-1).street
                             }
 
 
