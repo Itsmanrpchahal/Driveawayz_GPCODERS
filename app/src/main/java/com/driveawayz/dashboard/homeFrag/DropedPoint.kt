@@ -327,11 +327,9 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
                         ) {
                             select_address_spinner.selectedItem
                             if (position != 0) {
-                                Toast.makeText(
-                                    context,
-                                    "" + myAddresses.get(position - 1).street,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                setStringVal(Constants.LAT_D, "0.0")
+                                setStringVal(Constants.LNG_D, "0.0")
+                                setStringVal(Constants.DROPADDRESS,myAddresses.get(position-1).address+" ,"+myAddresses.get(position-1).street)
                             }
 
 

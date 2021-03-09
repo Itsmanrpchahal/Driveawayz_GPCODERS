@@ -126,6 +126,8 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
 
     private fun listeners() {
         setPickUpBt.setOnClickListener {
+
+
             if (utility.isConnectingToInternet(context)) {
                 if (pickupEt.text.toString().equals("")) {
                     pickupEt.requestFocus()
@@ -213,8 +215,6 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
             CameraPosition.builder().target(LatLng(lat, lng)).zoom(16f).bearing(10f)
                 .tilt(30f).build()
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
-
-
     }
 
     private fun autocompleteAddress() {
@@ -339,11 +339,10 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
                         ) {
                             select_address_spinner.selectedItem
                             if (position != 0) {
-                                Toast.makeText(
-                                    context,
-                                    "" + myAddresses.get(position - 1).street,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+
+                                setStringVal(Constants.LAT, "0.0")
+                                setStringVal(Constants.LNG, "0.0")
+                                setStringVal(Constants.PICKUPADDRESS, myAddresses.get(position-1).address+" ,"+myAddresses.get(position-1).street)
                             }
 
 

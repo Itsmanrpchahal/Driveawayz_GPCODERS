@@ -105,10 +105,6 @@ dependencies {
     //ToDo:CCP
     implementation 'com.github.joielechong:countrycodepicker:2.4.1'
 
-    //ToDo: SMS Catcher
-    implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    implementation 'com.google.android.gms:play-services-auth-api-phone:17.4.0'
-
     //ToDo: Stripe
     implementation 'com.stripe:stripe-android:8.2.0'
 //    implementation "com.stripe:stripeterminal:1.0.17"
