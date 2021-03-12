@@ -333,8 +333,6 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
                                 setStringVal(Constants.DROPADDRESS,myAddresses.get(position-1).address+" ,"+myAddresses.get(position-1).street)
                                 selectedAddress = myAddresses.get(position-1).address+" ,"+myAddresses.get(position-1).street
                             }
-
-
                             //pd.show()
                         }
 

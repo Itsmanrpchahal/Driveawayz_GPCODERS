@@ -50,16 +50,18 @@
                     android:layout_height="wrap_content"
                     android:text="username"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/textsize_sp16"
-                    ></TextView>
+                    android:textSize="@dimen/textsize_sp16">
+
+                </TextView>
 
 
                 <TextView
                     android:id="@+id/drive_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Jan 22 2019 at 16:00"
-                    ></TextView>
+                    android:text="Jan 22 2019 at 16:00">
+
+                </TextView>
             </LinearLayout>
 
             <LinearLayout
@@ -77,16 +79,18 @@
                     android:layout_height="wrap_content"
                     android:text="$100.00"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/textsize_sp16"
-                    ></TextView>
+                    android:textSize="@dimen/textsize_sp16">
+
+                </TextView>
 
 
                 <TextView
                     android:id="@+id/drive_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4 Hours"
-                    ></TextView>
+                    android:text="4 Hours">
+
+                </TextView>
             </LinearLayout>
 
             <RelativeLayout
@@ -103,7 +107,9 @@
                     android:text="PICK UP"
                     android:textColor="@color/grey"
                     android:layout_marginLeft="@dimen/margin_dp30"
-                    android:layout_marginTop="@dimen/margin_dp30"></TextView>
+                    android:layout_marginTop="@dimen/margin_dp30">
+
+                </TextView>
 
                 <TextView
                     android:id="@+id/drive_loc"
@@ -114,7 +120,9 @@
                     android:layout_marginLeft="@dimen/margin_dp30"
                     android:layout_marginTop="@dimen/margin_dp10"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/textsize_sp16"></TextView>
+                    android:textSize="@dimen/textsize_sp16">
+
+                </TextView>
 
                 <View
                     android:id="@+id/view1"
@@ -124,10 +132,13 @@
                     android:layout_below="@id/drive_loc"
                     android:layout_marginLeft="@dimen/margin_dp30"
                     android:layout_marginRight="@dimen/margin_dp30"
-                    android:layout_marginTop="10dp"></View>
+                    android:layout_marginTop="10dp">
+
+                </View>
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/layout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
@@ -140,7 +151,9 @@
                     android:text="DROP OFF"
                     android:textColor="@color/grey"
                     android:layout_marginLeft="@dimen/margin_dp30"
-                    android:layout_marginTop="@dimen/margin_dp30"></TextView>
+                    android:layout_marginTop="@dimen/margin_dp30">
+
+                </TextView>
 
                 <TextView
                     android:id="@+id/drive_drop_loc"
@@ -152,9 +165,48 @@
                     android:layout_marginTop="@dimen/margin_dp10"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textsize_sp16"
-                    android:layout_marginBottom="@dimen/margin_dp15"></TextView>
+                    android:layout_marginBottom="@dimen/margin_dp15">
+
+                </TextView>
 
             </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout3"
+                android:padding="@dimen/margin_dp8"
+                android:background="@color/white"
+                android:weightSum="2">
+
+
+                <Button
+                    android:id="@+id/startride_bt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_dp35"
+                    android:background="@android:color/holo_green_light"
+                    android:text="Start Ride"
+                    android:visibility="gone"
+                    android:textAllCaps="false"
+                    android:layout_marginRight="@dimen/margin_dp2"
+                    android:textStyle="bold"
+                    android:layout_weight="1">
+
+                </Button>
+
+                <Button
+                    android:id="@+id/cancelride_bt"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@android:color/black"
+                    android:text="Cancel Ride"
+                    android:layout_marginLeft="@dimen/margin_dp2"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    android:layout_weight="1">
+
+                </Button>
+            </LinearLayout>
 
         </RelativeLayout>
 

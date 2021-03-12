@@ -101,27 +101,37 @@
 
                         </TextView>
 
-
-
-                        <androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/select_address_spinner"
+                        <RelativeLayout
+                            android:id="@+id/layout1"
                             android:layout_width="match_parent"
-                            android:layout_below="@id/ortv"
+                            android:layout_height="50dp"
+                            android:layout_below="@+id/ortv"
+                            android:background="@drawable/blackborder"
                             android:layout_marginTop="@dimen/margin_dp10"
-                            android:layout_marginLeft="@dimen/margin_dp32"
-                            android:layout_marginRight="@dimen/margin_dp32"
-                            android:dropDownSelector="@drawable/ic_arrow_drop_down_black_24dp"
-                            android:layout_height="@dimen/margin_dp35"
-                            android:background="@drawable/round_border"
-                            android:inputType="text">
+                            android:layout_marginLeft="@dimen/margin_dp10"
+                            android:layout_marginRight="@dimen/margin_dp10"
+                            android:padding="@dimen/margin_dp5">
 
-                        </androidx.appcompat.widget.AppCompatSpinner>
+
+                            <androidx.appcompat.widget.AppCompatSpinner
+                                android:id="@+id/select_address_spinner"
+                                android:layout_width="match_parent"
+                                android:layout_centerInParent="true"
+                                android:dropDownSelector="@drawable/ic_arrow_drop_down_black_24dp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/round_border"
+                                android:inputType="text">
+
+                            </androidx.appcompat.widget.AppCompatSpinner>
+                        </RelativeLayout>
+
+
 
                         <Button
                             android:id="@+id/setPickUp_bt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/select_address_spinner"
+                            android:layout_below="@id/layout1"
                             android:layout_marginLeft="@dimen/margin_dp20"
                             android:layout_marginRight="@dimen/margin_dp20"
                             android:layout_marginBottom="@dimen/margin_dp20"
