@@ -9,6 +9,7 @@ import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
 import com.driveawayz.SignUp.signupphone.response.SignUp1user
 import com.driveawayz.dashboard.homeFrag.response.BookRide
 import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse
+import com.driveawayz.dashboard.mydriveFrag.DeleteRideResponse
 import com.driveawayz.dashboard.mydriveFrag.MyDrivesResponse
 import com.driveawayz.dashboard.setiingFrag.response.*
 import com.driveawayz.splashScreen.MeResponse
@@ -37,6 +38,7 @@ class Controller {
     var deleteVehiclesAPI: DeleteVehicleAPI? = null
     var uploadImageAPI: UploadImageAPI? = null
     var updateProfileAPI : UpdateProfileAPI? = null
+    var deleteRideAPI : DeleteRideAPI? = null
 
     fun Controller(signUpPhone: SignUpPhoneAPI) {
         signUpPhoneAPI = signUpPhone
@@ -71,8 +73,9 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(myDrives: MyDrivesAPI) {
+    fun Controller(myDrives: MyDrivesAPI,deleteRide : DeleteRideAPI) {
         myDrivesAPI = myDrives
+        deleteRideAPI = deleteRide
         webAPI = WebAPI()
     }
 
@@ -315,8 +318,7 @@ class Controller {
         numberOfGuests: String,
         numberOfHours: String,
         pickDate: String,
-        pickTime: String,
-        vehicleId: String,
+        vehicleId: Int,
         rideCharge: String
     ) {
         webAPI?.api?.bookRide(
@@ -328,7 +330,6 @@ class Controller {
             numberOfGuests,
             numberOfHours,
             pickDate,
-            pickTime,
             vehicleId,
             rideCharge
         )?.enqueue(object : Callback<BookRide> {
@@ -428,6 +429,24 @@ class Controller {
         })
     }
 
+    fun DeleteRide(token: String,id: String)
+    {
+        webAPI?.api?.deleteRide(token, id)?.enqueue(object :Callback<DeleteRideResponse>
+        {
+            override fun onResponse(
+                call: Call<DeleteRideResponse>,
+                response: Response<DeleteRideResponse>
+            ) {
+                deleteRideAPI?.onDeleteRideSuccess(response)
+            }
+
+            override fun onFailure(call: Call<DeleteRideResponse>, t: Throwable) {
+                t.message?.let { deleteRideAPI?.onError(it) }
+            }
+
+        })
+    }
+
     interface SignUpPhoneAPI {
         fun onSignUpPhoneSuccess(success: Response<SignUpPhoneNoResponse>)
         fun onError(error: String)
@@ -510,6 +529,11 @@ class Controller {
 
     interface UpdateProfileAPI {
         fun onUpdateProfileSuccess(success:Response<UpdateProfileResponse>)
+        fun onError(error: String)
+    }
+
+    interface DeleteRideAPI {
+        fun onDeleteRideSuccess(success:Response<DeleteRideResponse>)
         fun onError(error: String)
     }
 }

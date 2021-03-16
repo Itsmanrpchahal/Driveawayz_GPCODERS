@@ -125,7 +125,11 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
                 } else {
                     setStringVal(Constants.LAT_D, lat.toString())
                     setStringVal(Constants.LNG_D, lng.toString())
-                    setStringVal(Constants.DROPADDRESS,setdestination_et.text.toString())
+                    if (selectedAddress.equals("Select address"))
+                    {
+                         setStringVal(Constants.DROPADDRESS,setdestination_et.text.toString())
+                    }
+
 
                     manager.beginTransaction().replace(R.id.nav_host_fragment,BookDriver()).addToBackStack(null).commit()
                 }

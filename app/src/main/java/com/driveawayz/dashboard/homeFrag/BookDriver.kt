@@ -162,7 +162,7 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Con
                         if (currentDate == selectedDate) {
                             if (c.timeInMillis <= cal.timeInMillis) {
                                 Log.d("time", "" + c.timeInMillis + "  " + cal.timeInMillis)
-                                picktime_et.setText(SimpleDateFormat("HH:mm").format(cal.time))
+                                picktime_et.setText(SimpleDateFormat("HH:mm:ss").format(cal.time))
                             } else {
                                 Toast.makeText(context, "Invalid Time", Toast.LENGTH_SHORT).show()
                                 picktime_et.setText("")
@@ -188,10 +188,12 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Con
     private fun updateDateInView() {
         val myFormat = "dd/MM/yyyy" // mention the format you need
         val format1 = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        val format2 = "yyyy-MM-dd"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         val sdf1 = SimpleDateFormat(format1, Locale.UK)
-         datetime = sdf1.format(c.time)
-        Log.d("TIME", "" + datetime)
+        val sdf2 =SimpleDateFormat(format2, Locale.UK)
+         datetime = sdf2.format(c.time)
+        Log.d("TIME", "" + sdf2.format(c.time))
         pick_date_et.setText(sdf.format(c.time))
         picktime_et.setText("")
     }
@@ -268,12 +270,23 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Con
                     getStringVal(Constants.LAT)!!+","+getStringVal(Constants.LNG)!!,
                     numberofgueststv.text.toString(),
                     hours_et.text.toString(),
-                    datetime,
+                    datetime+" "+
                     picktime_et.text.toString(),
-                    vehicleID.toString(),
+                    vehicleID,
                     total.toString()
                 )
 
+//                                controller.RideBook("Bearer "+getStringVal(Constants.TOKEN),
+//                    "Ludhiana",
+//                    "Dsasua",
+//                    "0.0,0.0",
+//                    "0.0,0.0",
+//                    "2",
+//                   "2",
+//                    "2021-03-16 04:40",
+//                  9,
+//                    "100.0"
+//                )
             }
 
         })

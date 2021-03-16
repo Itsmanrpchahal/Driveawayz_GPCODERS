@@ -20,6 +20,10 @@ class BookRide {
     @Expose
     var pickUpLatLong: String? = null
 
+    @SerializedName("rideCharge")
+    @Expose
+    var rideCharge: String? = null
+
     @SerializedName("numberOfGuests")
     @Expose
     var numberOfGuests: Int? = null
@@ -28,21 +32,13 @@ class BookRide {
     @Expose
     var numberOfHours: Int? = null
 
-    @SerializedName("pickDate")
+    @SerializedName("pickDt")
     @Expose
-    var pickDate: String? = null
-
-    @SerializedName("pickTime")
-    @Expose
-    var pickTime: String? = null
+    var pickDt: String? = null
 
     @SerializedName("vehicleId")
     @Expose
     var vehicleId: Int? = null
-
-    @SerializedName("rideCharge")
-    @Expose
-    var rideCharge: String? = null
 
     @SerializedName("user")
     @Expose
@@ -52,9 +48,17 @@ class BookRide {
     @Expose
     var vehicle: Vehicle? = null
 
+    @SerializedName("deletedAt")
+    @Expose
+    var deletedAt: Any? = null
+
     @SerializedName("id")
     @Expose
     var id: Int? = null
+
+    @SerializedName("chargeMethod")
+    @Expose
+    var chargeMethod: String? = null
 
     @SerializedName("status")
     @Expose

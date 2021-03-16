@@ -1,19 +1,25 @@
 package com.driveawayz.dashboard.mydriveFrag.adater
 
 import android.content.Context
+import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.driveawayz.R
+import com.driveawayz.dashboard.mydriveFrag.MyDrivesFragment
 import com.driveawayz.dashboard.mydriveFrag.MyDrivesResponse
-import com.driveawayz.dashboard.setiingFrag.adatper.MyAddress_Adapter
 import com.makeramen.roundedimageview.RoundedImageView
 import kotlinx.android.synthetic.main.mydriveslayout.view.*
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class MyDrivesAdapter(
     var context: Context,
@@ -30,6 +36,7 @@ class MyDrivesAdapter(
         return Viewholder(v)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: MyDrivesAdapter.Viewholder, position: Int) {
         //var futureRides = futureRide.g
 
@@ -53,19 +60,73 @@ class MyDrivesAdapter(
             if (futureRide.size >= 1) {
                 val date1 = futureRide.get(position).pickDate?.substring(0, 10)
                 var date = date1
-                var spf = SimpleDateFormat("yyyy-mm-dd")
+                var spf = SimpleDateFormat("yyyy-MM-dd")
                 val newDate = spf.parse(date)
-                spf = SimpleDateFormat("dd/MM/yyyy")
+                spf = SimpleDateFormat("MMM-dd-yyyy")
                 date = spf.format(newDate)
                 println(date)
+                val date2 = date+" "+futureRide.get(position).pickDate?.substring(
+                    11,
+                    16
+                )
+                val formatter: DateTimeFormatter =
+                    DateTimeFormatter.ofPattern("MMM-dd-yyyy HH:mm", Locale.ENGLISH)
+                val localDate: LocalDateTime = LocalDateTime.parse(date2, formatter)
+                val timeInMilliseconds: Long =
+                    localDate.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()
 
 
-                holder.itemView.drive_date.text = date
+
+
+                val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+                val currentDate = sdf.format(Date())
+                System.out.println(" C DATE is  "+currentDate)
+
+
+//                val formatter1: DateTimeFormatter =
+//                    DateTimeFormatter.ofPattern("dd/M/yyyy hh:mm:ss", Locale.ENGLISH)
+//                val localDate1: LocalDateTime = LocalDateTime.parse(currentDate, formatter1)
+//                val timeInMilliseconds1: Long =
+//                    localDate1.atOffset(ZoneOffset.UTC).toInstant().toEpochMilli()
+                val calender = Calendar.getInstance();
+                val currentMilles = calender.timeInMillis
+//                Log.d("newTime", timeInMilliseconds.toString()+"     "+currentDate+"     "+timeInMilliseconds1)
+
+
+                Log.d(
+                    "datetime",
+                    "Date in milli :: FOR API >= 26 >>> $timeInMilliseconds" + "       " + currentMilles + "    "
+                )
+
+                holder.itemView.drive_date.text = date+" at "+futureRide.get(position).pickDate?.substring(
+                    11,
+                    16
+                )
                 holder.itemView.drive_price.text = "$ " + futureRide.get(position).rideCharge
-                holder.itemView.drive_time.text =  futureRide.get(position).pickTime
+                if (futureRide.get(position).numberOfHours?.equals("1")!!)
+                {
+                    holder.itemView.drive_time.text =  futureRide.get(position).numberOfHours.toString()+" Hour"
+                } else {
+                    holder.itemView.drive_time.text =  futureRide.get(position).numberOfHours.toString()+" Hours"
+                }
+
                 holder.itemView.drive_loc.text = futureRide.get(position).pickLocation
                 holder.itemView.drive_drop_loc.text = futureRide.get(position).destination
                 holder.itemView.driver_name.text = name
+
+                if (!type.equals("past"))
+                {
+                    if (currentMilles<=timeInMilliseconds)
+                    {
+                        holder.itemView.cancelride_bt.visibility = View.VISIBLE
+                    } else {
+                        holder.itemView.startride_bt.visibility = View.VISIBLE
+                        holder.itemView.startride_bt.text = "Complete Ride"
+                    }
+                    holder.itemView.cancelride_bt.setOnClickListener {
+                        MyDrivesFragment.deleterideidIf?.getID(futureRide.get(position).id.toString())
+                    }
+                }
 
             }
         }
@@ -90,6 +151,8 @@ class MyDrivesAdapter(
         lateinit var drive_time: TextView
         lateinit var drive_loc: TextView
         lateinit var drive_drop_loc: TextView
+        lateinit var cancelride_bt : Button
+        lateinit var startride_bt : Button
 
         fun binditems(
             futureRide: MutableList<MyDrivesResponse.FutureRide>,
@@ -103,6 +166,8 @@ class MyDrivesAdapter(
             drive_time = itemView.findViewById(R.id.drive_time)
             drive_loc = itemView.findViewById(R.id.drive_loc)
             drive_drop_loc = itemView.findViewById(R.id.drive_drop_loc)
+            cancelride_bt = itemView.findViewById(R.id.cancelride_bt)
+            startride_bt = itemView.findViewById(R.id.startride_bt)
         }
     }
 }

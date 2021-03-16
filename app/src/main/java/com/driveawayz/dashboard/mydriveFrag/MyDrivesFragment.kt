@@ -23,12 +23,13 @@ import com.driveawayz.Controller.Controller
 import com.driveawayz.R
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
+import com.driveawayz.dashboard.mydriveFrag.IF.DeleteRideID_IF
 import com.driveawayz.dashboard.mydriveFrag.adater.MyDrivesAdapter
 import com.driveawayz.dashboard.setiingFrag.adatper.MyVehicelAdapter
 import com.driveawayz.splashScreen.MeResponse
 import retrofit2.Response
 
-class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI{
+class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI,Controller.DeleteRideAPI, DeleteRideID_IF {
 
     private lateinit var future_bt: Button
     private lateinit var past_bt: Button
@@ -48,7 +49,7 @@ class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI{
         // Inflate the layout for this fragment
         val view: View
         view = inflater.inflate(R.layout.fragment_my_drives, container, false)
-
+        deleterideidIf = this
         findIds(view)
         listeners()
 
@@ -113,7 +114,7 @@ class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI{
         drives_recyler = view?.findViewById(R.id.drives_recyler)
         utility = Utility()
         controller = Controller()
-        controller.Controller(this)
+        controller.Controller(this,this)
     }
 
     //Check Internet Connection
@@ -128,6 +129,10 @@ class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI{
                 Utility.noConnectionDialog(context, "0")
             }
         }
+    }
+
+    companion object {
+        var deleterideidIf : DeleteRideID_IF?=null
     }
 
     override fun onStart() {
@@ -180,14 +185,42 @@ class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI{
         drives_recyler.adapter = myDrivesAdapter
     }
 
+    override fun onDeleteRideSuccess(success: Response<DeleteRideResponse>) {
+       if (success.isSuccessful)
+       {
+           if (success.body()?.deleted==true)
+           {
+               controller.MyDrives("Bearer "+getStringVal(Constants.TOKEN))
+           } else {
+               utility!!.relative_snackbar(
+                   requireActivity().window.decorView,
+                   success.message(),
+                   getString(R.string.close_up)
+               )
+           }
+       } else {
+           utility!!.relative_snackbar(
+               requireActivity().window.decorView,
+               success.message(),
+               getString(R.string.close_up)
+           )
+       }
+
+    }
 
 
     override fun onError(error: String) {
+        pd.dismiss()
         utility!!.relative_snackbar(
             requireActivity().window.decorView,
             error,
             getString(R.string.close_up)
         )
+    }
+
+    override fun getID(id: String?) {
+        pd.show()
+        controller.DeleteRide("Bearer "+getStringVal(Constants.TOKEN), id.toString())
     }
 
 }

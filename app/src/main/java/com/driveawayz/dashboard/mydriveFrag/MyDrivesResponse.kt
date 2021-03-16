@@ -41,13 +41,11 @@ class MyDrivesResponse {
         @Expose
         var numberOfHours: Int? = null
 
-        @SerializedName("pickDate")
+        @SerializedName("pickDt")
         @Expose
         var pickDate: String? = null
 
-        @SerializedName("pickTime")
-        @Expose
-        var pickTime: String? = null
+
 
         @SerializedName("rideCharge")
         @Expose

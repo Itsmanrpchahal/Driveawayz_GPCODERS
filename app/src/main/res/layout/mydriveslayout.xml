@@ -203,6 +203,7 @@
                     android:layout_marginLeft="@dimen/margin_dp2"
                     android:textAllCaps="false"
                     android:textStyle="bold"
+                    android:visibility="gone"
                     android:layout_weight="1">
 
                 </Button>

@@ -8,6 +8,7 @@ import com.driveawayz.SignUp.signupphone.response.SignUp1user;
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
 import com.driveawayz.dashboard.homeFrag.response.BookRide;
 import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse;
+import com.driveawayz.dashboard.mydriveFrag.DeleteRideResponse;
 import com.driveawayz.dashboard.mydriveFrag.MyDrivesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.DeleteAddressResponse;
 import com.driveawayz.dashboard.setiingFrag.response.DeleteVehicleReponse;
@@ -83,6 +84,15 @@ public interface ApiInterface {
     );
 
     @FormUrlEncoded
+    @PUT("/api/v1/user/me")
+    Call<UpdateProfileResponse> updateProfile(
+            @Header("Authorization") String token,
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("dateOfBirth") String dateOfBirth
+    );
+
+    @FormUrlEncoded
     @POST("/api/v1/vehicle")
     Call<AddVehiclesResponse> addVehicle(
             @Header("Authorization") String token,
@@ -129,9 +139,8 @@ public interface ApiInterface {
             @Field("pickUpLatLong") String pickUpLatLong,
             @Field("numberOfGuests") String numberOfGuests,
             @Field("numberOfHours") String numberOfHours,
-            @Field("pickDate") String pickDate,
-            @Field("pickTime") String pickTime,
-            @Field("vehicleId") String vehicleId,
+            @Field("pickDt") String pickDate,
+            @Field("vehicleId") Integer vehicleId,
             @Field("rideCharge") String rideCharge
     );
 
@@ -159,12 +168,10 @@ public interface ApiInterface {
             @Header("Authorization") String token,
             @Part MultipartBody.Part image);
 
-    @FormUrlEncoded
-    @PUT("/api/v1/user/me")
-    Call<UpdateProfileResponse> updateProfile(
+    @DELETE("/api/v1/ride/{input}")
+    Call<DeleteRideResponse> deleteRide(
             @Header("Authorization") String token,
-            @Field("name") String name,
-            @Field("email") String email,
-            @Field("dateOfBirth") String dateOfBirth
+            @Path("input") String id
     );
+
 }

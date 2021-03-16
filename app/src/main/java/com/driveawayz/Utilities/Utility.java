@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.icu.text.SimpleDateFormat;
+import android.icu.util.TimeZone;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.View;
@@ -56,6 +57,26 @@ public class Utility {
                 });
         snackbar.show();
     }
+
+    public static long localToUTC(long time) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM-dd-yyyy HH:mm");
+            Date date = new Date(time);
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            String strDate = dateFormat.format(date);
+//            System.out.println("Local Millis * " + date.getTime() + "  ---UTC time  " + strDate);//correct
+
+            SimpleDateFormat dateFormatLocal = new SimpleDateFormat("MMM-dd-yyyy HH:mm");
+            Date utcDate = dateFormatLocal.parse(strDate);
+//            System.out.println("UTC Millis * " + utcDate.getTime() + " ------  " + dateFormatLocal.format(utcDate));
+            long utcMillis = utcDate.getTime();
+            return utcMillis;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return time;
+    }
+
 
     public static void noConnectionDialog(final Context context, String c) {
         Dialog dialog = new Dialog(context);

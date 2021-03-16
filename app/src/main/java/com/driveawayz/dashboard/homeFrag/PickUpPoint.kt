@@ -135,7 +135,11 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
                 } else {
                     setStringVal(Constants.LAT, lat.toString())
                     setStringVal(Constants.LNG, lng.toString())
-                    setStringVal(Constants.PICKUPADDRESS, pickupEt.text.toString())
+                    if (selectedAddress.equals("Select address"))
+                    {
+                        setStringVal(Constants.PICKUPADDRESS, pickupEt.text.toString())
+                    }
+
 
                     manager.beginTransaction().replace(
                         R.id.nav_host_fragment,
