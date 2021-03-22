@@ -9,6 +9,7 @@ import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
 import com.driveawayz.SignUp.signupphone.response.SignUp1user
 import com.driveawayz.dashboard.homeFrag.response.BookRide
 import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse
+import com.driveawayz.dashboard.mydriveFrag.CompleteRideResponse
 import com.driveawayz.dashboard.mydriveFrag.DeleteRideResponse
 import com.driveawayz.dashboard.mydriveFrag.MyDrivesResponse
 import com.driveawayz.dashboard.setiingFrag.response.*
@@ -39,6 +40,7 @@ class Controller {
     var uploadImageAPI: UploadImageAPI? = null
     var updateProfileAPI : UpdateProfileAPI? = null
     var deleteRideAPI : DeleteRideAPI? = null
+    var completeRideAPI : CompleteRideAPI? = null
 
     fun Controller(signUpPhone: SignUpPhoneAPI) {
         signUpPhoneAPI = signUpPhone
@@ -73,9 +75,10 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(myDrives: MyDrivesAPI,deleteRide : DeleteRideAPI) {
+    fun Controller(myDrives: MyDrivesAPI,deleteRide : DeleteRideAPI,completeRide : CompleteRideAPI) {
         myDrivesAPI = myDrives
         deleteRideAPI = deleteRide
+        completeRideAPI = completeRide
         webAPI = WebAPI()
     }
 
@@ -447,6 +450,24 @@ class Controller {
         })
     }
 
+    fun CompleteRide(token: String,amount:Double,rideID:String)
+    {
+        webAPI?.api?.completeRide(token,amount,rideID)?.enqueue(object :Callback<List<CompleteRideResponse>>
+        {
+            override fun onResponse(
+                call: Call<List<CompleteRideResponse>>,
+                response: Response<List<CompleteRideResponse>>
+            ) {
+                completeRideAPI?.onCompleteRideSuccess(response)
+            }
+
+            override fun onFailure(call: Call<List<CompleteRideResponse>>, t: Throwable) {
+                t.message?.let { completeRideAPI?.onError(it) }
+            }
+
+        })
+    }
+
     interface SignUpPhoneAPI {
         fun onSignUpPhoneSuccess(success: Response<SignUpPhoneNoResponse>)
         fun onError(error: String)
@@ -534,6 +555,11 @@ class Controller {
 
     interface DeleteRideAPI {
         fun onDeleteRideSuccess(success:Response<DeleteRideResponse>)
+        fun onError(error: String)
+    }
+
+    interface CompleteRideAPI {
+        fun onCompleteRideSuccess(success:Response<List<CompleteRideResponse>>)
         fun onError(error: String)
     }
 }

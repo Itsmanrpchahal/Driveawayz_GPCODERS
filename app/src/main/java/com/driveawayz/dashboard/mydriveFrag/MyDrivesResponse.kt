@@ -49,7 +49,7 @@ class MyDrivesResponse {
 
         @SerializedName("rideCharge")
         @Expose
-        var rideCharge: String? = null
+        var rideCharge: Double? = null
 
         @SerializedName("status")
         @Expose
@@ -139,7 +139,7 @@ class MyDrivesResponse {
         @Expose
         var numberOfHours: Int? = null
 
-        @SerializedName("pickDate")
+        @SerializedName("pickDt")
         @Expose
         var pickDate: String? = null
 

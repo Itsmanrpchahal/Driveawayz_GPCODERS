@@ -8,6 +8,7 @@ import com.driveawayz.SignUp.signupphone.response.SignUp1user;
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
 import com.driveawayz.dashboard.homeFrag.response.BookRide;
 import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse;
+import com.driveawayz.dashboard.mydriveFrag.CompleteRideResponse;
 import com.driveawayz.dashboard.mydriveFrag.DeleteRideResponse;
 import com.driveawayz.dashboard.mydriveFrag.MyDrivesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.DeleteAddressResponse;
@@ -172,6 +173,14 @@ public interface ApiInterface {
     Call<DeleteRideResponse> deleteRide(
             @Header("Authorization") String token,
             @Path("input") String id
+    );
+
+    @FormUrlEncoded
+    @POST("/api/v1/charge-manual")
+    Call<List<CompleteRideResponse>> completeRide(
+            @Header("Authorization") String token,
+            @Field("amount") Double amount,
+            @Field("rideId") String id
     );
 
 }

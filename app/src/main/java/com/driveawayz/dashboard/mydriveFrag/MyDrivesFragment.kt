@@ -9,7 +9,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,13 +22,12 @@ import com.driveawayz.Controller.Controller
 import com.driveawayz.R
 import com.driveawayz.Utilities.Constants
 import com.driveawayz.Utilities.Utility
+import com.driveawayz.dashboard.mydriveFrag.IF.CompleteDrive_IF
 import com.driveawayz.dashboard.mydriveFrag.IF.DeleteRideID_IF
 import com.driveawayz.dashboard.mydriveFrag.adater.MyDrivesAdapter
-import com.driveawayz.dashboard.setiingFrag.adatper.MyVehicelAdapter
-import com.driveawayz.splashScreen.MeResponse
 import retrofit2.Response
 
-class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI,Controller.DeleteRideAPI, DeleteRideID_IF {
+class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI,Controller.DeleteRideAPI, DeleteRideID_IF,CompleteDrive_IF,Controller.CompleteRideAPI {
 
     private lateinit var future_bt: Button
     private lateinit var past_bt: Button
@@ -50,6 +48,7 @@ class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI,Controller.DeleteRid
         val view: View
         view = inflater.inflate(R.layout.fragment_my_drives, container, false)
         deleterideidIf = this
+        completedriveIf = this
         findIds(view)
         listeners()
 
@@ -114,7 +113,7 @@ class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI,Controller.DeleteRid
         drives_recyler = view?.findViewById(R.id.drives_recyler)
         utility = Utility()
         controller = Controller()
-        controller.Controller(this,this)
+        controller.Controller(this,this,this)
     }
 
     //Check Internet Connection
@@ -133,6 +132,7 @@ class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI,Controller.DeleteRid
 
     companion object {
         var deleterideidIf : DeleteRideID_IF?=null
+        var completedriveIf : CompleteDrive_IF? = null
     }
 
     override fun onStart() {
@@ -208,6 +208,19 @@ class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI,Controller.DeleteRid
 
     }
 
+    override fun onCompleteRideSuccess(success: Response<List<CompleteRideResponse>>) {
+        if (success.isSuccessful)
+        {
+            controller.MyDrives("Bearer "+getStringVal(Constants.TOKEN))
+        } else {
+            utility!!.relative_snackbar(
+                requireActivity().window.decorView,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
+    }
+
 
     override fun onError(error: String) {
         pd.dismiss()
@@ -221,6 +234,12 @@ class MyDrivesFragment : BaseFrag() ,Controller.MyDrivesAPI,Controller.DeleteRid
     override fun getID(id: String?) {
         pd.show()
         controller.DeleteRide("Bearer "+getStringVal(Constants.TOKEN), id.toString())
+    }
+
+    override fun getID(id: String?, price: Double?, mintues: String) {
+
+        pd.show()
+        controller.CompleteRide("Bearer "+getStringVal(Constants.TOKEN), price!!, id.toString())
     }
 
 }
