@@ -672,6 +672,7 @@ class SettingFragment : BaseFrag(),
     override fun onUpdateAddress(success: Response<AddNewAddressResponse>) {
         pd.dismiss()
         addnewAddressPopup.dismiss()
+        controller.MyAddresss("Bearer " + getStringVal(Constants.TOKEN))
     }
 
     override fun onUpdateAddressSuccess(success: Response<UpdateAddressResponse>) {
