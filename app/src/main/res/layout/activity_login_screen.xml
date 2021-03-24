@@ -172,13 +172,24 @@
 
                     </Button>
 
+                    <TextView
+                        android:id="@+id/forgotpassword_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Forgot password?"
+                        android:layout_below="@id/signInbt"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/colorBlack">
+
+                    </TextView>
+
                     <Button
                         android:id="@+id/donthaveaccountbt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Don’t have an account?"
                         android:textColor="@color/colorBt"
-                        android:layout_below="@id/signInbt"
+                        android:layout_below="@id/forgotpassword_tv"
                         android:background="@color/colorTrans"
                         android:textAllCaps="false"
                         android:layout_alignParentBottom="true">

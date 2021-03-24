@@ -1,5 +1,6 @@
 package com.driveawayz.Retrofit;
 
+import com.driveawayz.Login.response.ForgotResponse;
 import com.driveawayz.Login.response.LoginResponse;
 import com.driveawayz.OTPScreen.response.NumberVerifyResponse;
 import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse;
@@ -11,6 +12,7 @@ import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse;
 import com.driveawayz.dashboard.mydriveFrag.CompleteRideResponse;
 import com.driveawayz.dashboard.mydriveFrag.DeleteRideResponse;
 import com.driveawayz.dashboard.mydriveFrag.MyDrivesResponse;
+import com.driveawayz.dashboard.setiingFrag.response.ChangePasswordResponse;
 import com.driveawayz.dashboard.setiingFrag.response.DeleteAddressResponse;
 import com.driveawayz.dashboard.setiingFrag.response.DeleteVehicleReponse;
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse;
@@ -182,5 +184,20 @@ public interface ApiInterface {
             @Field("amount") Double amount,
             @Field("rideId") String id
     );
+
+    @FormUrlEncoded
+    @POST("/api/v1/user/forgotPass")
+    Call<ForgotResponse> forgotpassword (
+            @Field("email") String email
+    );
+
+    @FormUrlEncoded
+    @POST("/api/v1/user/changePass")
+    Call<ChangePasswordResponse> changePassword(
+            @Header("Authorization") String token,
+            @Field("currentPass") String currentPass,
+            @Field("newPass") String newPass
+    );
+
 
 }

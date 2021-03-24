@@ -1,5 +1,6 @@
 package com.driveawayz.Controller
 
+import com.driveawayz.Login.response.ForgotResponse
 import com.driveawayz.Login.response.LoginResponse
 import com.driveawayz.OTPScreen.response.NumberVerifyResponse
 import com.driveawayz.Retrofit.WebAPI
@@ -41,6 +42,8 @@ class Controller {
     var updateProfileAPI : UpdateProfileAPI? = null
     var deleteRideAPI : DeleteRideAPI? = null
     var completeRideAPI : CompleteRideAPI? = null
+    var forgotPasswordAPI: ForgotPasswordAPI? = null
+    var changePasswordAPI : ChangePasswordAPI? = null
 
     fun Controller(signUpPhone: SignUpPhoneAPI) {
         signUpPhoneAPI = signUpPhone
@@ -59,9 +62,10 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(login: LoginAPI, me: MeAPI) {
+    fun Controller(login: LoginAPI, me: MeAPI,forgotPassword: ForgotPasswordAPI) {
         loginAPI = login
         meAPI = me
+        forgotPasswordAPI = forgotPassword
         webAPI = WebAPI()
     }
 
@@ -98,7 +102,8 @@ class Controller {
         deleteAddress: DeleteAddressAPI,
         deleteVehicle: DeleteVehicleAPI,
         uploadImage: UploadImageAPI,
-        updateProfile : UpdateProfileAPI
+        updateProfile : UpdateProfileAPI,
+        changePassword : ChangePasswordAPI
     ) {
         myVehiclesAPI = myVehicles
         addVehiclesAPI = addVehicle
@@ -110,6 +115,7 @@ class Controller {
         deleteVehiclesAPI = deleteVehicle
         uploadImageAPI = uploadImage
         updateProfileAPI = updateProfile
+        changePasswordAPI = changePassword
         webAPI = WebAPI()
     }
 
@@ -468,6 +474,42 @@ class Controller {
         })
     }
 
+    fun ForgotPassword(email: String)
+    {
+        webAPI?.api?.forgotpassword(email)?.enqueue(object :Callback<ForgotResponse>
+        {
+            override fun onResponse(
+                call: Call<ForgotResponse>,
+                response: Response<ForgotResponse>
+            ) {
+                forgotPasswordAPI?.onForgotPasswordAPI(response)
+            }
+
+            override fun onFailure(call: Call<ForgotResponse>, t: Throwable) {
+                forgotPasswordAPI?.onError(t.localizedMessage)
+            }
+
+        })
+    }
+
+    fun ChangePassword(token: String,currentPass:String,newPass:String)
+    {
+        webAPI?.api?.changePassword(token,currentPass, newPass)?.enqueue(object :Callback<ChangePasswordResponse>
+        {
+            override fun onResponse(
+                call: Call<ChangePasswordResponse>,
+                response: Response<ChangePasswordResponse>
+            ) {
+                changePasswordAPI?.onChangePassword(response)
+            }
+
+            override fun onFailure(call: Call<ChangePasswordResponse>, t: Throwable) {
+                changePasswordAPI?.onError(t.localizedMessage)
+            }
+
+        })
+    }
+
     interface SignUpPhoneAPI {
         fun onSignUpPhoneSuccess(success: Response<SignUpPhoneNoResponse>)
         fun onError(error: String)
@@ -561,5 +603,15 @@ class Controller {
     interface CompleteRideAPI {
         fun onCompleteRideSuccess(success:Response<List<CompleteRideResponse>>)
         fun onError(error: String)
+    }
+
+    interface ForgotPasswordAPI {
+        fun onForgotPasswordAPI(success:Response<ForgotResponse>)
+        fun onError(error: String)
+    }
+
+    interface ChangePasswordAPI {
+        fun onChangePassword(success:Response<ChangePasswordResponse>)
+        fun onError(error:String)
     }
 }

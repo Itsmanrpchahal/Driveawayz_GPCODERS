@@ -1,5 +1,6 @@
 package com.driveawayz.Login
 
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -19,6 +20,7 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import com.driveawayz.Constant.BaseClass
 import com.driveawayz.Controller.Controller
+import com.driveawayz.Login.response.ForgotResponse
 import com.driveawayz.Login.response.LoginResponse
 import com.driveawayz.R
 import com.driveawayz.SignUp.SignUpDetail1
@@ -32,7 +34,7 @@ import retrofit2.Response
 
 
 @Suppress("DEPRECATION")
-class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
+class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI ,Controller.ForgotPasswordAPI{
 
     private lateinit var back: ImageButton
     private lateinit var email_et: EditText
@@ -45,6 +47,11 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
     private lateinit var labeled: RelativeLayout
     private lateinit var controller: Controller
     private lateinit var notC : String
+    private lateinit var forgotpassword_tv : TextView
+    private lateinit var forgotDialog : Dialog
+
+    private lateinit var f_email_et : EditText
+    private lateinit var reset_bt : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,6 +127,43 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
                 )
             )
         }
+
+        forgotpassword_tv.setOnClickListener {
+            forgot_Dialog()
+        }
+    }
+
+    private fun forgot_Dialog() {
+        forgotDialog = Dialog(this!!)
+        val window: Window = forgotDialog.getWindow()!!
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        forgotDialog.setContentView(R.layout.forgotpassword)
+        forgotDialog.setCancelable(true)
+        forgotDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        f_email_et = forgotDialog.findViewById(R.id.email_et)
+        reset_bt = forgotDialog.findViewById(R.id.reset_bt)
+
+        reset_bt.setOnClickListener {
+            when {
+                f_email_et.text.isEmpty() -> {
+                    f_email_et.requestFocus()
+                    f_email_et.error = "Enter Email"
+                } else -> {
+                hideKeyboard()
+                    pd.show()
+                pd.setContentView(R.layout.loading)
+                controller.ForgotPassword(f_email_et.text.toString())
+                }
+            }
+        }
+
+
+        forgotDialog.show()
+
     }
 
     private fun findIds() {
@@ -130,7 +174,7 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
         pd!!.isIndeterminate = true
         pd!!.setCancelable(false)
         controller = Controller()
-        controller.Controller(this,this)
+        controller.Controller(this,this,this)
         val window: Window = getWindow()
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -142,6 +186,7 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
         labeled = findViewById(R.id.labeled)
         pass_et = findViewById(R.id.pass_et)
         email_et = findViewById(R.id.email_et)
+        forgotpassword_tv = findViewById(R.id.forgotpassword_tv)
 
     }
 
@@ -221,10 +266,27 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI {
                     finish()
                 }
             } else{
-                utility.relative_snackbar(window.decorView,getString(R.string.nointernet),getString(R.string.close_up))
+                utility.relative_snackbar(window.currentFocus,getString(R.string.nointernet),getString(R.string.close_up))
             }
         }
 
+    }
+
+    override fun onForgotPasswordAPI(success: Response<ForgotResponse>) {
+            pd.dismiss()
+        if (success.isSuccessful)
+        {
+            if (success.body()?.error==false)
+            {
+                forgotDialog.dismiss()
+                utility.relative_snackbar(window.currentFocus, success.body()?.message, getString(R.string.close_up))
+            } else if (success.body()?.error==true) {
+                f_email_et.requestFocus()
+                f_email_et.error = success.body()!!.message
+            }
+        }else {
+            utility.relative_snackbar(window.currentFocus, success.message(), getString(R.string.close_up))
+        }
     }
 
     override fun onError(error: String) {

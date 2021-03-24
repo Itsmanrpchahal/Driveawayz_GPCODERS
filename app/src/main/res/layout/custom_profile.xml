@@ -279,6 +279,23 @@
 
             </Button>
 
+            <Button
+                android:id="@+id/changepassword_bt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/EditInfo"
+                android:layout_marginLeft="@dimen/margin_dp20"
+                android:layout_marginRight="@dimen/margin_dp20"
+                android:layout_marginBottom="@dimen/margin_dp20"
+                android:background="@drawable/color_black"
+                android:text="Change Password"
+                android:textColor="@color/colorWhite"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textsize_sp16">
+
+            </Button>
+
+
         </RelativeLayout>
 
     </ScrollView>

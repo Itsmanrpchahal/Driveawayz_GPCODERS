@@ -60,7 +60,8 @@ class SettingFragment : BaseFrag(),
     Controller.DeleteVehicleAPI,
     DeleteVehicleIF,
     Controller.UploadImageAPI,
-    Controller.UpdateProfileAPI {
+    Controller.UpdateProfileAPI,
+Controller.ChangePasswordAPI{
 
 
     private lateinit var part: MultipartBody.Part
@@ -95,6 +96,14 @@ class SettingFragment : BaseFrag(),
     private var datetime = ""
     private lateinit var addressesList: ArrayList<MyAddessesResponse>
     val c = Calendar.getInstance()
+    lateinit var changePasswordDialog : Dialog
+    lateinit var changepassword_bt : Button
+    private lateinit var oldpassword_et : EditText
+    private lateinit var newpassword_et : EditText
+    private lateinit var c_password_et : EditText
+    private lateinit var changepasword_bt : Button
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -186,6 +195,7 @@ class SettingFragment : BaseFrag(),
         addnewaddress_bt.setOnClickListener(this)
         EditInfo.setOnClickListener(this)
         user_birthdate_et.setOnClickListener(this)
+        changepassword_bt.setOnClickListener(this)
 
     }
 
@@ -219,7 +229,7 @@ class SettingFragment : BaseFrag(),
     private fun findIds(view: View?) {
         utility = Utility()
         controller = Controller()
-        controller.Controller(this, this, this, this, this, this, this, this, this, this)
+        controller.Controller(this, this, this, this, this, this, this, this, this, this,this)
         bottomnavigaton = view!!.findViewById(R.id.bottomnavigaton)
         profileview = view.findViewById(R.id.profileview)
         myaddressview = view.findViewById(R.id.myaddressview)
@@ -237,6 +247,7 @@ class SettingFragment : BaseFrag(),
         street = view.findViewById(R.id.street)
         EditInfo = view.findViewById(R.id.EditInfo)
         user_email = view.findViewById(R.id.user_email)
+        changepassword_bt = view.findViewById(R.id.changepassword_bt)
         pd = ProgressDialog(context)
         pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         pd!!.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
@@ -381,6 +392,60 @@ class SettingFragment : BaseFrag(),
                 datePickerDialog.show()
             }
         }
+        if (v==changepassword_bt)
+        {
+            changePasswordD()
+        }
+    }
+
+    private fun changePasswordD() {
+        changePasswordDialog = Dialog(context!!)
+        val window: Window = changePasswordDialog.getWindow()!!
+        window.setLayout(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        changePasswordDialog.setContentView(R.layout.changepassworddialog)
+        changePasswordDialog.setCancelable(true)
+        changePasswordDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        oldpassword_et = changePasswordDialog.findViewById(R.id.oldpassword_et)
+        newpassword_et = changePasswordDialog.findViewById(R.id.newpassword_et)
+        c_password_et = changePasswordDialog.findViewById(R.id.c_password_et)
+        changepasword_bt = changePasswordDialog.findViewById(R.id.changepasword_bt)
+
+        changepasword_bt.setOnClickListener {
+            when {
+                oldpassword_et.text.isEmpty() -> {
+                    oldpassword_et.requestFocus()
+                    oldpassword_et.error = "Enter Current Password"
+                }
+
+                newpassword_et.text.isEmpty() -> {
+                    newpassword_et.requestFocus()
+                    newpassword_et.error = "Enter New Password"
+
+                }
+
+                c_password_et.text.isEmpty() -> {
+                    c_password_et.requestFocus()
+                    c_password_et.error = "Confirm Password"
+                }
+
+                !newpassword_et.text.toString().equals(c_password_et.text.toString()) -> {
+                    c_password_et.requestFocus()
+                    c_password_et.error = "Password not matched"
+                }
+                else -> {
+                    hideKeyboard()
+                    pd.show()
+                    pd.setContentView(R.layout.loading)
+                    controller.ChangePassword("Bearer "+getStringVal(Constants.TOKEN),oldpassword_et.text.toString(),newpassword_et.text.toString())
+
+                }
+            }
+        }
+        changePasswordDialog.show()
     }
 
     private fun updateDateInView() {
@@ -756,6 +821,33 @@ class SettingFragment : BaseFrag(),
                 "Profile Updated",
                 getString(R.string.close_up)
             )
+        } else {
+            utility!!.relative_snackbar(
+                requireActivity().window.decorView,
+                success.message(),
+                getString(R.string.close_up)
+            )
+        }
+    }
+
+    override fun onChangePassword(success: Response<ChangePasswordResponse>) {
+        pd.dismiss()
+        if (success.isSuccessful)
+        {
+            if (success.body()?.error==false)
+            {
+                changePasswordDialog.dismiss()
+                utility!!.relative_snackbar(
+                    requireActivity().window.decorView,
+                    success.body()!!.message,
+                    getString(R.string.close_up)
+                )
+            } else if (success.body()?.error==true)
+            {
+                oldpassword_et.requestFocus()
+                oldpassword_et.error = success.body()!!.message
+
+            }
         } else {
             utility!!.relative_snackbar(
                 requireActivity().window.decorView,
