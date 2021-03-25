@@ -12,6 +12,7 @@ import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse;
 import com.driveawayz.dashboard.mydriveFrag.CompleteRideResponse;
 import com.driveawayz.dashboard.mydriveFrag.DeleteRideResponse;
 import com.driveawayz.dashboard.mydriveFrag.MyDrivesResponse;
+import com.driveawayz.dashboard.response.FeedbackResponse;
 import com.driveawayz.dashboard.setiingFrag.response.ChangePasswordResponse;
 import com.driveawayz.dashboard.setiingFrag.response.DeleteAddressResponse;
 import com.driveawayz.dashboard.setiingFrag.response.DeleteVehicleReponse;
@@ -20,6 +21,7 @@ import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse;
 import com.driveawayz.dashboard.setiingFrag.response.UpdateAddressResponse;
 import com.driveawayz.dashboard.setiingFrag.response.UpdateProfileResponse;
 import com.driveawayz.dashboard.setiingFrag.response.UploadImageResponse;
+import com.driveawayz.dashboard.supportFrag.SupportResponse;
 import com.driveawayz.splashScreen.MeResponse;
 
 import java.util.List;
@@ -187,7 +189,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/api/v1/user/forgotPass")
-    Call<ForgotResponse> forgotpassword (
+    Call<ForgotResponse> forgotpassword(
             @Field("email") String email
     );
 
@@ -199,5 +201,22 @@ public interface ApiInterface {
             @Field("newPass") String newPass
     );
 
+    @FormUrlEncoded
+    @POST("/api/v1/feedback")
+    Call<FeedbackResponse> feedback(
+            @Header("Authorization") String token,
+            @Field("name") String name,
+            @Field("description") String description
+    );
+
+    @FormUrlEncoded
+    @POST("/api/v1/support")
+    Call<SupportResponse> support(
+
+            @Header("Authorization") String token,
+            @Field("question") String question,
+            @Field("description") String description
+
+    );
 
 }

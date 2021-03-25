@@ -279,7 +279,7 @@ class LoginScreen : BaseClass(), Controller.LoginAPI, Controller.MeAPI ,Controll
             if (success.body()?.error==false)
             {
                 forgotDialog.dismiss()
-                utility.relative_snackbar(window.currentFocus, success.body()?.message, getString(R.string.close_up))
+                utility.relative_snackbar(window.decorView, success.body()?.message, getString(R.string.close_up))
             } else if (success.body()?.error==true) {
                 f_email_et.requestFocus()
                 f_email_et.error = success.body()!!.message

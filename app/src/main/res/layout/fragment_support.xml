@@ -3,12 +3,106 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".dashboard.supportFrag.SupportFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/margin_dp10"
+        android:maxWidth="@dimen/margin_dp250"
+        android:elevation="@dimen/margin_dp10"
+        android:layout_gravity="center_vertical"
+        app:cardBackgroundColor="@color/colorWhite"
+        android:layout_marginLeft="@dimen/margin_dp16"
+        android:layout_marginRight="@dimen/margin_dp16">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/signintext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/margin_dp16"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:textSize="@dimen/textsize_sp22"
+                android:textStyle="bold"
+                android:text="Ask Question?">
+
+            </TextView>
+
+
+            <EditText
+                android:id="@+id/question_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/signintext"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:layout_marginRight="@dimen/margin_dp16"
+                android:layout_marginTop="@dimen/margin_dp2"
+                android:backgroundTint="@color/colorTheme"
+                android:hint="your question ?"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@color/colorGreyLight"
+                android:textColor="@color/colorBlack">
+
+            </EditText>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/margin_dp16"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:textSize="@dimen/textsize_sp22"
+                android:textStyle="bold"
+                android:text="Your Answer!">
+
+            </TextView>
+
+
+            <EditText
+                android:id="@+id/answer_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/signintext"
+                android:layout_marginLeft="@dimen/margin_dp16"
+                android:layout_marginRight="@dimen/margin_dp16"
+                android:layout_marginTop="@dimen/margin_dp2"
+                android:backgroundTint="@color/colorTheme"
+                android:hint=""
+                android:inputType="textEmailAddress"
+                android:textColorHint="@color/colorGreyLight"
+                android:textColor="@color/colorBlack">
+
+            </EditText>
+
+
+
+            <Button
+                android:id="@+id/submit_bt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pass_et"
+                android:layout_marginLeft="@dimen/margin_dp20"
+                android:layout_marginRight="@dimen/margin_dp20"
+                android:layout_marginBottom="@dimen/margin_dp20"
+                android:background="@drawable/color_black"
+                android:text="Submit"
+                android:textColor="@color/colorWhite"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textsize_sp16"
+                android:layout_marginTop="@dimen/margin_dp30">
+
+            </Button>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>

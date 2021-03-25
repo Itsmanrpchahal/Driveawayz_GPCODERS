@@ -1,7 +1,10 @@
 package com.driveawayz.dashboard
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -19,6 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import com.driveawayz.Constant.BaseClass
+import com.driveawayz.Controller.Controller
 import com.driveawayz.MainActivity
 import com.driveawayz.R
 import com.driveawayz.Utilities.Constants
@@ -27,14 +31,16 @@ import com.driveawayz.dashboard.homeFrag.PickUpPoint
 import com.driveawayz.dashboard.mydriveFrag.MyDrivesFragment
 import com.driveawayz.dashboard.notificationFrag.NotificationFragment
 import com.driveawayz.dashboard.paymentFrag.PaymentFragment
+import com.driveawayz.dashboard.response.FeedbackResponse
 import com.driveawayz.dashboard.setiingFrag.SettingFragment
 import com.driveawayz.dashboard.supportFrag.SupportFragment
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.maindrawer.*
 import org.w3c.dom.Text
+import retrofit2.Response
 
-class Dashboard : BaseClass(), View.OnClickListener {
+class Dashboard : BaseClass(), View.OnClickListener ,Controller.FeedbackAPI{
 
     private lateinit var frameLayout: NavController
     private lateinit var drawerLayout: DrawerLayout
@@ -47,9 +53,13 @@ class Dashboard : BaseClass(), View.OnClickListener {
     private lateinit var setting_nav : Button
     private lateinit var support_nav : Button
     private lateinit var logout_nav : Button
-    private lateinit var utility: Utility
+    private lateinit var sendfeedback : EditText
     private lateinit var fragmentManager : FragmentManager
     private lateinit var title : TextView
+    private lateinit var sendfeedback_bt : Button
+    private lateinit var utility: Utility
+    private lateinit var pd: ProgressDialog
+    private lateinit var controller: Controller
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +78,7 @@ class Dashboard : BaseClass(), View.OnClickListener {
         setting_nav.setOnClickListener(this)
         support_nav.setOnClickListener(this)
         logout_nav.setOnClickListener(this)
+        sendfeedback_bt.setOnClickListener(this)
 
     }
 
@@ -89,7 +100,13 @@ class Dashboard : BaseClass(), View.OnClickListener {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorTheme))
         utility = Utility()
 
-
+        pd = ProgressDialog(this)
+        pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        pd!!.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        pd!!.isIndeterminate = true
+        pd!!.setCancelable(false)
+        controller = Controller()
+        controller.Controller(this)
         drawerLayout = findViewById(R.id.drawer_layout)
         appbarmain = findViewById(R.id.appbarmain)
         menu = findViewById(R.id.menu)
@@ -100,6 +117,8 @@ class Dashboard : BaseClass(), View.OnClickListener {
         setting_nav = findViewById(R.id.setting_nav)
         support_nav = findViewById(R.id.support_nav)
         logout_nav = findViewById(R.id.logout_nav)
+        sendfeedback = findViewById(R.id.sendfeedback)
+        sendfeedback_bt = findViewById(R.id.sendfeedback_bt)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(true)
@@ -373,7 +392,39 @@ class Dashboard : BaseClass(), View.OnClickListener {
                 finish()
             }
 
+            R.id.sendfeedback_bt -> {
+                when {
+                    sendfeedback.text.isEmpty() -> {
+                        sendfeedback.requestFocus()
+                        sendfeedback.error = "Enter feedback to continue"
+                } else -> {
+                    pd.show()
+                    pd.setContentView(R.layout.loading)
+                    controller.Feedback("Bearer "+getStringVal(Constants.TOKEN),
+                        getStringVal(Constants.NAME).toString(),sendfeedback.text.toString())
+                }
+                }
+            }
         }
+    }
+
+    override fun onFeedback(success: Response<FeedbackResponse>) {
+        pd.dismiss()
+        if (success.isSuccessful)
+        {
+            sendfeedback.setText("")
+            Toast.makeText(this,"Feedback sent",Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    override fun onError(error: String) {
+        pd.dismiss()
+        utility.relative_snackbar(
+            window.currentFocus,
+            error,
+            getString(R.string.close_up)
+        )
     }
 
 }

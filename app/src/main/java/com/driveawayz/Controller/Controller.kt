@@ -13,7 +13,9 @@ import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse
 import com.driveawayz.dashboard.mydriveFrag.CompleteRideResponse
 import com.driveawayz.dashboard.mydriveFrag.DeleteRideResponse
 import com.driveawayz.dashboard.mydriveFrag.MyDrivesResponse
+import com.driveawayz.dashboard.response.FeedbackResponse
 import com.driveawayz.dashboard.setiingFrag.response.*
+import com.driveawayz.dashboard.supportFrag.SupportResponse
 import com.driveawayz.splashScreen.MeResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -44,6 +46,8 @@ class Controller {
     var completeRideAPI : CompleteRideAPI? = null
     var forgotPasswordAPI: ForgotPasswordAPI? = null
     var changePasswordAPI : ChangePasswordAPI? = null
+    var feedbackAPI: FeedbackAPI? = null
+    var supportAPI : SupportAPI? = null
 
     fun Controller(signUpPhone: SignUpPhoneAPI) {
         signUpPhoneAPI = signUpPhone
@@ -123,6 +127,18 @@ class Controller {
         myVehiclesAPI = myVehicles
         rateAPI = rate
         bookRideAPI = bookRide
+        webAPI = WebAPI()
+    }
+
+    fun Controller(feedback: FeedbackAPI)
+    {
+        feedbackAPI = feedback
+        webAPI = WebAPI()
+    }
+
+    fun Controller(support: SupportAPI)
+    {
+        supportAPI = support
         webAPI = WebAPI()
     }
 
@@ -510,6 +526,42 @@ class Controller {
         })
     }
 
+    fun Feedback(token: String,name: String,decs:String)
+    {
+        webAPI?.api?.feedback(token,name,decs)?.enqueue(object :Callback<FeedbackResponse>
+        {
+            override fun onResponse(
+                call: Call<FeedbackResponse>,
+                response: Response<FeedbackResponse>
+            ) {
+                feedbackAPI?.onFeedback(response)
+            }
+
+            override fun onFailure(call: Call<FeedbackResponse>, t: Throwable) {
+               feedbackAPI?.onError(t.localizedMessage)
+            }
+
+        })
+    }
+
+    fun Support(token: String,question:String,description :String)
+    {
+        webAPI?.api?.support(token, question, description)?.enqueue(object :Callback<SupportResponse>
+        {
+            override fun onResponse(
+                call: Call<SupportResponse>,
+                response: Response<SupportResponse>
+            ) {
+                supportAPI?.onSupportSuccess(response)
+            }
+
+            override fun onFailure(call: Call<SupportResponse>, t: Throwable) {
+                supportAPI?.onError(t.localizedMessage)
+            }
+
+        })
+    }
+
     interface SignUpPhoneAPI {
         fun onSignUpPhoneSuccess(success: Response<SignUpPhoneNoResponse>)
         fun onError(error: String)
@@ -613,5 +665,15 @@ class Controller {
     interface ChangePasswordAPI {
         fun onChangePassword(success:Response<ChangePasswordResponse>)
         fun onError(error:String)
+    }
+
+    interface FeedbackAPI {
+        fun onFeedback(success:Response<FeedbackResponse>)
+        fun onError(error: String)
+    }
+
+    interface SupportAPI {
+        fun onSupportSuccess(support:Response<SupportResponse>)
+        fun onError(error: String)
     }
 }
