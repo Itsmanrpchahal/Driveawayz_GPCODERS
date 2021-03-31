@@ -202,7 +202,7 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
 
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0!!
-        val location = LatLng(lat, lat)
+        val location = LatLng(lat, lng)
 
         mMap.clear()
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 16f))
@@ -264,7 +264,7 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
 
                                 // val latLngs: MutableList<LatLng> = ArrayList(addresses.size)
                                 // Log.d("latLngs", latLngs.toString())
-                                9
+
                                 val lat2: Double =
                                     java.lang.String.valueOf(addresses.get(0).latitude).toDouble()
                                 val lng2: Double =
@@ -275,9 +275,14 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
                                 Log.d("LATLONG", "" + lat2 + "   " + lng2)
                                 val location = LatLng(lat, lng)
                                 Log.d("LATLNG", "" + lat + "   " + lng)
+                                setStringVal(Constants.LAT, lat.toString())
+                                setStringVal(Constants.LNG, lng.toString())
                                 pickupEt.setText(addresses.get(0).getAddressLine(0).toString())
                                 pickupEt.setSelection(pickupEt.text.length)
+                                pickupEt.setSelection(pickupEt.text.length)
                                 mMap.clear()
+
+
 
                                 if (mapviewpickup != null) {
                                     mapviewpickup!!.onCreate(null);
@@ -342,6 +347,8 @@ class PickUpPoint : BaseFrag(), OnMapReadyCallback, Controller.MyAdderessAPI {
                             select_address_spinner.selectedItem
                             if (position != 0) {
                                 selectedAddress = myAddresses.get(position-1).address+" ,"+myAddresses.get(position-1).street
+                                lat =0.0
+                                lng =0.0
                                 setStringVal(Constants.LAT, "0.0")
                                 setStringVal(Constants.LNG, "0.0")
                                 setStringVal(Constants.PICKUPADDRESS, myAddresses.get(position-1).address+" ,"+myAddresses.get(position-1).street)

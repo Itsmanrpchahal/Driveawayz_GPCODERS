@@ -30,6 +30,11 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/margin_dp55">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_dp40">
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card"
@@ -156,6 +161,11 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+
+        </RelativeLayout>
+
+
+
     </ScrollView>
 
     <Button
@@ -168,7 +178,10 @@
         android:background="@color/colorTrans"
         android:textAllCaps="false"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/margin_dp10">
+        android:layout_marginLeft="@dimen/margin_dp10"
+        android:layout_marginRight="@dimen/margin_dp10"
+        android:layout_marginTop="@dimen/margin_dp40">
 
     </Button>
+
 </RelativeLayout>

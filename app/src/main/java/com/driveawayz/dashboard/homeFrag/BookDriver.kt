@@ -26,15 +26,16 @@ import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.homeFrag.response.BookRide
 import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse
 import com.driveawayz.dashboard.setiingFrag.response.MyVehiclesResponse
+import com.google.android.gms.maps.model.LatLng
 import retrofit2.Response
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.LocalTime
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Controller.BookRideAPI{
+class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI,
+    Controller.BookRideAPI {
 
     private lateinit var bookdriver_bt: Button
     private lateinit var popup: Dialog
@@ -54,9 +55,12 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Con
     private lateinit var myVehiclesName: ArrayList<String>
     var price: Int = 0
     val c = Calendar.getInstance()
-    var vehicleID : Int = 0
-    var total : Float = 0.0f
+    var vehicleID: Int = 0
+    var total: Float = 0.0f
     var datetime: String = ""
+    var lat : Double =0.0;
+    var lng : Double=0.0
+    var totalKM : Double = 0.0
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -68,7 +72,10 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Con
         val view: View
 
         view = inflater.inflate(R.layout.fragment_book_driver, container, false)
+        lat = arguments?.getDouble("lat")!!
+        lng = arguments?.getDouble("lng")!!
         findIds(view)
+
         listeners()
         return view
     }
@@ -191,11 +198,13 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Con
         val format2 = "yyyy-MM-dd"
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         val sdf1 = SimpleDateFormat(format1, Locale.UK)
-        val sdf2 =SimpleDateFormat(format2, Locale.UK)
-         datetime = sdf2.format(c.time)
+        val sdf2 = SimpleDateFormat(format2, Locale.UK)
+        datetime = sdf2.format(c.time)
         Log.d("TIME", "" + sdf2.format(c.time))
         pick_date_et.setText(sdf.format(c.time))
         picktime_et.setText("")
+
+
     }
 
     //Check Internet Connection
@@ -239,7 +248,7 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Con
 
         var rate: Float = java.lang.Float.valueOf(price.toString())
         val hourr: Float = java.lang.Float.valueOf(hours_et.text.toString())
-         total  =
+        total =
             rate * hourr
 
         accept_bt = popup.findViewById(R.id.accept_bt)
@@ -259,21 +268,22 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Con
         cancel_bt.setOnClickListener(View.OnClickListener { popup.dismiss() })
 
         accept_bt.setOnClickListener(View.OnClickListener {
-            if (utility.isConnectingToInternet(context))
-            {
+            if (utility.isConnectingToInternet(context)) {
                 pd.show()
                 pd.setContentView(R.layout.loading)
-                controller.RideBook("Bearer "+getStringVal(Constants.TOKEN),
+                controller.RideBook(
+                    "Bearer " + getStringVal(Constants.TOKEN),
                     getStringVal(Constants.PICKUPADDRESS)!!,
                     getStringVal(Constants.DROPADDRESS)!!,
-                    getStringVal(Constants.LAT_D)!!+","+getStringVal(Constants.LNG_D)!!,
-                    getStringVal(Constants.LAT)!!+","+getStringVal(Constants.LNG)!!,
+                    getStringVal(Constants.LAT_D)!! + "," + getStringVal(Constants.LNG_D)!!,
+                    getStringVal(Constants.LAT)!! + "," + getStringVal(Constants.LNG)!!,
                     numberofgueststv.text.toString(),
                     hours_et.text.toString(),
-                    datetime+" "+
-                    picktime_et.text.toString(),
+                    datetime + " " +
+                            picktime_et.text.toString(),
                     vehicleID,
-                    total.toString()
+                    total.toString(),
+                    totalKM.toString()
                 )
 
 //                                controller.RideBook("Bearer "+getStringVal(Constants.TOKEN),
@@ -318,7 +328,7 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Con
         pd!!.setCancelable(false)
 
         controller = Controller()
-        controller.Controller(this, this,this)
+        controller.Controller(this, this, this)
         controller.MyVehicles("Bearer " + getStringVal(Constants.TOKEN))
         pd.show()
         pd.setContentView(R.layout.loading)
@@ -328,7 +338,46 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Con
         picktime_et = view.findViewById(R.id.picktime_et)
         numberofgueststv = view.findViewById(R.id.numberofgueststv)
         hours_et = view.findViewById(R.id.hours_et)
+
+        if (!getStringVal(Constants.LNG).equals("0.0") && !getStringVal(Constants.LAT).equals("0.0") && !getStringVal(
+                Constants.LNG_D
+            ).equals("0.0") && !getStringVal(Constants.LAT_D).equals("0.0"))
+        {
+
+            var pickloc = LatLng(getStringVal(Constants.LAT)!!.toDouble(),getStringVal(Constants.LNG)!!.toDouble())
+            var dropLoc = LatLng(lat,lng)
+            totalKM = CalculationByDistance(pickloc,dropLoc)
+
+        }
     }
+
+    fun CalculationByDistance(StartP: LatLng, EndP: LatLng): Double {
+        val Radius = 6371 // radius of earth in Km
+        val lat1 = StartP.latitude
+        val lat2 = EndP.latitude
+        val lon1 = StartP.longitude
+        val lon2 = EndP.longitude
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = (Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + (Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2)))
+        val c = 2 * Math.asin(Math.sqrt(a))
+        val valueResult = Radius * c
+        val km = valueResult / 1
+        val newFormat = DecimalFormat("####")
+        val kmInDec: Int = Integer.valueOf(newFormat.format(km))
+        val meter = valueResult % 1000
+        val meterInDec: Int = Integer.valueOf(newFormat.format(meter))
+        Log.i(
+            "Radius Value", "" + valueResult + "   KM  " + kmInDec
+                    + " Meter   " + meterInDec
+        )
+        return Radius * c
+    }
+
+
 
     override fun onMyVehiclesSuccess(success: Response<List<MyVehiclesResponse>>) {
         pd.dismiss()
@@ -396,8 +445,7 @@ class BookDriver : BaseFrag(), Controller.MyVehiclesAPI, Controller.RateAPI ,Con
 
     override fun onBookRideSuccess(success: Response<BookRide>) {
         pd.dismiss()
-        if (success.isSuccessful)
-        {
+        if (success.isSuccessful) {
             popup.dismiss()
             dialogOK()
         }

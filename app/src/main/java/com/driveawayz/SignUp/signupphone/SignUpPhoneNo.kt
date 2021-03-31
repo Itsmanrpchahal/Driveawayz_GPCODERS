@@ -33,7 +33,7 @@ class SignUpPhoneNo : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
     private lateinit var utility: Utility
     private lateinit var pd: ProgressDialog
     private lateinit var alreadyhaveaccount_bt : Button
-    private  var c_code: String = "+91"
+    private  var c_code: String = "91"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +62,7 @@ class SignUpPhoneNo : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
                           closeKeyBoard()
                             pd.show()
                             pd.setContentView(R.layout.loading)
-                            controller.SignUpPhone(c_code + phone_number_et.text.toString(), "sms")
+                            controller.SignUpPhone("+"+c_code + phone_number_et.text.toString(), "sms")
                         } else {
                             pd!!.dismiss()
                             Toast.makeText(
@@ -110,6 +110,7 @@ class SignUpPhoneNo : AppCompatActivity(), CountryCodePicker.OnCountryChangeList
         pd!!.dismiss()
         if (success.isSuccessful) {
             startActivity(Intent(this, OTPScreen::class.java).putExtra(Constants.MOBILENUMBER, phone_number_et.text.toString()).putExtra(Constants.CODE,c_code))
+            finish()
         }else {
             Toast.makeText(this,success.message(),Toast.LENGTH_SHORT).show()
         }

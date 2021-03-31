@@ -94,7 +94,7 @@ class OTPScreen : BaseClass(), Controller.SignUpPhoneAPI, Controller.VerifyPhone
 //                    }
 //                    else -> {
                 startTimeCounterCall()
-                controller.SignUpPhone(code + mobileno, "call")
+                controller.SignUpPhone("+"+code + mobileno, "call")
                 //  }
                 //}
             } else {
@@ -109,7 +109,7 @@ class OTPScreen : BaseClass(), Controller.SignUpPhoneAPI, Controller.VerifyPhone
 
                     if (utility.isConnectingToInternet(this)) {
                         startTimeCounter()
-                        controller.SignUpPhone(code + mobileno, "sms")
+                        controller.SignUpPhone("+"+code + mobileno, "sms")
                     } else {
                         Toast.makeText(this, getString(R.string.nointernet), Toast.LENGTH_SHORT)
                             .show()
@@ -129,7 +129,7 @@ class OTPScreen : BaseClass(), Controller.SignUpPhoneAPI, Controller.VerifyPhone
                     else -> {
                         pd.show()
                         pd.setContentView(R.layout.loading)
-                        controller.VerifyPhone(code + mobileno, otp_view.otp.toString())
+                        controller.VerifyPhone("+"+code + mobileno, otp_view.otp.toString())
                     }
                 }
             }
@@ -175,6 +175,7 @@ class OTPScreen : BaseClass(), Controller.SignUpPhoneAPI, Controller.VerifyPhone
                 setStringVal(Constants.CODE,code)
                 setStringVal(Constants.MOBILENUMBER,mobileno)
                 startActivity(Intent(this, SignUpDetail1::class.java))
+                finish()
             } else {
                 otp_view.requestFocus()
                 otp_view.showError()

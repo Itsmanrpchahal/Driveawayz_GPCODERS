@@ -10,8 +10,6 @@ import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.net.ConnectivityManager
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,7 +28,6 @@ import com.driveawayz.Utilities.GpsTracker
 import com.driveawayz.Utilities.Utility
 import com.driveawayz.dashboard.homeFrag.customPlacepicker.AutoCompleteAdapter
 import com.driveawayz.dashboard.setiingFrag.response.MyAddessesResponse
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -93,10 +90,11 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
             lat = gpsTracker.latitude
             lng = gpsTracker.longitude
 
+
             val geocoder : Geocoder
-            geocoder = Geocoder(context,Locale.getDefault())
+            geocoder = Geocoder(context, Locale.getDefault())
             val address : List<Address>
-            address = geocoder.getFromLocation(lat,lng,1)
+            address = geocoder.getFromLocation(lat, lng, 1)
 
            // setdestination_et.setText(address.get(0).getAddressLine(0))
 
@@ -123,19 +121,27 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
                     setdestination_et.requestFocus()
                     setdestination_et.setError("Enter Pickup address")
                 } else {
-                    setStringVal(Constants.LAT_D, lat.toString())
-                    setStringVal(Constants.LNG_D, lng.toString())
                     if (selectedAddress.equals("Select address"))
                     {
-                         setStringVal(Constants.DROPADDRESS,setdestination_et.text.toString())
+                         setStringVal(Constants.DROPADDRESS, setdestination_et.text.toString())
+
                     }
+                    val bundle = Bundle()
+                    bundle.putDouble("lat", lat)
+                    bundle.putDouble("lng",lng)
+                    var  bookDriver = BookDriver()
+                    bookDriver.arguments = bundle
 
 
-                    manager.beginTransaction().replace(R.id.nav_host_fragment,BookDriver()).addToBackStack(null).commit()
+                    manager.beginTransaction().replace(R.id.nav_host_fragment, bookDriver).addToBackStack(
+                        null
+                    ).commit()
                 }
-
             } else {
-                context?.registerReceiver(broadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+                context?.registerReceiver(
+                    broadcastReceiver,
+                    IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+                )
             }
 
         }
@@ -147,7 +153,7 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
         select_address_spinner = view?.findViewById(R.id.select_address_spinner)
         setdestination_et.threshold = 1
         setdestination_et.setOnItemClickListener(autocompleteClickListener)
-        adapter = AutoCompleteAdapter(context,placesClient)
+        adapter = AutoCompleteAdapter(context, placesClient)
         setdestination_et.setAdapter(adapter)
         utility = Utility()
         pd = ProgressDialog(context)
@@ -190,7 +196,7 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
 
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0!!
-        val location = LatLng(lat, lat)
+        val location = LatLng(lat, lng)
 
         mMap.clear()
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 16f))
@@ -264,9 +270,14 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
                                 lng = lng2
                                 Log.d("LATLONG", "" + lat2 + "   " + lng2)
                                 val location = LatLng(lat, lng)
-                                Log.d("LATLNG", "" + lat + "   " + lng)
-                                setdestination_et.setText(addresses.get(0).getAddressLine(0).toString())
 
+                                setdestination_et.setText(
+                                    addresses.get(0).getAddressLine(0).toString()
+                                )
+                                setStringVal(Constants.LAT_D, lat.toString())
+                                setStringVal(Constants.LNG_D, lng.toString())
+
+                                Log.d("LATLNG", "" + lat + "   " + lng)
                                 mMap.clear()
 
                                 if (mapviewdrop != null) {
@@ -332,10 +343,19 @@ class DropedPoint : BaseFrag(),OnMapReadyCallback , Controller.MyAdderessAPI {
                         ) {
                             select_address_spinner.selectedItem
                             if (position != 0) {
+                                lat =0.0
+                                lng =0.0
                                 setStringVal(Constants.LAT_D, "0.0")
                                 setStringVal(Constants.LNG_D, "0.0")
-                                setStringVal(Constants.DROPADDRESS,myAddresses.get(position-1).address+" ,"+myAddresses.get(position-1).street)
-                                selectedAddress = myAddresses.get(position-1).address+" ,"+myAddresses.get(position-1).street
+                                setStringVal(
+                                    Constants.DROPADDRESS,
+                                    myAddresses.get(position - 1).address + " ," + myAddresses.get(
+                                        position - 1
+                                    ).street
+                                )
+                                selectedAddress = myAddresses.get(position - 1).address+" ,"+myAddresses.get(
+                                    position - 1
+                                ).street
                             }
                             //pd.show()
                         }

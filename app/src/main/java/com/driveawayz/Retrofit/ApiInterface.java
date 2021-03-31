@@ -7,6 +7,7 @@ import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse;
 import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse;
 import com.driveawayz.SignUp.signupphone.response.SignUp1user;
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse;
+import com.driveawayz.dashboard.DashboardResponse;
 import com.driveawayz.dashboard.homeFrag.response.BookRide;
 import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse;
 import com.driveawayz.dashboard.mydriveFrag.CompleteRideResponse;
@@ -146,7 +147,8 @@ public interface ApiInterface {
             @Field("numberOfHours") String numberOfHours,
             @Field("pickDt") String pickDate,
             @Field("vehicleId") Integer vehicleId,
-            @Field("rideCharge") String rideCharge
+            @Field("rideCharge") String rideCharge,
+            @Field("distance") String distance
     );
 
     @GET("/api/v1/myRides")
@@ -217,6 +219,11 @@ public interface ApiInterface {
             @Field("question") String question,
             @Field("description") String description
 
+    );
+
+    @POST("/api/v1/user/dashboard")
+    Call<DashboardResponse> dashboard(
+            @Header("Authorization") String token
     );
 
 }

@@ -8,6 +8,8 @@ import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse
 import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
 import com.driveawayz.SignUp.signupphone.response.SignUp1user
+import com.driveawayz.dashboard.Dashboard
+import com.driveawayz.dashboard.DashboardResponse
 import com.driveawayz.dashboard.homeFrag.response.BookRide
 import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse
 import com.driveawayz.dashboard.mydriveFrag.CompleteRideResponse
@@ -48,6 +50,7 @@ class Controller {
     var changePasswordAPI : ChangePasswordAPI? = null
     var feedbackAPI: FeedbackAPI? = null
     var supportAPI : SupportAPI? = null
+    var dashboardAPI:DashboardAPI? = null
 
     fun Controller(signUpPhone: SignUpPhoneAPI) {
         signUpPhoneAPI = signUpPhone
@@ -130,9 +133,10 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(feedback: FeedbackAPI)
+    fun Controller(feedback: FeedbackAPI,dashboard: DashboardAPI)
     {
         feedbackAPI = feedback
+        dashboardAPI = dashboard
         webAPI = WebAPI()
     }
 
@@ -142,6 +146,10 @@ class Controller {
         webAPI = WebAPI()
     }
 
+    fun Controller(dashboard: DashboardAPI)
+    {
+        webAPI = WebAPI()
+    }
 
     fun SignUpPhone(mobileNumber: String, channel: String) {
         webAPI?.api?.signUpPhone(mobileNumber, channel)
@@ -344,7 +352,8 @@ class Controller {
         numberOfHours: String,
         pickDate: String,
         vehicleId: Int,
-        rideCharge: String
+        rideCharge: String,
+        distance:String
     ) {
         webAPI?.api?.bookRide(
             token,
@@ -356,7 +365,8 @@ class Controller {
             numberOfHours,
             pickDate,
             vehicleId,
-            rideCharge
+            rideCharge,
+            distance
         )?.enqueue(object : Callback<BookRide> {
             override fun onResponse(call: Call<BookRide>, response: Response<BookRide>) {
                 bookRideAPI?.onBookRideSuccess(response)
@@ -562,6 +572,24 @@ class Controller {
         })
     }
 
+    fun Dashboard(token: String)
+    {
+        webAPI?.api?.dashboard(token)?.enqueue(object :Callback<DashboardResponse>
+        {
+            override fun onResponse(
+                call: Call<DashboardResponse>,
+                response: Response<DashboardResponse>
+            ) {
+                dashboardAPI?.onDashboardSuccess(response)
+            }
+
+            override fun onFailure(call: Call<DashboardResponse>, t: Throwable) {
+                dashboardAPI?.onError(t.message.toString())
+            }
+
+        })
+    }
+
     interface SignUpPhoneAPI {
         fun onSignUpPhoneSuccess(success: Response<SignUpPhoneNoResponse>)
         fun onError(error: String)
@@ -674,6 +702,11 @@ class Controller {
 
     interface SupportAPI {
         fun onSupportSuccess(support:Response<SupportResponse>)
+        fun onError(error: String)
+    }
+
+    interface DashboardAPI {
+        fun onDashboardSuccess(dashboard: Response<DashboardResponse>)
         fun onError(error: String)
     }
 }

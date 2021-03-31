@@ -40,7 +40,7 @@ import kotlinx.android.synthetic.main.maindrawer.*
 import org.w3c.dom.Text
 import retrofit2.Response
 
-class Dashboard : BaseClass(), View.OnClickListener ,Controller.FeedbackAPI{
+class Dashboard : BaseClass(), View.OnClickListener ,Controller.FeedbackAPI,Controller.DashboardAPI{
 
     private lateinit var frameLayout: NavController
     private lateinit var drawerLayout: DrawerLayout
@@ -60,6 +60,9 @@ class Dashboard : BaseClass(), View.OnClickListener ,Controller.FeedbackAPI{
     private lateinit var utility: Utility
     private lateinit var pd: ProgressDialog
     private lateinit var controller: Controller
+    private lateinit var hour_header : TextView
+    private lateinit var km_header:TextView
+    private lateinit var job_header: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,7 +109,7 @@ class Dashboard : BaseClass(), View.OnClickListener ,Controller.FeedbackAPI{
         pd!!.isIndeterminate = true
         pd!!.setCancelable(false)
         controller = Controller()
-        controller.Controller(this)
+        controller.Controller(this,this)
         drawerLayout = findViewById(R.id.drawer_layout)
         appbarmain = findViewById(R.id.appbarmain)
         menu = findViewById(R.id.menu)
@@ -119,10 +122,15 @@ class Dashboard : BaseClass(), View.OnClickListener ,Controller.FeedbackAPI{
         logout_nav = findViewById(R.id.logout_nav)
         sendfeedback = findViewById(R.id.sendfeedback)
         sendfeedback_bt = findViewById(R.id.sendfeedback_bt)
+        hour_header = findViewById(R.id.hour_header)
+        km_header = findViewById(R.id.km_header)
+        job_header = findViewById(R.id.job_header)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(true)
         title = findViewById(R.id.title)
+
+        controller.Dashboard("Bearer "+getStringVal(Constants.TOKEN))
 
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment,PickUpPoint()).commit()
         title.setText("Home")
@@ -416,6 +424,26 @@ class Dashboard : BaseClass(), View.OnClickListener ,Controller.FeedbackAPI{
             Toast.makeText(this,"Feedback sent",Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    override fun onDashboardSuccess(dashboard: Response<DashboardResponse>) {
+        pd.dismiss()
+
+        if (dashboard.isSuccessful)
+        {
+            if (dashboard.body()?.error==false)
+            {
+                hour_header.text = dashboard.body()?.details?.totalTime
+                km_header.text = dashboard.body()?.details?.totalDistance
+                job_header.text = dashboard.body()?.details?.totalRides.toString()
+            }
+        } else {
+            utility.relative_snackbar(
+                window.currentFocus,
+                dashboard.message(),
+                getString(R.string.close_up)
+            )
+        }
     }
 
     override fun onError(error: String) {
