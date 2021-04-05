@@ -8,13 +8,14 @@ import com.driveawayz.SignUp.signupphone.response.AddVehiclesResponse
 import com.driveawayz.SignUp.signupphone.response.SignUpPhoneNoResponse
 import com.driveawayz.SignUp.signupphone.response.AddNewAddressResponse
 import com.driveawayz.SignUp.signupphone.response.SignUp1user
-import com.driveawayz.dashboard.Dashboard
 import com.driveawayz.dashboard.DashboardResponse
 import com.driveawayz.dashboard.homeFrag.response.BookRide
 import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse
 import com.driveawayz.dashboard.mydriveFrag.CompleteRideResponse
 import com.driveawayz.dashboard.mydriveFrag.DeleteRideResponse
 import com.driveawayz.dashboard.mydriveFrag.MyDrivesResponse
+import com.driveawayz.dashboard.notificationFrag.ClearNotificationsResponse
+import com.driveawayz.dashboard.notificationFrag.NotificationsResponse
 import com.driveawayz.dashboard.response.FeedbackResponse
 import com.driveawayz.dashboard.setiingFrag.response.*
 import com.driveawayz.dashboard.supportFrag.SupportResponse
@@ -51,6 +52,8 @@ class Controller {
     var feedbackAPI: FeedbackAPI? = null
     var supportAPI : SupportAPI? = null
     var dashboardAPI:DashboardAPI? = null
+    var notificationsAPI:NotificationsAPI? = null
+    var clearNotificationsAPI:ClearNotificationsAPI?=null
 
     fun Controller(signUpPhone: SignUpPhoneAPI) {
         signUpPhoneAPI = signUpPhone
@@ -146,8 +149,10 @@ class Controller {
         webAPI = WebAPI()
     }
 
-    fun Controller(dashboard: DashboardAPI)
+    fun Controller(notifications: NotificationsAPI,clearNotifications: ClearNotificationsAPI)
     {
+        notificationsAPI = notifications
+        clearNotificationsAPI = clearNotifications
         webAPI = WebAPI()
     }
 
@@ -590,6 +595,42 @@ class Controller {
         })
     }
 
+    fun Notifications(token: String)
+    {
+        webAPI?.api?.notifications(token)?.enqueue(object :Callback<List<NotificationsResponse>>
+        {
+            override fun onResponse(
+                call: Call<List<NotificationsResponse>>,
+                response: Response<List<NotificationsResponse>>
+            ) {
+                notificationsAPI?.onNotifications(response)
+            }
+
+            override fun onFailure(call: Call<List<NotificationsResponse>>, t: Throwable) {
+                notificationsAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
+    fun ClearNotifications(token: String)
+    {
+        webAPI?.api?.clearNotifications(token)?.enqueue(object :Callback<ClearNotificationsResponse>
+        {
+            override fun onResponse(
+                call: Call<ClearNotificationsResponse>,
+                response: Response<ClearNotificationsResponse>
+            ) {
+                clearNotificationsAPI?.onClearNotifications(response)
+            }
+
+            override fun onFailure(call: Call<ClearNotificationsResponse>, t: Throwable) {
+                clearNotificationsAPI?.onError(t.message!!)
+            }
+
+        })
+    }
+
     interface SignUpPhoneAPI {
         fun onSignUpPhoneSuccess(success: Response<SignUpPhoneNoResponse>)
         fun onError(error: String)
@@ -707,6 +748,16 @@ class Controller {
 
     interface DashboardAPI {
         fun onDashboardSuccess(dashboard: Response<DashboardResponse>)
+        fun onError(error: String)
+    }
+
+    interface NotificationsAPI {
+        fun onNotifications(notifications: Response<List<NotificationsResponse>>)
+        fun onError(error: String)
+    }
+
+    interface ClearNotificationsAPI {
+        fun onClearNotifications(clearNotifications:Response<ClearNotificationsResponse>)
         fun onError(error: String)
     }
 }

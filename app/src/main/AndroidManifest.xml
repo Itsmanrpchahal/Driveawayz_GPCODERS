@@ -23,6 +23,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/driveawayzicon"
         android:label="@string/app_name"
+        android:defaultToDeviceProtectedStorage="true"
         android:roundIcon="@mipmap/driveawayzicon"
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"

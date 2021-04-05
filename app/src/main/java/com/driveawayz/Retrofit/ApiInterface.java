@@ -13,6 +13,8 @@ import com.driveawayz.dashboard.homeFrag.response.MyVehicleRateResponse;
 import com.driveawayz.dashboard.mydriveFrag.CompleteRideResponse;
 import com.driveawayz.dashboard.mydriveFrag.DeleteRideResponse;
 import com.driveawayz.dashboard.mydriveFrag.MyDrivesResponse;
+import com.driveawayz.dashboard.notificationFrag.ClearNotificationsResponse;
+import com.driveawayz.dashboard.notificationFrag.NotificationsResponse;
 import com.driveawayz.dashboard.response.FeedbackResponse;
 import com.driveawayz.dashboard.setiingFrag.response.ChangePasswordResponse;
 import com.driveawayz.dashboard.setiingFrag.response.DeleteAddressResponse;
@@ -223,6 +225,15 @@ public interface ApiInterface {
 
     @POST("/api/v1/user/dashboard")
     Call<DashboardResponse> dashboard(
+            @Header("Authorization") String token
+    );
+    @GET("/api/v1/notifications")
+    Call<List<NotificationsResponse>> notifications(
+            @Header("Authorization") String token
+    );
+
+    @PUT("/api/v1/notifications")
+    Call<ClearNotificationsResponse> clearNotifications(
             @Header("Authorization") String token
     );
 
